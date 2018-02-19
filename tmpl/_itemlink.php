@@ -3,13 +3,13 @@
 
 	Weiterlesen-Link
 
-	Dieses Template ist optional.
-
 	Folgende Felder, in X-Fields angelegt, stehen zur Verfügung:
 
 	- readmore-override-item = Verlinke „Weiterlesen” mit einem Menüeintrag
 	- readmore-override-article = Verlinke „Weiterlesen” mit einem anderen Artikel
 	- readmore-override-url = Verlinke „Weiterlesen” mit einer URL
+
+	Wenn diese Felder nicht existieren wird der normale „Weiterlesen”-Link benutzt. 
  */
 defined('_JEXEC') or die;
 
