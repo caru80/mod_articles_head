@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.1" client="site" method="upgrade">
+	<name>MOD_ARTICLES_HEAD</name>
+	<author>Carsten Ruppert</author>
+	<creationDate>2017-07-05</creationDate>
+	<copyright></copyright>
+	<license></license>
+	<authorEmail>webmaster@headmarketing.de</authorEmail>
+	<authorUrl>www.headmarketing.de</authorUrl>
+	<version>1.0.3</version>
+	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_articles_head">mod_articles_head.php</filename>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+		<filename>mod_articles_head.xml</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages folder="language">
+		<language tag="de-DE">de-DE.mod_articles_head.ini</language>
+		<language tag="de-DE">de-DE.mod_articles_head.sys.ini</language>
+	</languages>
+	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_ARTICLES_NEWSFLASH" />
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="moduleintro"
+					type="editor"
+					filter="raw"
+					label="MOD_ARTICLES_HEAD_MODULEINTRO"
+					description="Zeige diesen Introtext über den Artikeln."
+				/>
+				<field
+					name="catid"
+					type="category"
+					extension="com_content"
+					multiple="true"
+					default=""
+					size="10"
+					label="JCATEGORY"
+					description="MOD_ARTICLES_NEWS_FIELD_CATEGORY_DESC"
+				>
+					<option value="">JOPTION_ALL_CATEGORIES</option>
+				</field>
+
+				<field
+					name="show_featured"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="Featured Artikel"
+					description="Wenn keine Kategorie gewählt wurde, werden alle Featured-Artikel angezeigt (wenn erwünscht). Wenn eine (oder mehrere) Kategorie gewählt wurde, werden nur Featured Artikel aus dieser Kategorie angezeigt."
+				>
+					<option value="">Anzeigen</option>
+					<option value="0">Verbergen</option>
+					<option value="1">Nur</option>
+				</field>
+
+				<field
+					name="hidecurrentarticle"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ARTICLES_HEAD_HIDECURRENTARTICLE"
+					description="MOD_ARTICLES_HEAD_HIDECURRENTARTICLE_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="note-module-link"
+					type="note"
+					label="Modul-Weiterlesen"
+					description="Einen Link anzeigen, der zum gewählten Menüeintrag oder zur Kategorie führt."
+				/>
+				<field
+					name="linkeditem"
+					type="menuitem"
+					published="1"
+					label="MOD_ARTICLES_HEAD_LINKEDITEM"
+					description="Einen Link anzeigen, der zum gewählten Menüeintrag führt. Aber nur, wenn &quot;Mit Kategorie Verlinken&quot; nicht gewählt wurde."
+				>
+					<option	value="">Keine Verknüpfung</option>
+				</field>
+				<field
+					name="linkcategory"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ARTICLES_HEAD_LINKTOCATEGORY"
+					description="Einen Link anzeigen, der zur in &quot;Kategorie&quot; gewählten Kategorie führt. Aber nur, wenn nur eine Kategorie gewählt wurde (was sonst passiert ist unklar)."
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+					name="linklabel"
+					type="text"
+					class="input-medium"
+					default=""
+					hint="z.B. mehr"
+					label="MOD_ARTICLES_HEAD_LINKLABEL"
+					description="Optionale Beschrifung für den Link zur Kategorie oder zum Menüeintrag."
+				/>
+
+				<field
+					name="module-link-position"
+					type="radio"
+					class="btn-group"
+					default="0"
+					label="Link Position"
+					description="Die Position des Link. Oben wird unterhalb den Einleitungstext angezeigt. Unten wird unter dem Modulinhalt angezeigt."
+				>
+					<option value="0">Unten</option>
+					<option value="1">Oben</option>
+					<option value="2">Beides</option>
+				</field>
+
+				<field
+					name="note-articles"
+					type="note"
+					label="Artikel"
+					description="Einstellungen für Artikel."
+				/>
+				<field
+					name="image"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ARTICLES_NEWS_FIELD_IMAGES_LABEL"
+					description="Bilder im Text anzeigen, oder nicht."
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="preview-image"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="1"
+					label="Einleitungsbild anzeigen"
+					description="Einleitungsbild anzeigen, oder nicht."
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+
+				<field
+					name="item_title"
+					class="btn-group btn-group-yesno"
+					type="radio"
+					default="0"
+					label="MOD_ARTICLES_NEWS_FIELD_TITLE_LABEL"
+					description="MOD_ARTICLES_NEWS_FIELD_TITLE_DESC"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+
+				<field
+					name="triggerevents"
+					type="radio"
+					label="Events auslösen"
+					description="Content Events auslösen (afterDisplayTitle, beforeDisplayContent, afterDisplayContent). Wenn Customfields aus den Artikeln benötigt werden ist dies einzuschalten!"
+					class="btn-group btn-group-yesno"
+					default="1"
+				>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+
+				<field
+					name="link_titles"
+					type="list"
+					class="chzn-color"
+					label="MOD_ARTICLES_NEWS_FIELD_LINKTITLE_LABEL"
+					description="MOD_ARTICLES_NEWS_FIELD_LINKTITLE_DESC"
+				>
+					<option value="">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="item_heading"
+					type="list"
+					default="h4"
+					label="MOD_ARTICLES_NEWS_TITLE_HEADING"
+					description="MOD_ARTICLES_NEWS_TITLE_HEADING_DESCRIPTION"
+				>
+					<option value="h1">JH1</option>
+					<option value="h2">JH2</option>
+					<option value="h3">JH3</option>
+					<option value="h4">JH4</option>
+					<option value="h5">JH5</option>
+				</field>
+
+				<field
+					name="readmore"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ARTICLES_NEWS_FIELD_READMORE_LABEL"
+					description="MOD_ARTICLES_NEWS_FIELD_READMORE_DESC"
+				>
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
+				</field>
+
+				<field
+					name="note-ajax-and-sorting"
+					type="note"
+					label="Sortierung und AJAX"
+					description="Einstellungen für Sortierung und nachladen per AJAX."
+				/>
+				<field
+					name="count"
+					type="text"
+					default="5"
+					label="MOD_ARTICLES_NEWS_FIELD_ITEMS_LABEL"
+					description="MOD_ARTICLES_NEWS_FIELD_ITEMS_DESC" />
+
+				<field
+					name="ajax"
+					type="radio"
+					class="btn-group"
+					default="0"
+					label="AJAX Artikel nachladen"
+					description="Ein Link zum laden weiterer Beiträge wird angezeigt. Die Anzahl wird in &quot;Anzahl von Beträgen&quot; bestimmt."
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="ajax_loadmore_label"
+					type="text"
+					class="input-md"
+					default=""
+					label="AJAX-Link Beschriftung"
+					description="Die optionale Beschriftung für den AJAX-Link."
+					hint="z.B. mehr"
+				/>
+
+				<field
+					name="ordering"
+					type="list"
+					default="a.publish_up"
+					label="MOD_ARTICLES_NEWS_FIELD_ORDERING_LABEL"
+					description="MOD_ARTICLES_NEWS_FIELD_ORDERING_DESC"
+				>
+					<option value="a.publish_up">MOD_ARTICLES_NEWS_FIELD_ORDERING_PUBLISHED_DATE</option>
+					<option value="a.created">MOD_ARTICLES_NEWS_FIELD_ORDERING_CREATED_DATE</option>
+					<option value="a.ordering">MOD_ARTICLES_NEWS_FIELD_ORDERING_ORDERING</option>
+					<option value="a.hits">JGLOBAL_HITS</option>
+					<option value="rand()">MOD_ARTICLES_NEWS_FIELD_ORDERING_RANDOM</option>
+				</field>
+
+				<field
+					name="direction"
+					type="list"
+					default="1"
+					label="JGLOBAL_ORDER_DIRECTION_LABEL"
+					description="JGLOBAL_ORDER_DIRECTION_DESC"
+				>
+					<option value="0">JGLOBAL_ORDER_ASCENDING</option>
+					<option value="1">JGLOBAL_ORDER_DESCENDING</option>
+				</field>
+			</fieldset>
+
+			<fieldset name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+				<field
+					name="moduleclass_sfx"
+					type="textarea" rows="3"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field
+					name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC"
+				>
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+
+				<field
+					name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+
+				<field
+					name="cachemode"
+					type="hidden"
+					default="itemid"
+				>
+					<option value="itemid"></option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
