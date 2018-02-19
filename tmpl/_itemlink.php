@@ -1,10 +1,15 @@
 <?php
 /**
-	
+
 	Weiterlesen-Link
-	
-	Mit Berücksichtigung der Overrides aus X-Fields.
-	
+
+	Dieses Template ist optional.
+
+	Folgende Felder, in X-Fields angelegt, stehen zur Verfügung:
+
+	- readmore-override-item = Verlinke „Weiterlesen” mit einem Menüeintrag
+	- readmore-override-article = Verlinke „Weiterlesen” mit einem anderen Artikel
+	- readmore-override-url = Verlinke „Weiterlesen” mit einer URL
  */
 defined('_JEXEC') or die;
 
@@ -19,7 +24,7 @@ if( $attribs->get('readmore-override-item', 0) )
 	$link_override = true;
 
 	$menu_item = JFactory::getApplication()->getMenu()->getItem( $attribs->get('readmore-override-item', 0));
-	
+
 	if( $menu_item )
 	{
 		if( $menu_item->flink )
@@ -28,7 +33,7 @@ if( $attribs->get('readmore-override-item', 0) )
 		}
 		else
 		{
-			$link = JRoute::_($menu_item->link . '&Itemid=' . $menu_item->id);			
+			$link = JRoute::_($menu_item->link . '&Itemid=' . $menu_item->id);
 		}
 	}
 	else{
@@ -43,9 +48,9 @@ if( $attribs->get('readmore-override-article', 0) )
 
 	$db = JFactory::getDbo();
 	$q 	= $db->getQuery(true);
-	
+
 	$q->select($db->quoteName('id') .', '. $db->quoteName('state') )->from($db->quoteName('#__content'))->where($db->quoteName('id') . ' = ' . $db->quote($artid));
-	
+
 	$db->setQuery($q);
 	$db->execute();
 
@@ -54,13 +59,13 @@ if( $attribs->get('readmore-override-article', 0) )
 		if( $result->state == '1' ) // ...und ist veröffentlicht
 		{
 			$link_override = true;
-	
+
 			// Hole Artikel Model, weil es nicht immer verfügbar ist, und hole damit den Artikel.
 			JModelLegacy::addIncludePath(JPATH_SITE . DIRECTORY_SEPARATOR .'components' . DIRECTORY_SEPARATOR. 'com_content' . DIRECTORY_SEPARATOR . 'models', 'ContentModel');
 			$articleModel = JModelLegacy::getInstance('Article','ContentModel');
-			
+
 			$article = $articleModel->getItem( $artid );
-			
+
 			if( $article )
 			{
 				$link = JRoute::_( ContentHelperRoute::getArticleRoute($article->id, $article->catid) );
@@ -77,7 +82,7 @@ if( $attribs->get('readmore-override-article', 0) )
 if( $attribs->get('readmore-override-url', '') )
 {
 	$link_override = true;
-	
+
 	$link = $attribs->get('readmore-override-url', '');
 }
 
