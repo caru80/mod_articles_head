@@ -2,34 +2,60 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2017-07-05</creationDate>
+	<creationDate>2018-05-02</creationDate>
 	<copyright></copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
-	<authorUrl>www.headmarketing.de</authorUrl>
-	<version>1.0.3</version>
+	<authorUrl>http://www.headmarketing.de</authorUrl>
+	<version>1.5.0</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
 		<folder>tmpl</folder>
+		<folder>xfields</folder>
 		<filename>helper.php</filename>
-		<filename>mod_articles_head.xml</filename>
 		<filename>index.html</filename>
+		<filename>mod_articles_head.xml</filename>
 	</files>
 	<languages folder="language">
 		<language tag="de-DE">de-DE.mod_articles_head.ini</language>
 		<language tag="de-DE">de-DE.mod_articles_head.sys.ini</language>
 	</languages>
+	<media destination="mod_articles_head" folder="media">
+		<filename>index.html</filename>
+		<folder>js</folder>
+	</media>
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_ARTICLES_NEWSFLASH" />
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				
+				<field
+					name="show_moduleintro"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_MODULEINTRO_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_MODULEINTRO_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
 				<field
 					name="moduleintro"
 					type="editor"
 					filter="raw"
-					label="MOD_ARTICLES_HEAD_MODULEINTRO"
-					description="Zeige diesen Introtext über den Artikeln."
+					showon="show_moduleintro:1"
+					label="MOD_ARTICLES_HEAD_FIELD_MODULEINTRO_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_MODULEINTRO_DESC"
+				/>
+
+				<field
+					name="note-filter"
+					type="note"
+					label="MOD_ARTICLES_HEAD_FIELD_NOTE_FILTER_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_NOTE_FILTER_DESC"
 				/>
 				<field
 					name="catid"
@@ -39,22 +65,32 @@
 					default=""
 					size="10"
 					label="JCATEGORY"
-					description="MOD_ARTICLES_NEWS_FIELD_CATEGORY_DESC"
+					description="MOD_ARTICLES_HEAD_FIELD_CATEGORY_DESC"
 				>
 					<option value="">JOPTION_ALL_CATEGORIES</option>
 				</field>
 
 				<field
+					name="tag"
+					type="tag"
+					label="JTAG"
+					description="JTAG_DESC"
+					mode="nested"
+					multiple="true"
+					class="multipleTags"
+				/>
+
+				<field
 					name="show_featured"
 					type="radio"
-					class="btn-group btn-group-yesno"
-					default="0"
-					label="Featured Artikel"
-					description="Wenn keine Kategorie gewählt wurde, werden alle Featured-Artikel angezeigt (wenn erwünscht). Wenn eine (oder mehrere) Kategorie gewählt wurde, werden nur Featured Artikel aus dieser Kategorie angezeigt."
+					class="btn-group"
+					default=""
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_DESC"
 				>
-					<option value="">Anzeigen</option>
-					<option value="0">Verbergen</option>
-					<option value="1">Nur</option>
+					<option value="0">MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_OPT_HIDE</option>
+					<option value="">MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_OPT_SHOW</option>
+					<option value="1">MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_OPT_ONLY</option>
 				</field>
 
 				<field
@@ -72,37 +108,39 @@
 				<field
 					name="note-module-link"
 					type="note"
-					label="Modul-Weiterlesen"
-					description="Einen Link anzeigen, der zum gewählten Menüeintrag oder zur Kategorie führt."
+					label="MOD_ARTICLES_HEAD_FIELD_NOTE_MODULE_READMORE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_NOTE_MODULE_READMORE_DESC"
 				/>
+
 				<field
 					name="linkeditem"
 					type="menuitem"
 					published="1"
-					label="MOD_ARTICLES_HEAD_LINKEDITEM"
-					description="Einen Link anzeigen, der zum gewählten Menüeintrag führt. Aber nur, wenn &quot;Mit Kategorie Verlinken&quot; nicht gewählt wurde."
+					label="MOD_ARTICLES_HEAD_FIELD_LINKEDITEM_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_LINKEDITEM_DESC"
 				>
-					<option	value="">Keine Verknüpfung</option>
+					<option	value="">JNO</option>
 				</field>
 				<field
 					name="linkcategory"
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="0"
-					label="MOD_ARTICLES_HEAD_LINKTOCATEGORY"
-					description="Einen Link anzeigen, der zur in &quot;Kategorie&quot; gewählten Kategorie führt. Aber nur, wenn nur eine Kategorie gewählt wurde (was sonst passiert ist unklar)."
+					label="MOD_ARTICLES_HEAD_FIELD_LINKTOCATEGORY_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_LINKTOCATEGORY_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 				<field
-					name="linklabel"
+					name="module_readmore_label"
 					type="text"
 					class="input-medium"
 					default=""
-					hint="z.B. mehr"
-					label="MOD_ARTICLES_HEAD_LINKLABEL"
-					description="Optionale Beschrifung für den Link zur Kategorie oder zum Menüeintrag."
+					showon="linkeditem!:[OR]linkcategory!:0"
+					hint="MOD_ARTICLES_HEAD_FIELD_MODULEREADMORE_LABEL_FRONT"
+					label="MOD_ARTICLES_HEAD_FIELD_MODULEREADMORE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_MODULEREADMORE_DESC"
 				/>
 
 				<field
@@ -110,73 +148,62 @@
 					type="radio"
 					class="btn-group"
 					default="0"
-					label="Link Position"
-					description="Die Position des Link. Oben wird unterhalb den Einleitungstext angezeigt. Unten wird unter dem Modulinhalt angezeigt."
+					showon="linkeditem!:[OR]linkcategory!:0"
+					label="MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_DESC"
 				>
-					<option value="0">Unten</option>
-					<option value="1">Oben</option>
-					<option value="2">Beides</option>
+					<option value="0">MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_OPT_BOTTOM</option>
+					<option value="1">MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_OPT_TOP</option>
+					<option value="2">MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_OPT_BOTH</option>
 				</field>
 
 				<field
 					name="note-articles"
 					type="note"
-					label="Artikel"
-					description="Einstellungen für Artikel."
+					label="MOD_ARTICLES_HEAD_FIELD_NOTE_ARTICLES_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_NOTE_ARTICLES_DESC"
 				/>
-				<field
-					name="image"
-					type="radio"
-					class="btn-group btn-group-yesno"
-					default="0"
-					label="MOD_ARTICLES_NEWS_FIELD_IMAGES_LABEL"
-					description="Bilder im Text anzeigen, oder nicht."
-				>
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
-				</field>
+
 				<field
 					name="preview-image"
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="1"
-					label="Einleitungsbild anzeigen"
-					description="Einleitungsbild anzeigen, oder nicht."
+					label="MOD_ARTICLES_HEAD_FIELD_IMAGEINTRO_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_IMAGEINTRO_DESC"
 				>
-					<option value="1">JYES</option>
 					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-
+				<field
+					name="image"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_IMAGES_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_IMAGES_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 				<field
 					name="item_title"
 					class="btn-group btn-group-yesno"
 					type="radio"
 					default="0"
-					label="MOD_ARTICLES_NEWS_FIELD_TITLE_LABEL"
-					description="MOD_ARTICLES_NEWS_FIELD_TITLE_DESC"
+					label="MOD_ARTICLES_HEAD_FIELD_ITEM_TITLE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_ITEM_TITLE_DESC"
 				>
-					<option value="1">JYES</option>
 					<option value="0">JNO</option>
-				</field>
-
-				<field
-					name="triggerevents"
-					type="radio"
-					label="Events auslösen"
-					description="Content Events auslösen (afterDisplayTitle, beforeDisplayContent, afterDisplayContent). Wenn Customfields aus den Artikeln benötigt werden ist dies einzuschalten!"
-					class="btn-group btn-group-yesno"
-					default="1"
-				>
 					<option value="1">JYES</option>
-					<option value="0">JNO</option>
 				</field>
 
 				<field
 					name="link_titles"
 					type="list"
 					class="chzn-color"
-					label="MOD_ARTICLES_NEWS_FIELD_LINKTITLE_LABEL"
-					description="MOD_ARTICLES_NEWS_FIELD_LINKTITLE_DESC"
+					label="MOD_ARTICLES_HEAD_FIELD_LINK_TITLES_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_LINK_TITLES_DESC"
 				>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 					<option value="0">JNO</option>
@@ -187,14 +214,15 @@
 					name="item_heading"
 					type="list"
 					default="h4"
-					label="MOD_ARTICLES_NEWS_TITLE_HEADING"
-					description="MOD_ARTICLES_NEWS_TITLE_HEADING_DESCRIPTION"
+					label="MOD_ARTICLES_HEAD_FIELD_TITLE_HEADING_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_TITLE_HEADING_DESC"
 				>
 					<option value="h1">JH1</option>
 					<option value="h2">JH2</option>
 					<option value="h3">JH3</option>
 					<option value="h4">JH4</option>
 					<option value="h5">JH5</option>
+					<option value="h5">JH6</option>
 				</field>
 
 				<field
@@ -202,60 +230,56 @@
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="0"
-					label="MOD_ARTICLES_NEWS_FIELD_READMORE_LABEL"
-					description="MOD_ARTICLES_NEWS_FIELD_READMORE_DESC"
+					label="MOD_ARTICLES_HEAD_FIELD_READMORE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_READMORE_DESC"
 				>
-					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 
 				<field
-					name="note-ajax-and-sorting"
-					type="note"
-					label="Sortierung und AJAX"
-					description="Einstellungen für Sortierung und nachladen per AJAX."
-				/>
-				<field
-					name="count"
-					type="text"
-					default="5"
-					label="MOD_ARTICLES_NEWS_FIELD_ITEMS_LABEL"
-					description="MOD_ARTICLES_NEWS_FIELD_ITEMS_DESC" />
-
-				<field
-					name="ajax"
+					name="triggerevents"
 					type="radio"
-					class="btn-group"
-					default="0"
-					label="AJAX Artikel nachladen"
-					description="Ein Link zum laden weiterer Beiträge wird angezeigt. Die Anzahl wird in &quot;Anzahl von Beträgen&quot; bestimmt."
+					label="MOD_ARTICLES_HEAD_FIELD_TRIGGER_EVENTS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_TRIGGER_EVENTS_DESC"
+					class="btn-group btn-group-yesno"
+					default="1"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+				<field
+					name="note-articles-content-events"
+					type="note"
+					description="MOD_ARTICLES_HEAD_FIELD_NOTE_CONTENT_EVENTS_DESC"
+				/>
 
 				<field
-					name="ajax_loadmore_label"
-					type="text"
-					class="input-md"
-					default=""
-					label="AJAX-Link Beschriftung"
-					description="Die optionale Beschriftung für den AJAX-Link."
-					hint="z.B. mehr"
+					name="note-ordering"
+					type="note"
+					label="MOD_ARTICLES_HEAD_FIELD_NOTE_ORDERING_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_NOTE_ORDERING_DESC"
 				/>
+
+				<field
+					name="count"
+					type="text"
+					default="5"
+					label="MOD_ARTICLES_HEAD_FIELD_ITEMS_COUNT_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_ITEMS_COUNT_DESC" />
 
 				<field
 					name="ordering"
 					type="list"
 					default="a.publish_up"
-					label="MOD_ARTICLES_NEWS_FIELD_ORDERING_LABEL"
-					description="MOD_ARTICLES_NEWS_FIELD_ORDERING_DESC"
+					label="MOD_ARTICLES_HEAD_FIELD_ORDERING_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_ORDERING_DESC"
 				>
-					<option value="a.publish_up">MOD_ARTICLES_NEWS_FIELD_ORDERING_PUBLISHED_DATE</option>
-					<option value="a.created">MOD_ARTICLES_NEWS_FIELD_ORDERING_CREATED_DATE</option>
-					<option value="a.ordering">MOD_ARTICLES_NEWS_FIELD_ORDERING_ORDERING</option>
+					<option value="a.publish_up">MOD_ARTICLES_HEAD_FIELD_ORDERING_OPT_PUBLISHED_DATE</option>
+					<option value="a.created">MOD_ARTICLES_HEAD_FIELD_ORDERING_OPT_CREATED_DATE</option>
+					<option value="a.ordering">MOD_ARTICLES_HEAD_FIELD_ORDERING_OPT_ORDERING</option>
 					<option value="a.hits">JGLOBAL_HITS</option>
-					<option value="rand()">MOD_ARTICLES_NEWS_FIELD_ORDERING_RANDOM</option>
+					<option value="rand()">MOD_ARTICLES_HEAD_FIELD_ORDERING_OPT_RANDOM</option>
 				</field>
 
 				<field
@@ -268,6 +292,37 @@
 					<option value="0">JGLOBAL_ORDER_ASCENDING</option>
 					<option value="1">JGLOBAL_ORDER_DESCENDING</option>
 				</field>
+
+				<field
+					name="note-ajax-interface"
+					type="note"
+					label="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_INTERFACE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_INTERFACE_DESC"
+				/>
+
+				<field
+					name="ajax_loadmore"
+					type="radio"
+					class="btn-group"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="ajax_loadmore_label"
+					type="text"
+					showon="ajax_loadmore:1"
+					class="input-md"
+					default=""
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LINK_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LINK_DESC"
+					hint="MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL"
+				/>
+
 			</fieldset>
 
 			<fieldset name="advanced">

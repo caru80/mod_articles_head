@@ -15,6 +15,7 @@ $attribs 	= new JRegistry( $item->attribs );
 
 // Bilder
 $images 	= json_decode( $item->images );
+$videos 	= (object)array("intro" => $attribs->get('teaser_video'), "full" => $attribs->get('full_video'));
 
 /* 
 	Joomla 3.7 Eigene Felder/Custom Fields
@@ -31,6 +32,11 @@ foreach($item->jcfields as $field)
 	$item->jcfields[$field->name] = $field;
 }
 
+/* 
+	Beitrags-Attribute
+*/
+$attribs = new JRegistry($item->attribs);
+
 /*
 	Weiterlesen-Link, mit Berücksichtigung von X-Fields Overrides – Gibt auch ohne X-Fields einen Link zurück!
 
@@ -38,52 +44,85 @@ foreach($item->jcfields as $field)
 	$link ist entweder ein URL oder false
 */
 require JModuleHelper::getLayoutPath('mod_articles_head', '_itemlink');
+
 ?>
 <div class="item-column col-equal">
 	<article itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
 		<meta itemprop="inLanguage" content="<?php echo ($item->language === '*') ? JFactory::getConfig()->get('language') : $item->language; ?>" />
 		<?php
-			echo JLayoutHelper::render('head.protoslider', $item);
 			// Einleitungsbild
-			
 			if($images->image_intro != '' && (bool)$params->get('preview-image',1)):
 		?>
 				<div class="item-image-intro">
 					<img src="<?php echo $images->image_intro;?>" alt="<?php echo $images->image_intro_alt;?>" />
+					<?php
+						// Titel
+						if( $params->get('item_title',false) && ( $attribs->get('show_title', false) == 1 || $attribs->get('show_title', false) == '' ) ):
+							$htag = $params->get('item_heading','h3');
+					?>
+							<header itemprop="name">
+								<<?php echo $htag;?> class="item-title"><!--
+								--><?php if( $params->get('link_titles',0) && $link ):	?><a href="<?php echo $link;?>"<?php echo $link_blank ? ' target="_blank"' : '';?>><?php endif; ?><!--
+									--><?php echo $item->title;?>
+									<?php if( $params->get('link_titles',0) && $link ):	?></a><?php endif; ?>
+								</<?php echo $htag;?>>
+							</header>
+					<?php
+							echo $item->afterDisplayTitle;
+						endif;
+					?>
+
 				</div>
 		<?php
 			endif;
 		?>
-		<?php
-			// Titel
 			
-			if( $params->get('item_title',false) && ( $attribs->get('show_title', false) == 1 || $attribs->get('show_title', false) == '' ) ):
-				$htag = $params->get('item_heading','h3');
-		?>
-				<header itemprop="name">
-					<<?php echo $htag;?> class="item-title">
-						<?php if( $params->get('link_titles',0) && $link ):	?><a href="<?php echo $link;?>"<?php echo $link_blank ? ' target="_blank"' : '';?>><?php endif; ?>
-						<?php echo $item->title;?>
-						<?php if( $params->get('link_titles',0) && $link ):	?></a><?php endif; ?>
-					</<?php echo $htag;?>>
-				</header>
 		<?php
-				echo $item->afterDisplayTitle;
+			// -- Vorschauvideo	
+			/**
+				Achtung: Joomla Dateiauswahlfelder haben einen Standardwert vom Typ string mit dem Wert: -1, wenn nichts ausgewählt wurde.
+			*/
+			if($videos->intro !== "-1"):
+				
+				$autoplay 	= $images->image_intro == "" ? " autoplay" : "";
+
+				if($videos->full !== "-1"):
+		?>
+					<div class="teaser-video with-full" title="<?php echo JText::_('TPL_HEAD_PLAY_TEASER_VIDEO');?>">
+						<video preload="metadata"<?php echo $autoplay;?> loop muted width="100%" data-fullvideo="videos/<?php echo $videos->full;?>">
+		<?php
+				else:
+		?>			
+					<div class="teaser-video">
+						<video preload="metadata"<?php echo $autoplay;?> loop muted width="100%">
+		<?php
+				endif;
+		?>
+						<source src="<?php echo JUri::root() . '/videos/' . $videos->intro;?>" type="video/mp4" />
+					</video>
+				</div>
+		<?php
 			endif;
 		?>
-		<section class="item-introtext" itemprop="articleBody">
+
+		<?php
+			// -- Layout Protoslider
+			echo JLayoutHelper::render('head.protoslider', $item);
+		?>
+
+		<div class="item-introtext" itemprop="articleBody">
 			<?php echo $item->beforeDisplayContent;?>
 
 			<?php echo $item->introtext; ?>
 
 			<?php echo $item->afterDisplayContent;?>
-		</section>
+		</div>
 		<footer>
 			<?php
 				if( $link ):
 			?>
 					<div class="readmore">
-						<a itemprop="url" class="btn btn-primary more" href="<?php echo $link; ?>"<?php echo $link_blank ? ' target="_blank"' : '';?>>
+						<a class="btn btn-primary more" itemprop="url" href="<?php echo $link; ?>"<?php echo $link_blank ? ' target="_blank"' : '';?>>
 							<span>
 								<?php 
 									if ($readmore = $item->alternative_readmore) :
@@ -108,4 +147,3 @@ require JModuleHelper::getLayoutPath('mod_articles_head', '_itemlink');
 		</footer>
 	</article>
 </div>
-<span class="item-truncator"></span>

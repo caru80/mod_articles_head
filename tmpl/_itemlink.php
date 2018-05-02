@@ -1,13 +1,14 @@
 <?php
 /**
 
-	Weiterlesen-Link
+	Weiterlesen-Link für Beiträge
 
-	Folgende Felder, in X-Fields angelegt, stehen zur Verfügung:
+	Folgende Felder, wenn in X-Fields angelegt, stehen zur Verfügung:
 
-	- readmore-override-item = Verlinke „Weiterlesen” mit einem Menüeintrag
+	- readmore-override-item 	= Verlinke „Weiterlesen” mit einem Menüeintrag
 	- readmore-override-article = Verlinke „Weiterlesen” mit einem anderen Artikel
-	- readmore-override-url = Verlinke „Weiterlesen” mit einer URL
+	- readmore-override-url 	= Verlinke „Weiterlesen” mit einer URL
+	- readmore-blank 			= Wird in neuem Fenster geöffnet, wenn TRUE
 
 	Wenn diese Felder nicht existieren wird der normale „Weiterlesen”-Link benutzt. 
  */
@@ -16,7 +17,7 @@ defined('_JEXEC') or die;
 $nolink 		= false;
 $link_override 	= false;
 $link			= false;
-$link_blank 	= $attribs->get('readmore-blank', 0);
+$link_blank 	= (bool)$attribs->get('readmore-blank', 0);
 
 // Link zu Menü-Item
 if( $attribs->get('readmore-override-item', 0) )
@@ -87,7 +88,7 @@ if( $attribs->get('readmore-override-url', '') )
 }
 
 
-// Standard Verlinkung
+// Standard-Link
 if( !$nolink && !$link_override && $item->fulltext != '' )
 {
 	$link = $item->link;

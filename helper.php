@@ -1,41 +1,92 @@
 <?php
 /**
+	HEAD. Artikelmodul Helper 1.5.0
+	Cru. 2018-04-30
 
-	HEAD. Artikelmodul 1.0.2
-	Cru. 2017-07-05
-
+	2018-04-30
+	+ Stand-Alone AJAX Interface
+	+ etc.
 
 	2017-07-05
 	+ Fix Kompatibilität mit Joomla 3.7.3
-
- */
-
+*/
 defined('_JEXEC') or die;
-
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-
 JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
 
 /**
- * Helper for mod_articles_news
+ * Helper for mod_articles_head
  *
- * @package     Joomla.Site
- * @subpackage  mod_articles_news
+ * @package     tplhead
+ * @subpackage  mod_articles_head
  *
- * @since       1.6
+ * @since       3.8
  */
 abstract class ModArticlesHeadHelper
 {
+	/** 
+		Cru.: 
+		Nur Anzahl Items ausgeben für AJAX.
+	*/
+	public static function getItemsCount(&$params)
+	{
+		$count = self::getList($params, true);
+		return count($count);
+	}
+
 	/**
-	 * Get a list of the latest articles from the article model
-	 *
+		CRu.: 2018-04-30
+		AJAX Interface Controller
+	 */
+	public static function getListAjax()
+	{
+		$input  = JFactory::getApplication()->input;
+		$id 	= $input->get('modid',FALSE,'INT'); // Der Helper weiß sonst nicht, welches Modul gemeint ist sprich welche Beiträge geladen werden sollen.
+		
+		if(!$id) return FALSE;
+
+		$dbo = JFactory::getDbo();
+		$q	 = $dbo->getQuery(true);
+
+		$q->select('*')
+			->from( $dbo->quoteName('#__modules') )
+			->where( $dbo->quoteName('id') . ' = ' . $dbo->quote($id) )
+			->limit(1);
+
+		$dbo->setQuery( $q );
+
+		if( $dbo->query() )
+		{
+			$module = $dbo->loadObject();
+			$params = new JRegistry($module->params);
+
+			$params->set('ajax', 1);	// Das steuert die Ausgabe im Modul-Template. Das bedeutet, wenn der Parameter gleich 1 ist, wird weniger HTML ausgegeben (siehe tmpl/default.php).
+			$params->set('start', $input->get('start',0,'INT')); // Wo das Modul anfängt neue Beiträge zu laden.
+
+			// Das „Module Chrome” (den Modulstil aus den Moduleinstellungen, das ist z.B. 'html5' oder 'xhtml' etc.) an dieser Stelle überschreiben, weil wir nur einen Teil der Ausgabe brauchen.
+			$chrome = "none";
+			$params->set('style', $chrome);
+
+			// Die Paramerter zurückschreiben ...
+			$module->params = $params->toString();
+
+			// ... und den Spaß wieder an Joomla übergeben:
+			return JModuleHelper::renderModule($module);
+		}
+
+		return FALSE;
+	}
+	/**
+	 * Hole die Artikelliste vom Artikel Model
+	 * 
 	 * @param   \Joomla\Registry\Registry  &$params  object holding the models parameters
+	 * @param 	bool 	$count 	Ein boolescher Wert der die Nachbearbeitung der erhaltenen Beiträge verhindert (Events etc.) – aus Performancegründen für AJAX Interface und self::getItemsCount
 	 *
 	 * @return  mixed
 	 *
-	 * @since 1.6
+	 * @since 3.8
 	 */
-	public static function getList(&$params)
+	public static function getList(&$params, $count = false)
 	{
 		// Get an instance of the generic articles model
 		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
@@ -46,8 +97,21 @@ abstract class ModArticlesHeadHelper
 		$model->setState('params', $appParams);
 
 		// Set the filters based on the module params
-		$model->setState('list.start', 0);
-		$model->setState('list.limit', (int) $params->get('count', 5));
+		// Cru. Start dynamisch gemacht (siehe ajax_loadmodule.php im Template-Ordner):
+		// $model->setState('list.start', 0);
+		$model->setState('list.start', (int) $params->get('start', 0));
+		if( $params->get('limit',0) > 0 )
+		{
+			$model->setState('list.limit', (int) $params->get('limit', 5));
+		}
+		else if( $params->get('count', 0) > 0 )
+		{
+			$model->setState('list.limit', (int) $params->get('count', 5));
+		}
+		else
+		{
+			$model->setState('list.limit', 4000000000 ); // 4 Mrd. entspricht – nach meiner Kenntniss – dem Maximum in einer MySQL Tabelle, zumindest bei dem alten MYISAM
+		}
 		$model->setState('filter.published', 1);
 
 		// Access filter
@@ -61,7 +125,7 @@ abstract class ModArticlesHeadHelper
 		// Filter by language
 		$model->setState('filter.language', $app->getLanguageFilter());
 
-		//  Featured switch
+		// Featured switch
 		switch ($params->get('show_featured'))
 		{
 			case '1' :
@@ -90,56 +154,49 @@ abstract class ModArticlesHeadHelper
 			$model->setState('list.ordering', $ordering);
 		}
 
-		// Check if we should trigger additional plugin events
-		// CRu./TSö. Joomla 3.7 – Auslösen von Content Events kann nun in den Moduleinstellungen ein-/ausgeschaltet werden
-		$triggerEvents = $params->get('triggerevents', 1);
-
-		// Set the filters based on the module params
-		// Cru. Start dynamisch gemacht (siehe ajax_loadmodule.php im Template-Ordner):
-		// $model->setState('list.start', 0);
-		$model->setState('list.start', (int) $params->get('start', 0));
-		if( $params->get('limit',0) > 0 )
-		{
-			$model->setState('list.limit', (int) $params->get('limit', 5));
-		}
-		else if( $params->get('count', 0) > 0 )
-		{
-			$model->setState('list.limit', (int) $params->get('count', 5));
-		}
-		else
-		{
-			$model->setState('list.limit', 4000000000 );
-		}
+		/**
+			CRu.: Filer by tag aus mod_articles_news
+		*/
+		$model->setState('filter.tag', $params->get('tag'), array());
 
 		// Retrieve Content
 		$items = $model->getItems();
 
-
-		if( $params->get('hidecurrentarticle',0) )
+		/**
+			CRu.:
+			Wenn das Modul in option=com_content&view=article (einem Beitrag) angezeigt wird, und in den Optionen „Aktuellen Artikel vebergen” eingeschaltet ist, und das Modul eine Kategorie zeigt, 
+			in welcher der Beitrag, der gerade angezeigt wird, vorhanden ist, wird dieser Beitrag hier rausgeschmissen und erscheint nicht im Modul:
+		*/
+		if($params->get('hidecurrentarticle',0))
 		{
-			// CRu.: Derzeit angezeigten Artikel aus Liste ausschließen, wenn com_content article
-			$jinput = $app->input;
-			$env = array( 'option' => '', 'view' => '', 'id' => '', 'Itemid' => '' );
-			$env = $jinput->getArray($env);
+			$env = $app->input->getArray(array('option' => 'string', 'view' => 'string', 'id' => '', 'Itemid' => 'int'));
+			$env["id"] = explode(":", $env["id"]); // Fix Artikel Slug
 
-			// Fix Artikel Slug
-			$env["id"] = explode(":", $env["id"]);
+			foreach($items as $i => $item) {
+				if( $env["option"] == 'com_content' && $env["view"] == 'article' && $item->id == $env['id'][0] )
+				{
+					array_splice($items, $i, 1);
+					break;
+				}
+			}
 		}
 
+		/**
+			CRu.:
+			Wir benötigen nur die Anzahl der Items und brechen an dieser Stelle ab.
+		*/
+		if($count) {
+			return $items;
+		}
+
+		/**
+			CRu./TSö.: 
+			Check if we should trigger additional plugin events – aus mod_articles_news
+		*/
+		$triggerEvents = $params->get('triggerevents', 1);
 
 		foreach ($items as $idx => &$item)
 		{
-			// CRu.: Derzeit angezeigten Artikel aus Liste ausschließen:
-
-			if( $params->get('hidecurrentarticle',0) )
-			{
-				if( $env["option"] == 'com_content' && $env["view"] == 'article' && $item->id == $env['id'][0] )
-				{
-					array_splice($items, $idx, 1);
-					continue;
-				}
-			}
-
 			$item->readmore = strlen(trim($item->fulltext));
 			$item->slug     = $item->id . ':' . $item->alias;
 
@@ -166,6 +223,10 @@ abstract class ModArticlesHeadHelper
 				$item->introtext = preg_replace('/<img[^>]*>/', '', $item->introtext);
 			}
 
+			/**
+				CRu./TSö.: 
+				Check if we should trigger additional plugin events – aus mod_articles_news
+			*/
 			if ($triggerEvents)
 			{
 				$item->text = '';
@@ -189,12 +250,5 @@ abstract class ModArticlesHeadHelper
 		}
 
 		return $items;
-	}
-
-	// Cru, nur Anzahl Items ausgeben für AJAX
-	public static function getItemsCount(&$params)
-	{
-		$count = self::getList($params);
-		return count($count);
 	}
 }

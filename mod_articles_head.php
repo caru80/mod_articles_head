@@ -35,6 +35,17 @@ $params->set('count', $limit);
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
-$layout = $params->get('layout','default');
 
+
+
+if($params->get('ajax_loadmore', false)) {
+
+
+    JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_articles_head.js');
+
+}
+
+
+
+$layout = $params->get('layout','default');
 require JModuleHelper::getLayoutPath('mod_articles_head', $layout);
