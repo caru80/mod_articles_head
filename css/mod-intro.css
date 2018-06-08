@@ -1,0 +1,173 @@
+.mod-intro{} /* Ein Modul */
+
+.mod-intro .mod-intro-introtext{} /* Einleitungstext */
+
+
+
+.mod-intro .mod-intro-readmore, /* Modul-Weiterlesen; Link zu Kategorie etc. */
+.mod-intro .mod-intro-loadmore  /* AJAX mehr Laden */
+{
+	text-align: center;
+}
+/*
+	Modul-Weiterlesen oben:
+	.mod-intro .mod-intro-readmore-top .mod-intro-readmore{} 
+
+	Modul-Weiterlesen unten:
+	.mod-intro .mod-intro-readmore-bottom .mod-intro-readmore{} 
+*/
+
+
+
+/* -- Bootstrap-Grid für Beiträge */
+
+.mod-intro .mod-intro-items-list{} /* Enthält alle Zeilen und .mod-intro-loadmore */
+
+.mod-intro .mod-intro-items-list .mod-intro-items{} /* Enthält eine Zeile */
+/* .mod-intro .mod-intro-items.async{} */ /* Dieses .mod-intro-items wurde asynchron nachgeladen (AJAX) */
+
+/* Eine Zeile mit Beiträgen */
+.mod-intro .mod-intro-items-list .mod-intro-items .list-row{
+	/* .make-row(); */
+}
+
+/* Eine Spalte, die einen Beitrag (<article class="item">) enthält. */
+.mod-intro .mod-intro-items-list .mod-intro-items .list-row .item-column {
+    /* .mk-grid-cols(12,4,4,4, @reset: true); */ /* Benötigt require.less */
+    /* margin-bottom: @grid-gutter-width; */
+}
+
+
+
+/* -- Item (<article class="item">) */
+.mod-intro article{
+	height: 100%;
+	position: relative;
+	background-color: #ffffff;
+    border: 1px solid #dfdfdf;
+    
+    padding: 1em 1.5em 1em 1.5em;
+}
+
+/* -- Vorschaubild */
+.mod-intro article .item-image-intro{
+    margin: -1em -1.5em 1em -1.5em;
+}
+.mod-intro article .item-image-intro img{
+    width: 100%;
+}
+
+/* -- Protoslider-Layout */
+.mod-intro article .ptslider-layout{
+    margin: -1em -1.5em 1em -1.5em;
+}
+
+
+/* -- Header */
+.mod-intro article header {
+	font-size: 16px; /* @font-size-base; */
+	padding: 0 0 1em 0;
+	text-align: left;
+}
+/* -- Überschrift */
+.mod-intro article header h4 {
+	font-weight: 600;
+	font-size: 18px; /* @font-size-h4; */
+	line-height: 1.5em;
+	margin: 0;
+}
+
+
+/* -- Inhalt */
+.mod-intro article .item-introtext{}
+
+
+/* -- Weiterlesen */
+.mod-intro article footer .readmore{
+    min-height: 2.5em; /* Raum für Hyperlink */
+	margin: 0;
+}
+.mod-intro article footer .readmore a{
+    position: absolute;
+    bottom: 1em; /* Siehe padding oben in article */
+    right: 1.5em; /* Siehe padding oben in article */
+}
+
+
+
+/* -- Vorschauvideo */
+.mod-intro .item-introvideo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 10;
+	/**
+		Mindesthöhe:
+		Wenn ein Vorschauvideo vorhanden ist ist das egal, weil das Vorschauvideo die Höhe Vorgibt.
+		Wenn kein Vorschauvideo vorhanden ist, aber ein Video zum abspielen in der Lightbox, brauchst du das, damit der Play-Button ordentlich sitzt.
+		Beachte auch, dass das Kind-Element <video> (wenn es denn vorhanden ist) vertikal nach oben „gezogen” werden muss. Also ein Minus-Margin mit dem gleichen Wert braucht.
+
+		Padding in Prozent wird anhand der Breite des Blockelemnts, auf welches das Padding angewendet wird, berechnet.
+		
+		Der Rechenweg lautet: Höhe / Breite * 100 
+	*/
+	padding-top: 56.25%; /* Mindesthöhe mit der Ratio 16:9 erzwingen. Falls kein Vorschauvideo da ist, damit der Play-Button ordentlich sitzt. */
+	/* padding-top: 75%; */ /* 4:3 */
+}
+.mod-intro .item-introvideo video{
+    display: block; /* Wichtig! wg. White-Spaces */
+
+	margin-top: -56.25%; /* 16:9 */
+    /* margin-top: -75%; */ /* 4:3 */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.mod-intro .item-introvideo.in video{ /* MouseOver */
+	opacity: 1;
+}
+
+
+/* -- Play-Button und „Film abspielen” */
+.mod-intro .item-introvideo.with-full-video {
+	cursor: pointer;
+}
+.mod-intro .item-introvideo.with-full-video:before,
+.mod-intro .item-introvideo.with-full-video:after{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 2;
+	color: #ffffff;
+}
+
+/* -- Play-Button */
+.mod-intro .item-introvideo.with-full-video:before{
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 400;
+	content: "\f144";
+	
+	font-size: 6em;
+	-webkit-transform: translate3d(-50%,-50%,0); /* Zentrieren */
+			transform: translate3d(-50%,-50%,0);
+}
+.mod-intro .item-introvideo.with-full-video:hover:before{
+	color: #4a80e2;
+}
+
+/* -- „Film abspielen” */
+.mod-intro .item-introvideo.with-full-video:after{
+	content: attr(title);
+	font-weight: 500;
+	font-size: 1.5em;
+    margin-top: 3em;
+	text-shadow: 2px 2px 0px rgba(0,0,0,0.6);
+	opacity: 0;
+    -webkit-transform: translate3d(-50%,-50%,0);
+	        transform: translate3d(-50%,-50%,0);
+	-webkit-transition: opacity 0.5s ease;
+			transition: opacity 0.5s ease;
+}
+.mod-intro .item-introvideo.with-full-video:hover:after {
+	opacity: 1;
+}

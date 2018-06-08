@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2018-05-02</creationDate>
-	<copyright></copyright>
+	<creationDate>2018-06-08</creationDate>
+	<copyright>©2018 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.5.0</version>
+	<version>1.6.0</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -23,13 +23,32 @@
 	</languages>
 	<media destination="mod_articles_head" folder="media">
 		<filename>index.html</filename>
-		<folder>js</folder>
+        <folder>css</folder>
+        <folder>js</folder>
 	</media>
-	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_ARTICLES_NEWSFLASH" />
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
 				
+                <field
+					name="load_module_css"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_LOAD_MODULE_CSS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_LOAD_MODULE_CSS_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+                <field
+                    name="note_module_css"
+                    type="note"
+                    showon="load_module_css:1"
+                    description="MOD_ARTICLES_HEAD_NOTE_MODULE_CSS_DESC"
+                />
+
 				<field
 					name="show_moduleintro"
 					type="radio"
@@ -175,6 +194,31 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+
+				<field
+					name="introvideos"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_INTROVIDEOS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_INTROVIDEOS_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+					name="featherlightbox"
+					type="radio"
+					showon="introvideos:1"
+					class="btn-group btn-group-yesno"
+					default="1"
+					label="MOD_ARTICLES_HEAD_FIELD_FEATHERLIGHTBOX_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_FEATHERLIGHTBOX_DESC"
+				>
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+				</field>
+
 				<field
 					name="image"
 					type="radio"
@@ -251,6 +295,7 @@
 				<field
 					name="note-articles-content-events"
 					type="note"
+                    showon="triggerevents:1"
 					description="MOD_ARTICLES_HEAD_FIELD_NOTE_CONTENT_EVENTS_DESC"
 				/>
 

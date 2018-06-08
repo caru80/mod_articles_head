@@ -33,11 +33,11 @@ elseif( $params->get('linkcategory',0) != 0 )
 	*/
 ?>
 		<div class="mod-intro-items async" id="intro-<?php echo $module->id;?>-items-<?php echo $params->get('start',0);?>">
-			<div class="list-row">
+			<div class="list-row row-equal">
 				<?php 
 					foreach ($list as $item) : 
 						require JModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout);
-					endforeach; 
+					endforeach;
 				?>
 			</div>
 		</div>
@@ -75,7 +75,13 @@ elseif( $params->get('linkcategory',0) != 0 )
 					Modul-Weiterlesen – Position "oben"
 				*/
 				if($moduleReadmore && $params->get('module-link-position',0) >= 1):
-					require JModuleHelper::getLayoutPath('mod_articles_head', "_modreadmore");
+			?>
+					<div class="mod-intro-readmore-top">
+					<?php
+						require JModuleHelper::getLayoutPath('mod_articles_head', "_modreadmore");
+					?>
+					</div>
+			<?php
 				endif;
 			?>
 			<div id="mod-intro-items-list-<?php echo $module->id;?>" class="mod-intro-items-list">

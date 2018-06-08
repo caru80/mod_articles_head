@@ -25,27 +25,27 @@ $images 	= json_decode( $item->images );
 	
 	echo $item->customField['FELDNAME']->value;
 */
-JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
-foreach($item->jcfields as $field)
-{
-	$item->jcfields[$field->name] = $field;
+if($params->get('triggerevents',0)) {
+    JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
+    foreach($item->jcfields as $field)
+    {
+        $item->jcfields[$field->name] = $field;
+    }
 }
 
 /*
-	Weiterlesen-Link, mit Berücksichtigung von X-Fields Overrides – Gibt auch ohne X-Fields einen Link zurück!
-
-	Deklariert $link
-	$link ist entweder ein URL oder false
+	Weiterlesen-Link
+	Deklariert $readmore_url
+	$readmore_url ist entweder ein string mit einer URL oder boolesch false, wenn gar kein „Weiterlesen” URL ermittelt werden kann.
 */
 require JModuleHelper::getLayoutPath('mod_articles_head', '_itemlink');
+
 ?>
 <div class="item-column col-equal">
-	<article itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+	<article class="item" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
 		<meta itemprop="inLanguage" content="<?php echo ($item->language === '*') ? JFactory::getConfig()->get('language') : $item->language; ?>" />
 		<?php
-			echo JLayoutHelper::render('head.protoslider', $item);
-			// Einleitungsbild
-			
+			// -- Einleitungsbild
 			if($images->image_intro != '' && (bool)$params->get('preview-image',1)):
 		?>
 				<div class="item-image-intro">
@@ -54,17 +54,29 @@ require JModuleHelper::getLayoutPath('mod_articles_head', '_itemlink');
 		<?php
 			endif;
 		?>
+
 		<?php
-			// Titel
-			
+			// -- Protoslider Layout
+			echo JLayoutHelper::render('head.protoslider', $item);
+		?>
+		
+		<?php
+			// -- Modul-Layout Vorschauvideo
+			if($params->get('introvideos',0)):
+				require JModuleHelper::getLayoutPath('mod_articles_head', '_itemvideo');
+			endif;
+		?>
+
+		<?php
+			// -- Titel
 			if( $params->get('item_title',false) && ( $attribs->get('show_title', false) == 1 || $attribs->get('show_title', false) == '' ) ):
 				$htag = $params->get('item_heading','h3');
 		?>
-				<header itemprop="name">
+				<header itemprop="name" class="item-header">
 					<<?php echo $htag;?> class="item-title">
-						<?php if( $params->get('link_titles',0) && $link ):	?><a href="<?php echo $link;?>"<?php echo $link_blank ? ' target="_blank"' : '';?>><?php endif; ?>
+						<?php if( $params->get('link_titles',0) && $readmore_url ):	?><a href="<?php echo $readmore_url;?>"<?php echo $link_blank ? ' target="_blank"' : '';?>><?php endif; ?>
 						<?php echo $item->title;?>
-						<?php if( $params->get('link_titles',0) && $link ):	?></a><?php endif; ?>
+						<?php if( $params->get('link_titles',0) && $readmore_url ):	?></a><?php endif; ?>
 					</<?php echo $htag;?>>
 				</header>
 		<?php
@@ -78,12 +90,12 @@ require JModuleHelper::getLayoutPath('mod_articles_head', '_itemlink');
 
 			<?php echo $item->afterDisplayContent;?>
 		</section>
-		<footer>
+		<footer class="item-footer">
 			<?php
-				if( $link ):
+				if( $readmore_url ):
 			?>
 					<div class="readmore">
-						<a itemprop="url" class="btn btn-primary more" href="<?php echo $link; ?>"<?php echo $link_blank ? ' target="_blank"' : '';?>>
+						<a itemprop="url" class="btn btn-primary more" href="<?php echo $readmore_url; ?>"<?php echo $link_blank ? ' target="_blank"' : '';?>>
 							<span>
 								<?php 
 									if ($readmore = $item->alternative_readmore) :

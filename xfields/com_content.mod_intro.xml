@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields name="attribs">
+		<fieldset name="mod_articles_head">
+			<!--
+				Für mod_articles_head, für das Template „videos”. 
+				Beiträge können ein Vorschauvideo anzeigen
+			-->
+			<field
+				name="note-previewvideo"
+				type="note"
+				label="Video"
+				description=""
+			/>
+			<field
+				name="teaser_video"
+				type="filelist"
+				directory="videos"
+				hide_default="true"
+				default="0"
+				filter="(.\.mp4)"
+				label="Vorschauvideo"
+				description="Das Vorschauvideo, dass beim Mouseover abgespielt wird."
+			/>
+			<field
+				name="full_video"
+				type="filelist"
+				directory="videos"
+				hide_default="true"
+				default="0"
+				filter="(.\.mp4)"
+				label="Komplettes Video"
+				description="Wenn gewählt, wird diese Video beim anklicken des Vorschauvideos abgespielt."
+			/>
+
+			<field
+				name="note-override"
+				type="note"
+				label="Weiterlesen überschreiben"
+				description=""
+			/>
+			<field
+				name="readmore-override-item"
+				type="menuitem"
+				published="true"
+				label="Link zu Menüeintrag"
+				description="In Kacheldarstellung die Verlinkung von Weiterlesen mit einem Menüeintrag überschreiben."
+			>
+				<option	value="">Keiner</option>
+			</field>
+			<field
+				name="readmore-override-article"
+				type="modal_article"
+				class="input-xlarge"
+				edit="true"
+				clear="true"
+				label="Link zu Beitrag"
+				description="In Kacheldarstellung die Verlinkung von Weiterlesen mit einem Beitrag überschreiben."
+			/>
+			<field
+				name="readmore-override-url"
+				type="text"
+				label="Link zu URL"
+				description="In Kacheldarstellung die Verlinkung von Weiterlesen mit einer URL überschreiben."
+				hint="http://www.domain.tld"
+			/>
+			<field
+				name="readmore-blank"
+				type="radio"
+				class="btn-group btn-group-yesno"
+				default="0"
+				label="In neuem Fenster öffnen"
+				description=""
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+		</fieldset>
+	</fields>
+</form>

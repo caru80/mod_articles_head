@@ -16,8 +16,9 @@ defined('_JEXEC') or die;
 
 $nolink 		= false;
 $link_override 	= false;
-$link			= false;
 $link_blank 	= (bool)$attribs->get('readmore-blank', 0);
+
+$readmore_url	= false;
 
 // Link zu Menü-Item
 if( $attribs->get('readmore-override-item', 0) )
@@ -30,11 +31,11 @@ if( $attribs->get('readmore-override-item', 0) )
 	{
 		if( $menu_item->flink )
 		{
-			$link = $menu_item->flink;
+			$readmore_url = $menu_item->flink;
 		}
 		else
 		{
-			$link = JRoute::_($menu_item->link . '&Itemid=' . $menu_item->id);
+			$readmore_url = JRoute::_($menu_item->link . '&Itemid=' . $menu_item->id);
 		}
 	}
 	else{
@@ -69,7 +70,7 @@ if( $attribs->get('readmore-override-article', 0) )
 
 			if( $article )
 			{
-				$link = JRoute::_( ContentHelperRoute::getArticleRoute($article->id, $article->catid) );
+				$readmore_url = JRoute::_( ContentHelperRoute::getArticleRoute($article->id, $article->catid) );
 			}
 		}
 	}
@@ -84,14 +85,14 @@ if( $attribs->get('readmore-override-url', '') )
 {
 	$link_override = true;
 
-	$link = $attribs->get('readmore-override-url', '');
+	$readmore_url = $attribs->get('readmore-override-url', '');
 }
 
 
 // Standard-Link
 if( !$nolink && !$link_override && $item->fulltext != '' )
 {
-	$link = $item->link;
+	$readmore_url = $item->link;
 }
 
 ?>

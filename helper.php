@@ -41,7 +41,7 @@ abstract class ModArticlesHeadHelper
 	public static function getListAjax()
 	{
 		$input  = JFactory::getApplication()->input;
-		$id 	= $input->get('modid',FALSE,'INT'); // Der Helper weiß sonst nicht, welches Modul gemeint ist sprich welche Beiträge geladen werden sollen.
+		$id 	= $input->get('modid',FALSE,'INT'); // Der Helper weiß sonst nicht, welches Modul gemeint ist – sprich welche Beiträge geladen werden sollen.
 		
 		if(!$id) return FALSE;
 
@@ -77,7 +77,7 @@ abstract class ModArticlesHeadHelper
 		return FALSE;
 	}
 	/**
-	 * Hole die Artikelliste vom Artikel Model
+	 * Hole die Artikelliste vom Artikel-Model
 	 * 
 	 * @param   \Joomla\Registry\Registry  &$params  object holding the models parameters
 	 * @param 	bool 	$count 	Ein boolescher Wert der die Nachbearbeitung der erhaltenen Beiträge verhindert (Events etc.) – aus Performancegründen für AJAX Interface und self::getItemsCount
