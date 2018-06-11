@@ -51,7 +51,34 @@
 				}.bind(this));
             }
 		},
-		
+        
+        postEffects : function(response, config)
+        {
+            var html  = $(response),
+                items = html.find('.item');
+
+			items.css({visibility : 'hidden', opacity : '0'});
+			
+            $(config.target).append(html);
+
+            var animateIn = function() {
+				var anim = this.data('modintroanim');
+                this.one('webkitAnimatioEnd msAnimationEnd animationend', function(){
+					var anim = $(this).data('modintroanim');
+					$(this).removeClass(anim.class + ' ' + anim.name);
+                });
+                this.addClass(anim.class + ' ' + anim.name).css({visibility : '', opacity : '1'});
+            }
+
+			var item;
+            for(var i = 0, len = items.length; i < len; i++)
+            {
+				item = items.eq(i);
+				item.data('modintroanim', {class : config.aniclass, name : config.aniname});
+				window.setTimeout(animateIn.bind(items.eq(i)), i * 100);
+            }
+        },
+
 		sendRequest : function(trigger) 
 		{
 			var trigger = $(trigger),
@@ -63,7 +90,9 @@
 	
 			trigger.remove();
 			temp.html($(this.opt.html.loading));
-			
+            
+            //$('html, body').stop().animate({ scrollTop : temp.offset().top }, {duration : 800} );
+
 			$.ajax({
 				url    : config.url,
 				type   : 'POST',
@@ -71,9 +100,15 @@
 				success: function (response) 
 				{
 					temp.remove();
-					$(config.target).append(response);
-					this.module.triggerHandler('afterLoad');
 
+                    if(config.animate) {
+                        this.postEffects(response, config);
+                    }
+                    else {
+                        $(config.target).append(response);
+                    }
+
+					this.module.triggerHandler('afterLoad');
 				}.bind(this),
 				error: function(response) {
 					console.log(response);

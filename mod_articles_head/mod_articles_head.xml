@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2018-06-08</creationDate>
+	<creationDate>2018-06-11</creationDate>
 	<copyright>©2018 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.6.0</version>
+	<version>1.7.0</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -24,8 +24,11 @@
 	<media destination="mod_articles_head" folder="media">
 		<filename>index.html</filename>
         <folder>css</folder>
-        <folder>js</folder>
 	</media>
+    <updateservers>
+	    <server type="extension" priority="0" name="HEAD. Beiträge-Modul Updates"></server>
+ 	</updateservers>
+	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_ARTICLES_NEWSFLASH" />
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -367,6 +370,60 @@
 					description="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LINK_DESC"
 					hint="MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL"
 				/>
+
+                <field
+                    name="ajax_post_animations"
+                    type="radio"
+                    showon="ajax_loadmore:1"
+                    class="btn-group btn-group-yes-no"
+                    default="0"
+                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LABEL"
+                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    name="ajax_post_animations_load_animatedcss"
+                    type="radio"
+                    showon="ajax_post_animations:1"
+                    class="btn-group btn-group-yes-no"
+                    default="0"
+                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_LABEL"
+                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field
+                    name="ajax_post_animation_class"
+                    type="text"
+                    showon="ajax_post_animations:1"
+                    class="input-md"
+                    default="animated"
+                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_LABEL"
+                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_DESC"
+                />
+                
+                <field
+                    name="ajax_post_animation_name"
+                    type="text"
+                    showon="ajax_post_animations:1"
+                    class="input-md"
+                    default="bounceIn"
+                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_LABEL"
+                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_DESC"
+                />
+
+                <field
+                    name="note_ajax_post_animation_names"
+                    type="note"
+                    showon="ajax_post_animations:1"
+                    label=""
+                    description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATION_NAMES_DESC"
+                />
 
 			</fieldset>
 
