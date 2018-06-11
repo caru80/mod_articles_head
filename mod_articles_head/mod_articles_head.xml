@@ -26,7 +26,7 @@
         <folder>css</folder>
 	</media>
     <updateservers>
-	    <server type="extension" priority="0" name="HEAD. Beiträge-Modul Updates"></server>
+	    <server type="extension" priority="0" name="HEAD. Beiträge-Modul Updates">https://raw.githubusercontent.com/caru80/mod_articles_head/master/updates/updates.xml</server>
  	</updateservers>
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_ARTICLES_NEWSFLASH" />
 	<config>
