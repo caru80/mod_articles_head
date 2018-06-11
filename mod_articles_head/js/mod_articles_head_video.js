@@ -1,10 +1,12 @@
 /**
-	mod_articles_head Steuerung für Vorschauvideos
-
-	v 0.2
-	Carsten Ruppert
-	2018-06-07
-*/
+ * @package        HEAD. Article Module
+ * @version        1.7.2
+ * 
+ * @author         Carsten Ruppert <webmaster@headmarketing.de>
+ * @link           https://www.headmarketing.de
+ * @copyright      Copyright © 2018 HEAD. MARKETING GmbH All Rights Reserved
+ * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+ */
 'use strict';
 (function($) {
 

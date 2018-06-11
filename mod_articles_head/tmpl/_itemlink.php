@@ -1,5 +1,22 @@
 <?php
 /**
+ * @package        HEAD. Article Module
+ * @version        1.7.2
+ * 
+ * @author         Carsten Ruppert <webmaster@headmarketing.de>
+ * @link           https://www.headmarketing.de
+ * @copyright      Copyright © 2018 HEAD. MARKETING GmbH All Rights Reserved
+ * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+ */
+
+/**
+ * @copyright    Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @license      GNU General Public License version 2 or later; see LICENSE.txt
+ */
+defined('_JEXEC') or die;
+
+
+/**
 
 	Weiterlesen-Link für Beiträge
 
@@ -12,7 +29,7 @@
 
 	Wenn diese Felder nicht existieren wird der normale „Weiterlesen”-Link benutzt. 
  */
-defined('_JEXEC') or die;
+
 
 $nolink 		= false;
 $link_override 	= false;

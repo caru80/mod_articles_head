@@ -1,33 +1,36 @@
 <?php
 /**
-	HEAD. Artikelmodul Helper 1.5.0
-	Cru. 2018-04-30
-
-	2018-04-30
-	+ Stand-Alone AJAX Interface
-	+ etc.
-
-	2017-07-05
-	+ Fix Kompatibilität mit Joomla 3.7.3
-*/
-defined('_JEXEC') or die;
-JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
+ * @package        HEAD. Article Module
+ * @version        1.7.2
+ * 
+ * @author         Carsten Ruppert <webmaster@headmarketing.de>
+ * @link           https://www.headmarketing.de
+ * @copyright      Copyright © 2018 HEAD. MARKETING GmbH All Rights Reserved
+ * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+ */
 
 /**
- * Helper for mod_articles_head
- *
- * @package     tplhead
- * @subpackage  mod_articles_head
- *
- * @since       3.8
+ * @copyright    Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+defined('_JEXEC') or die;
+
+JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+
+JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
+
 abstract class ModArticlesHeadHelper
 {
 	/** 
-		Cru.: 
-		Nur Anzahl Items ausgeben für AJAX.
-	*/
+	 * Ermittle die Anzahl der Beiträge. Je nach Moduleintellungen.
+	 * 
+	 * @param   \Joomla\Registry\Registry  &$params   Ein Objekt, dass die Model-Parameter enthält
+	 * 
+	 * @return   int  Anzahl der Beiträge
+	 * 
+	 * @since   1.5
+	 */
 	public static function getItemsCount(&$params)
 	{
 		$count = self::getList($params, true);
@@ -35,8 +38,11 @@ abstract class ModArticlesHeadHelper
 	}
 
 	/**
-		CRu.: 2018-04-30
-		AJAX Interface Controller
+	 * AJAX Controller – Wird von com_ajax aufgerufen und rendert ein Modul partiel.
+	 * 
+	 * @return   mixed
+	 * 
+	 * @since   1.5
 	 */
 	public static function getListAjax()
 	{
@@ -76,15 +82,16 @@ abstract class ModArticlesHeadHelper
 
 		return FALSE;
 	}
+
 	/**
 	 * Hole die Artikelliste vom Artikel-Model
 	 * 
 	 * @param   \Joomla\Registry\Registry  &$params  object holding the models parameters
-	 * @param 	bool 	$count 	Ein boolescher Wert der die Nachbearbeitung der erhaltenen Beiträge verhindert (Events etc.) – aus Performancegründen für AJAX Interface und self::getItemsCount
+	 * @param 	bool  $count  Ein boolescher Wert der die Nachbearbeitung der erhaltenen Beiträge verhindert (Events etc.) – aus Performancegründen für AJAX Interface und self::getItemsCount
 	 *
 	 * @return  mixed
 	 *
-	 * @since 3.8
+	 * @since 1.5
 	 */
 	public static function getList(&$params, $count = false)
 	{
@@ -92,7 +99,7 @@ abstract class ModArticlesHeadHelper
 		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 
 		// Set application parameters in model
-		$app       = JFactory::getApplication();
+		$app	   = JFactory::getApplication();
 		$appParams = $app->getParams();
 		$model->setState('params', $appParams);
 
@@ -115,7 +122,7 @@ abstract class ModArticlesHeadHelper
 		$model->setState('filter.published', 1);
 
 		// Access filter
-		$access     = !JComponentHelper::getParams('com_content')->get('show_noauth');
+		$access	 = !JComponentHelper::getParams('com_content')->get('show_noauth');
 		$authorised = JAccess::getAuthorisedViewLevels(JFactory::getUser()->get('id'));
 		$model->setState('filter.access', $access);
 
@@ -198,7 +205,7 @@ abstract class ModArticlesHeadHelper
 		foreach ($items as $idx => &$item)
 		{
 			$item->readmore = strlen(trim($item->fulltext));
-			$item->slug     = $item->id . ':' . $item->alias;
+			$item->slug	 = $item->id . ':' . $item->alias;
 
 			/** @deprecated Catslug is deprecated, use catid instead. 4.0 **/
 			$item->catslug  = $item->catid . ':' . $item->category_alias;
@@ -206,7 +213,7 @@ abstract class ModArticlesHeadHelper
 			if ($access || in_array($item->access, $authorised))
 			{
 				// We know that user has the privilege to view the article
-				$item->link     = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language));
+				$item->link	 = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language));
 				$item->linkText = JText::_('MOD_ARTICLES_NEWS_READMORE');
 			}
 			else
@@ -232,18 +239,18 @@ abstract class ModArticlesHeadHelper
 				$item->text = '';
 				$app->triggerEvent('onContentPrepare', array ('com_content.article', &$item, &$params, 0));
 
-				$results                 = $app->triggerEvent('onContentAfterTitle', array('com_content.article', &$item, &$params, 0));
+				$results				 = $app->triggerEvent('onContentAfterTitle', array('com_content.article', &$item, &$params, 0));
 				$item->afterDisplayTitle = trim(implode("\n", $results));
 
-				$results                    = $app->triggerEvent('onContentBeforeDisplay', array('com_content.article', &$item, &$params, 0));
+				$results					= $app->triggerEvent('onContentBeforeDisplay', array('com_content.article', &$item, &$params, 0));
 				$item->beforeDisplayContent = trim(implode("\n", $results));
 
-				$results                   = $app->triggerEvent('onContentAfterDisplay', array('com_content.article', &$item, &$params, 0));
+				$results				   = $app->triggerEvent('onContentAfterDisplay', array('com_content.article', &$item, &$params, 0));
 				$item->afterDisplayContent = trim(implode("\n", $results));
 			}
 			else
 			{
-				$item->afterDisplayTitle    = '';
+				$item->afterDisplayTitle	= '';
 				$item->beforeDisplayContent = '';
 				$item->afterDisplayContent  = '';
 			}

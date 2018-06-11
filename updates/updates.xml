@@ -3,7 +3,7 @@
 		<name>HEAD. Beiträge-Modul</name>
 		<description>Teste Updatefunktion</description>
 		<element>mod_articles_head</element>
-		<version>1.7.1</version>
+		<version>1.7.2</version>
 		<type>module</type>
 		<client>0</client>
 		<folder/>
