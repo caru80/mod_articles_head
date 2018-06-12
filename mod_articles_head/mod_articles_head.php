@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.2
+ * @version        1.7.3
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -13,29 +13,27 @@
  * @copyright    Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
 
 // Include the news functions only once
 JLoader::register('ModArticlesHeadHelper', __DIR__ . '/helper.php');
 
 
+// -- Gesamtanzahl Items abfragen, dazu parameter überschreiben:
+$tmpParams = clone $params;
+$tmpParams->set('start', 0);
+$tmpParams->set('count', 0);
+$fullItemsCount = ModArticlesHeadHelper::getItemsCount($tmpParams);
+unset($tmpParams);
 
+
+// -- Für AJAX; Start und Anzahl von Items:
 $begin		= $params->get('start',0);
 $limit 		= $params->get('count',0);
 
+
+// -- Liste der Beiträge
 $list		= ModArticlesHeadHelper::getList($params);
-
-
-// -- Gesamtanzahl Items abfragen, dazu parameter überschreiben:
-$params->set('start', 0);
-$params->set('count', 0);
-
-$fullItemsCount = ModArticlesHeadHelper::getItemsCount($params);
-
-// -- Parameter wieder zurücksetzen:
-$params->set('start', $begin);
-$params->set('count', $limit);
 
 
 // -- Modulklassen-Suffix
@@ -49,11 +47,11 @@ if($params->get('load_module_css', 0)) {
 
 // -- Lade das AJAX Controller-Script
 if($params->get('ajax_loadmore', 0)) {
-	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_articles_head_ajax.js');
+	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js');
 
-    if($params->get('ajax_post_animations', 0) && $params->get('ajax_post_animations_load_animatedcss', 0)) {
-        JFactory::getApplication()->getDocument()->addStylesheet(JUri::root() . 'media/mod_articles_head/css/animate.css');
-    }
+	if($params->get('ajax_post_animations', 0) && $params->get('ajax_post_animations_load_animatedcss', 0)) {
+		JFactory::getApplication()->getDocument()->addStylesheet(JUri::root() . 'media/mod_articles_head/css/animate.css');
+	}
 
 	$ajaxInitScript = <<<SCRIPT
 (function($) {
@@ -68,7 +66,7 @@ SCRIPT;
 
 // -- Lade die Vorschauvideo-Scripts etc.
 if($params->get('introvideos', 0)) {
-	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_articles_head_video.js');
+	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_intro_video.min.js');
 
 	$videoInitScript = <<<SCRIPT
 (function($) {

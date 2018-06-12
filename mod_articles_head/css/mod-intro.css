@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.7.2
+ * @version        1.7.3
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -43,8 +43,8 @@
 
 /* Eine Spalte, die einen Beitrag (<article class="item">) enthält. */
 .mod-intro .mod-intro-items-list .mod-intro-items .list-row .item-column {
-    /* .mk-grid-cols(12,4,4,4, @reset: true); */ /* Benötigt require.less */
-    /* margin-bottom: @grid-gutter-width; */
+	/* .mk-grid-cols(12,4,4,4, @reset: true); */ /* Benötigt require.less */
+	/* margin-bottom: @grid-gutter-width; */
 }
 
 
@@ -54,22 +54,22 @@
 	height: 100%;
 	position: relative;
 	background-color: #ffffff;
-    border: 1px solid #dfdfdf;
-    
-    padding: 1em 1.5em 1em 1.5em;
+	border: 1px solid #dfdfdf;
+	
+	padding: 1em 1.5em 1em 1.5em;
 }
 
 /* -- Vorschaubild */
 .mod-intro article .item-image-intro{
-    margin: -1em -1.5em 1em -1.5em;
+	margin: -1em -1.5em 1em -1.5em;
 }
 .mod-intro article .item-image-intro img{
-    width: 100%;
+	width: 100%;
 }
 
 /* -- Protoslider-Layout */
 .mod-intro article .ptslider-layout{
-    margin: -1em -1.5em 1em -1.5em;
+	margin: -1em -1.5em 1em -1.5em;
 }
 
 
@@ -94,13 +94,13 @@
 
 /* -- Weiterlesen */
 .mod-intro article footer .readmore{
-    min-height: 2.5em; /* Raum für Hyperlink */
+	min-height: 2.5em; /* Raum für Hyperlink */
 	margin: 0;
 }
 .mod-intro article footer .readmore a{
-    position: absolute;
-    bottom: 1em; /* Siehe padding oben in article */
-    right: 1.5em; /* Siehe padding oben in article */
+	position: absolute;
+	bottom: 1em; /* Siehe padding oben in article */
+	right: 1.5em; /* Siehe padding oben in article */
 }
 
 
@@ -126,12 +126,12 @@
 	/* padding-top: 75%; */ /* 4:3 */
 }
 .mod-intro .item-introvideo video{
-    display: block; /* Wichtig! wg. White-Spaces */
+	display: block; /* Wichtig! wg. White-Spaces */
 
 	margin-top: -56.25%; /* 16:9 */
-    /* margin-top: -75%; */ /* 4:3 */
-    opacity: 0;
-    transition: opacity 0.3s ease;
+	/* margin-top: -75%; */ /* 4:3 */
+	opacity: 0;
+	transition: opacity 0.3s ease;
 }
 .mod-intro .item-introvideo.in video{ /* MouseOver */
 	opacity: 1;
@@ -170,11 +170,11 @@
 	content: attr(title);
 	font-weight: 500;
 	font-size: 1.5em;
-    margin-top: 3em;
+	margin-top: 3em;
 	text-shadow: 2px 2px 0px rgba(0,0,0,0.6);
 	opacity: 0;
-    -webkit-transform: translate3d(-50%,-50%,0);
-	        transform: translate3d(-50%,-50%,0);
+	-webkit-transform: translate3d(-50%,-50%,0);
+			transform: translate3d(-50%,-50%,0);
 	-webkit-transition: opacity 0.5s ease;
 			transition: opacity 0.5s ease;
 }

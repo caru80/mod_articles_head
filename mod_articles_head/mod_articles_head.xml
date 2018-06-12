@@ -7,7 +7,7 @@
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.7.2</version>
+	<version>1.7.3</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -23,17 +23,17 @@
 	</languages>
 	<media destination="mod_articles_head" folder="media">
 		<filename>index.html</filename>
-        <folder>css</folder>
+		<folder>css</folder>
 	</media>
-    <updateservers>
-	    <server type="extension" priority="0" name="HEAD. Beiträge-Modul Updates">https://raw.githubusercontent.com/caru80/mod_articles_head/master/updates/updates.xml</server>
+	<updateservers>
+		<server type="extension" priority="0" name="HEAD. Beiträge-Modul Updates">https://raw.githubusercontent.com/caru80/mod_articles_head/master/updates/updates.xml</server>
  	</updateservers>
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_ARTICLES_NEWSFLASH" />
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
 				
-                <field
+				<field
 					name="load_module_css"
 					type="radio"
 					class="btn-group btn-group-yesno"
@@ -45,12 +45,12 @@
 					<option value="1">JYES</option>
 				</field>
 
-                <field
-                    name="note_module_css"
-                    type="note"
-                    showon="load_module_css:1"
-                    description="MOD_ARTICLES_HEAD_NOTE_MODULE_CSS_DESC"
-                />
+				<field
+					name="note_module_css"
+					type="note"
+					showon="load_module_css:1"
+					description="MOD_ARTICLES_HEAD_NOTE_MODULE_CSS_DESC"
+				/>
 
 				<field
 					name="show_moduleintro"
@@ -298,7 +298,7 @@
 				<field
 					name="note-articles-content-events"
 					type="note"
-                    showon="triggerevents:1"
+					showon="triggerevents:1"
 					description="MOD_ARTICLES_HEAD_FIELD_NOTE_CONTENT_EVENTS_DESC"
 				/>
 
@@ -371,59 +371,59 @@
 					hint="MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL"
 				/>
 
-                <field
-                    name="ajax_post_animations"
-                    type="radio"
-                    showon="ajax_loadmore:1"
-                    class="btn-group btn-group-yes-no"
-                    default="0"
-                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LABEL"
-                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_DESC"
-                >
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
-                </field>
+				<field
+					name="ajax_post_animations"
+					type="radio"
+					showon="ajax_loadmore:1"
+					class="btn-group btn-group-yes-no"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 
-                <field
-                    name="ajax_post_animations_load_animatedcss"
-                    type="radio"
-                    showon="ajax_post_animations:1"
-                    class="btn-group btn-group-yes-no"
-                    default="0"
-                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_LABEL"
-                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_DESC"
-                >
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
-                </field>
+				<field
+					name="ajax_post_animations_load_animatedcss"
+					type="radio"
+					showon="ajax_post_animations:1"
+					class="btn-group btn-group-yes-no"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 
-                <field
-                    name="ajax_post_animation_class"
-                    type="text"
-                    showon="ajax_post_animations:1"
-                    class="input-md"
-                    default="animated"
-                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_LABEL"
-                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_DESC"
-                />
-                
-                <field
-                    name="ajax_post_animation_name"
-                    type="text"
-                    showon="ajax_post_animations:1"
-                    class="input-md"
-                    default="bounceIn"
-                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_LABEL"
-                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_DESC"
-                />
+				<field
+					name="ajax_post_animation_class"
+					type="text"
+					showon="ajax_post_animations:1"
+					class="input-md"
+					default="animated"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_DESC"
+				/>
+				
+				<field
+					name="ajax_post_animation_name"
+					type="text"
+					showon="ajax_post_animations:1"
+					class="input-md"
+					default="bounceIn"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_DESC"
+				/>
 
-                <field
-                    name="note_ajax_post_animation_names"
-                    type="note"
-                    showon="ajax_post_animations:1"
-                    label=""
-                    description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATION_NAMES_DESC"
-                />
+				<field
+					name="note_ajax_post_animation_names"
+					type="note"
+					showon="ajax_post_animations:1"
+					label=""
+					description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATION_NAMES_DESC"
+				/>
 
 			</fieldset>
 

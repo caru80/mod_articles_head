@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.2
+ * @version        1.7.3
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -12,18 +12,6 @@
 /**
  * @copyright    Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die;
-
-
-/**
-
- 2017-06-19
- - Eigenes Template zum generieren des Links für "Weiterlesen" (_itemlink.php) anstelle Layout aus Template.
- 
- 2016-05-12
- - Titel wird nur noch angezeigt, wenn Einstellung im Modul UND im Artikel auf "Ja" steht.
- 
  */
 defined('_JEXEC') or die;
 
@@ -43,11 +31,11 @@ $images 	= json_decode( $item->images );
 	echo $item->customField['FELDNAME']->value;
 */
 if($params->get('triggerevents',0)) {
-    JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
-    foreach($item->jcfields as $field)
-    {
-        $item->jcfields[$field->name] = $field;
-    }
+	JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
+	foreach($item->jcfields as $field)
+	{
+		$item->jcfields[$field->name] = $field;
+	}
 }
 
 /*

@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.7.2
+ * @version        1.7.3
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -41,45 +41,45 @@
 			this.module.on('afterLoad', function() {
 				this.setup();
 			}.bind(this));
-        },
-        
-        setup : function()
-        {
-            var trigger = this.module.find('[data-modintroajax]');
+		},
+		
+		setup : function()
+		{
+			var trigger = this.module.find('[data-modintroajax]');
 
-            for(var i = 0, len = trigger.length; i < len; i++) {
+			for(var i = 0, len = trigger.length; i < len; i++) {
 				trigger.one('click' + this.opt.evNamespace, function(ev) {
 					this.sendRequest(ev.currentTarget);
 				}.bind(this));
-            }
+			}
 		},
-        
-        postEffects : function(response, config)
-        {
-            var html  = $(response),
-                items = html.find('.item');
+		
+		postEffects : function(response, config)
+		{
+			var html  = $(response),
+				items = html.find('.item');
 
 			items.css({visibility : 'hidden', opacity : '0'});
 			
-            $(config.target).append(html);
+			$(config.target).append(html);
 
-            var animateIn = function() {
+			var animateIn = function() {
 				var anim = this.data('modintroanim');
-                this.one('webkitAnimatioEnd msAnimationEnd animationend', function(){
+				this.one('webkitAnimatioEnd msAnimationEnd animationend', function(){
 					var anim = $(this).data('modintroanim');
 					$(this).removeClass(anim.class + ' ' + anim.name);
-                });
-                this.addClass(anim.class + ' ' + anim.name).css({visibility : '', opacity : '1'});
-            }
+				});
+				this.addClass(anim.class + ' ' + anim.name).css({visibility : '', opacity : '1'});
+			}
 
 			var item;
-            for(var i = 0, len = items.length; i < len; i++)
-            {
+			for(var i = 0, len = items.length; i < len; i++)
+			{
 				item = items.eq(i);
 				item.data('modintroanim', {class : config.aniclass, name : config.aniname});
 				window.setTimeout(animateIn.bind(items.eq(i)), i * 100);
-            }
-        },
+			}
+		},
 
 		sendRequest : function(trigger) 
 		{
@@ -92,23 +92,23 @@
 	
 			trigger.remove();
 			temp.html($(this.opt.html.loading));
-            
-            //$('html, body').stop().animate({ scrollTop : temp.offset().top }, {duration : 800} );
+			
+			//$('html, body').stop().animate({ scrollTop : temp.offset().top }, {duration : 800} );
 
 			$.ajax({
-				url    : config.url,
+				url	: config.url,
 				type   : 'POST',
 				data   : this.opt.request,
 				success: function (response) 
 				{
 					temp.remove();
 
-                    if(config.animate) {
-                        this.postEffects(response, config);
-                    }
-                    else {
-                        $(config.target).append(response);
-                    }
+					if(config.animate) {
+						this.postEffects(response, config);
+					}
+					else {
+						$(config.target).append(response);
+					}
 
 					this.module.triggerHandler('afterLoad');
 				}.bind(this),
@@ -123,8 +123,8 @@
 	{
 		var self = $(this).data('modintroajax');
 
-        if(!self) 
-        {
+		if(!self) 
+		{
 			self = new $.ModIntroAJAX(options, this);
 		}
 		return self;

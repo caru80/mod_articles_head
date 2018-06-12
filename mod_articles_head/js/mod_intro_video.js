@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.7.2
+ * @version        1.7.3
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -96,7 +96,7 @@
 						ev.preventDefault();
 						var tpl =   '<div class="video-player">' +
 									'   <video class="featherlight-video" autoplay controls volume="70" type="video/mpeg">' +
-									'       <source src="' + $(this).data('fullvideo') + '" type="video/mp4" />' +
+									'	   <source src="' + $(this).data('fullvideo') + '" type="video/mp4" />' +
 									'   </video>' +
 									'</div>';
 			
