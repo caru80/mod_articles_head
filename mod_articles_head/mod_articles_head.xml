@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2018-06-11</creationDate>
+	<creationDate>2018-06-13</creationDate>
 	<copyright>©2018 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.7.3</version>
+	<version>1.7.4</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -161,9 +161,9 @@
 					class="input-medium"
 					default=""
 					showon="linkeditem!:[OR]linkcategory!:0"
-					hint="MOD_ARTICLES_HEAD_FIELD_MODULEREADMORE_LABEL_FRONT"
 					label="MOD_ARTICLES_HEAD_FIELD_MODULEREADMORE_LABEL"
 					description="MOD_ARTICLES_HEAD_FIELD_MODULEREADMORE_DESC"
+					hint="MOD_ARTICLES_HEAD_MODULEREADMORE_LABEL_FRONT"
 				/>
 
 				<field
@@ -440,6 +440,30 @@
 					type="textarea" rows="3"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field
+					name="classnames_rows"
+					type="text"
+					label="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ROWS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ROWS_DESC"
+					hint="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ROWS_HINT"
+				/>
+
+				<field
+					name="classnames_cols"
+					type="text"
+					label="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_COLS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_COLS_DESC"
+					hint="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_COLS_HINT"
+				/>
+
+				<field
+					name="classnames_items"
+					type="text"
+					label="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ITEMS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ITEMS_DESC"
+					hint="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ITEMS_HINT"
+				/>
 
 				<field
 					name="cache"

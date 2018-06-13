@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.3
+ * @version        1.7.4
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -14,6 +14,22 @@
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
+
+
+// -- Modul-Weiterlesen URL
+$moduleReadmore = false;
+if( $params->get('linkeditem','') != '' ) // -- Zu einem Menüeintrag
+{
+	$menuitem = \Joomla\CMS\Factory::getApplication()->getMenu()->getItem($params->get('linkeditem',''));
+	$moduleReadmore = \Joomla\CMS\Router\Route::_($menuitem->link.'&Itemid='.$menuitem->id);
+
+}
+elseif( $params->get('linkcategory',0) != 0 ) // -- Zur ersten gewählten Kategorie
+{
+	$categories = $params->get('catid', false); // wg. Notice: Strict Standards...
+	$moduleReadmore = \Joomla\CMS\Router\Route::_(ContentHelperRoute::getCategoryRoute(reset($categories)));
+}
+
 ?>
 <div class="mod-intro-readmore">
 	<a href="<?php echo $moduleReadmore;?>" class="btn btn-primary more">

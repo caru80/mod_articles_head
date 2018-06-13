@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.3
+ * @version        1.7.4
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
+Joomla\CMS\MVC\Model\BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
 
 abstract class ModArticlesHeadHelper
 {
@@ -81,6 +81,38 @@ abstract class ModArticlesHeadHelper
 		}
 
 		return FALSE;
+	}
+
+	/**
+	 * AJAX - Konfiguration für den Hyperlink „Mehr-laden” .
+	 * 
+	 * @param   stdClass  &$module   Ein Objekt, welches das Modul repräsentiert.
+	 * 
+	 * @return  stdClass  Ein Objekt, welches die Konfiguration für den AJAX-Request enthält.
+	 * 
+	 * @since   1.7.4
+	 */
+	public static function getAjaxLinkConfig(&$module) {
+
+		$params = new \Joomla\Registry\Registry($module->params);
+		
+		// -- AJAX-Request Konfiguration
+		$config = (object) [
+			'url' 		=> JUri::root() . 'index.php',
+			'id'		=> $module->id,
+			's' 		=> $params->get('start',0) + $params->get('count', 4),
+			'target' 	=> '#mod-intro-items-list-' . $module->id 
+		];
+
+		// -- Post-Animationen
+		if($params->get('ajax_post_animations',0)) 
+		{
+			$config->animate 	= true;
+			$config->aniclass 	= $params->get('ajax_post_animation_class','');
+			$config->aniname 	= $params->get('ajax_post_animation_name','');
+		}
+
+		return $config;
 	}
 
 	/**
@@ -258,4 +290,81 @@ abstract class ModArticlesHeadHelper
 
 		return $items;
 	}
+
+
+	/** 
+	 * Generiert den Weiterlesen-Link eines Beitrags
+	 * 
+	 * @param   stdClass  &$item   Ein Objekt, welches ein Beitrags-Model repräsentiert.
+	 * 
+	 * @return   string   Ein String, welcher den Weiterlesen-URL repräsentiert oder ein leerer String, wenn gar keine URL ermittelt werden konnte.
+	 * 
+	 * @since   1.7.4
+	 */
+	public static function getReadmoreUrl(&$item) 
+	{
+		$attribs 		= new \Joomla\Registry\Registry($item->attribs);
+		$readmore_url 	= '';
+
+		switch($attribs->get('xfields_readmore_override',''))
+		{
+			case 'menuitem' :
+				$menu_item = \Joomla\CMS\Factory::getApplication()->getMenu()->getItem($attribs->get('xfields_readmore_override_menuitem', 0));
+
+				if($menu_item)
+				{
+					if($menu_item->flink)
+					{
+						$readmore_url = $menu_item->flink;
+					}
+					else
+					{
+						$readmore_url = \Joomla\CMS\Router\Route::_($menu_item->link . '&Itemid=' . $menu_item->id);
+					}
+				}
+			break;
+
+			case 'article' : 
+				$id = $attribs->get('xfields_readmore_override_article', 0);
+
+				$db = \Joomla\CMS\Factory::getDbo();
+				$q 	= $db->getQuery(true);
+	
+				$q->select($db->quoteName('id') .', '. $db->quoteName('state'))
+					->from($db->quoteName('#__content'))
+					->where($db->quoteName('id') . ' = ' . $db->quote($id));
+	
+				$db->setQuery($q);
+				$db->execute();
+	
+				if($result = $db->loadObject()) // Artikel ist vorhanden.
+				{
+					if($result->state !== '1') break; // Der Artikel ist nicht veröffentlicht.
+
+					// -- Hole Artikel Model, weil es nicht immer verfügbar ist, und hole damit den Artikel.
+					$model = Joomla\CMS\MVC\Model\BaseDatabaseModel::getInstance('Article','ContentModel');
+
+					$article = $model->getItem( $id );
+
+					if( $article )
+					{
+						$readmore_url = \Joomla\CMS\Router\Route::_(ContentHelperRoute::getArticleRoute($article->id, $article->catid));
+					}
+				}
+			break;
+
+			case 'url' :
+				$readmore_url = $attribs->get('xfields_readmore_override_url', '');
+			break;
+
+			default : 
+				// -- Standard-URL, wenn ein Fulltext vorhanden ist.
+				if($item->fulltext) {
+					$readmore_url = $item->link;
+				}
+		}
+
+		return $readmore_url;
+	}
+
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.3
+ * @version        1.7.4
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -15,13 +15,12 @@
  */
 defined('_JEXEC') or die;
 
-// Artikel Parameter und "X-Fields"
+// -- Artikel Parameter und "X-Fields"
 $attribs 	= new JRegistry( $item->attribs );
-
-// Bilder
+// -- Bilder
 $images 	= json_decode( $item->images );
 
-/* 
+/** 
 	Joomla 3.7 Eigene Felder/Custom Fields
 	
 	Dazu in den Moduleinstellungen das Triggern der Events einschalten!
@@ -38,16 +37,18 @@ if($params->get('triggerevents',0)) {
 	}
 }
 
-/*
-	Weiterlesen-Link
-	Deklariert $readmore_url
-	$readmore_url ist entweder ein string mit einer URL oder boolesch false, wenn gar kein „Weiterlesen” URL ermittelt werden kann.
+/**
+    Weiterlesen-Link
+    $item_readmore_url ist entweder ein string mit einem URL. Dabei entweder der standard Weiterlesen-URL oder der aus den X-Fields-Overrides ermittelte URL.
+    Wenn gar kein URL ermittlet werden kann ist $item_readmore_url ein leerer String. 
 */
-require JModuleHelper::getLayoutPath('mod_articles_head', '_itemlink');
+$item_readmore_url = ModArticlesHeadHelper::getReadmoreUrl($item);
+// -- target="_blank"; Boolesch
+$item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 
 ?>
-<div class="item-column col-equal">
-	<article class="item" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+<div class="item-column col-equal <?php echo $params->get('classnames_cols','');?>">
+	<article class="item <?php echo $params->get('classnames_items','');?>" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
 		<meta itemprop="inLanguage" content="<?php echo ($item->language === '*') ? JFactory::getConfig()->get('language') : $item->language; ?>" />
 		<?php
 			// -- Einleitungsbild
@@ -79,9 +80,9 @@ require JModuleHelper::getLayoutPath('mod_articles_head', '_itemlink');
 		?>
 				<header itemprop="name" class="item-header">
 					<<?php echo $htag;?> class="item-title">
-						<?php if( $params->get('link_titles',0) && $readmore_url ):	?><a href="<?php echo $readmore_url;?>"<?php echo $link_blank ? ' target="_blank"' : '';?>><?php endif; ?>
+						<?php if( $params->get('link_titles',0) && $item_readmore_url !== '' ):	?><a href="<?php echo $readmore_url;?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>><?php endif; ?>
 						<?php echo $item->title;?>
-						<?php if( $params->get('link_titles',0) && $readmore_url ):	?></a><?php endif; ?>
+						<?php if( $params->get('link_titles',0) && $item_readmore_url !== '') : ?></a><?php endif; ?>
 					</<?php echo $htag;?>>
 				</header>
 		<?php
@@ -97,10 +98,10 @@ require JModuleHelper::getLayoutPath('mod_articles_head', '_itemlink');
 		</section>
 		<footer class="item-footer">
 			<?php
-				if( $readmore_url ):
+				if($item_readmore_url !== '') :
 			?>
 					<div class="readmore">
-						<a itemprop="url" class="btn btn-primary more" href="<?php echo $readmore_url; ?>"<?php echo $link_blank ? ' target="_blank"' : '';?>>
+						<a itemprop="url" class="btn btn-primary more" href="<?php echo $item_readmore_url; ?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>>
 							<span>
 								<?php 
 									if ($readmore = $item->alternative_readmore) :

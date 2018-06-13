@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.3
+ * @version        1.7.4
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -21,20 +21,6 @@ if(!isset($layoutConf)) {
 					"item_layout" 	=> "_item"
 					);
 }
-
-// Modul-Weiterlesen
-$moduleReadmore = false;
-if( $params->get('linkeditem','') != '' )
-{
-	$menuitem = JFactory::getApplication()->getMenu()->getItem($params->get('linkeditem',''));
-	$moduleReadmore = JRoute::_($menuitem->link.'&Itemid='.$menuitem->id);
-
-}
-elseif( $params->get('linkcategory',0) != 0 )
-{
-	$categories = $params->get('catid', false); // wg. Notice: Strict Standards...
-	$moduleReadmore = JRoute::_(ContentHelperRoute::getCategoryRoute(reset($categories)));
-}
 ?>
 
 <?php
@@ -44,7 +30,7 @@ elseif( $params->get('linkcategory',0) != 0 )
 	*/
 ?>
 		<div class="mod-intro-items async" id="intro-<?php echo $module->id;?>-items-<?php echo $params->get('start',0);?>">
-			<div class="list-row row-equal">
+			<div class="list-row row-equal <?php echo $params->get('classnames_rows','');?>">
 				<?php 
 					foreach ($list as $item) : 
 						require JModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout);
@@ -85,7 +71,7 @@ elseif( $params->get('linkcategory',0) != 0 )
 				/** 
 					Modul-Weiterlesen – Position "oben"
 				*/
-				if($moduleReadmore && $params->get('module-link-position',0) >= 1):
+				if($params->get('module-link-position',0) >= 1):
 			?>
 					<div class="mod-intro-readmore-top">
 					<?php
@@ -102,7 +88,7 @@ elseif( $params->get('linkcategory',0) != 0 )
 					*/					
 				?>
 				<div class="mod-intro-items" id="intro-<?php echo $module->id;?>-items-<?php echo $params->get('start',0);?>">
-					<div class="list-row row-equal">
+					<div class="list-row row-equal <?php echo $params->get('classnames_rows','');?>">
 						<?php foreach ($list as $item) : ?>
 							<?php require JModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout); ?>
 						<?php endforeach; ?>
@@ -121,11 +107,11 @@ elseif( $params->get('linkcategory',0) != 0 )
 				/** 
 					Modul-Weiterlesen – Position "unten"
 				*/
-				if(($moduleReadmore && $params->get('module-link-position',0) == 0)||($moduleReadmore && $params->get('module-link-position',0) == 2)):
+				if(($params->get('module-link-position',0) == 0)||($params->get('module-link-position',0) == 2)):
 					require JModuleHelper::getLayoutPath('mod_articles_head', "_modreadmore");
 				endif;
 			?>
 		</div>
 <?php
-	endif;	
+	endif;
 ?>

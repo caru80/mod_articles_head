@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.3
+ * @version        1.7.4
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -16,25 +16,17 @@
 
 defined('_JEXEC') or die;
 
-// -- AJAX-Request Konfiguration
-$config = (object) [
-			'url' 		=> JUri::root() . 'index.php',
-			'id'		=> $module->id,
-			's' 		=> $params->get('start',0) + $params->get('count', 4),
-			'target' 	=> '#mod-intro-items-list-' . $module->id 
-		];
+// -- AJAX-Request Konfiguration vom Helper holen
+$config = ModArticlesHeadHelper::getAjaxLinkConfig($module);
 
-// -- Post-Animationen
-if($params->get('ajax_post_animations',0)) {
-	$config->animate 	= true;
-	$config->aniclass 	= $params->get('ajax_post_animation_class','');
-	$config->aniname 	= $params->get('ajax_post_animation_name','');
-}
-
+// -- Ausgabe nur, wenn Start ($config->s) größer als Gesamtanzahl der Beiträge ist:
 if( $config->s < $fullItemsCount ):
 ?>
 	<div class="mod-intro-loadmore">
-		<a tabindex="0" class="btn btn-primary" data-modintroajax='<?php echo json_encode($config);?>'>
+		<a  tabindex="0" 
+            class="btn btn-primary" 
+            data-modintroajax='<?php echo json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);?>'
+        >
 			<span><?php echo $params->get('ajax_loadmore_label','') != '' ? $params->get('ajax_loadmore_label','') : JText::_("MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL");?></span> <i class="fas fa-plus"></i>
 		</a>
 	</div>

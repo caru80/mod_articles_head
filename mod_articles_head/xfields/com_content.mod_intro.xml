@@ -2,75 +2,88 @@
 <form>
 	<fields name="attribs">
 		<fieldset name="mod_articles_head">
-			<!--
-				Für mod_articles_head, für das Template „videos”. 
-				Beiträge können ein Vorschauvideo anzeigen
-			-->
 			<field
-				name="note-previewvideo"
+				name="xfields-note-videos"
 				type="note"
-				label="Video"
-				description=""
+				label="MOD_ARTICLES_HEAD_XFIELDS_VIDEOS_NOTE_LABEL"
+				description="MOD_ARTICLES_HEAD_XFIELDS_VIDEOS_NOTE_DESC"
 			/>
 			<field
-				name="teaser_video"
+				name="xfields_teaser_video"
 				type="filelist"
-				directory="videos"
+				directory="images/videos"
 				hide_default="true"
 				default="0"
 				filter="(.\.mp4)"
-				label="Vorschauvideo"
-				description="Das Vorschauvideo, dass beim Mouseover abgespielt wird."
+				label="MOD_ARTICLES_HEAD_XFIELDS_TEASER_VIDEO_LABEL"
+				description="MOD_ARTICLES_HEAD_XFIELDS_TEASER_VIDEO_DESC"
 			/>
 			<field
-				name="full_video"
+				name="xfields_full_video"
 				type="filelist"
-				directory="videos"
+				directory="images/videos"
 				hide_default="true"
 				default="0"
 				filter="(.\.mp4)"
-				label="Komplettes Video"
-				description="Wenn gewählt, wird diese Video beim anklicken des Vorschauvideos abgespielt."
+				label="MOD_ARTICLES_HEAD_XFIELDS_FULL_VIDEO_LABEL"
+				description="MOD_ARTICLES_HEAD_XFIELDS_FULL_VIDEO_DESC"
 			/>
 
 			<field
-				name="note-override"
+				name="xfields-note-readmore-override"
 				type="note"
-				label="Weiterlesen überschreiben"
-				description=""
+				label="MOD_ARTICLES_HEAD_XFIELDS_NOTE_READMORE_OVERRIDE_LABEL"
+				description="MOD_ARTICLES_HEAD_XFIELDS_NOTE_READMORE_OVERRIDE_DESC"
 			/>
+
+            <field
+                name="xfields_readmore_override"
+                type="list"
+                default=""
+                label="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_LABEL"
+                description="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_DESC"
+            >
+                <option value="">JNONE</option>
+				<option value="menuitem">MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_OPT_MENUITEM</option>
+				<option value="article">MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_OPT_ARTICLE</option>
+				<option value="url">MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_OPT_URL</option>
+            </field>
+			
 			<field
-				name="readmore-override-item"
+				name="xfields_readmore_override_menuitem"
 				type="menuitem"
 				published="true"
-				label="Link zu Menüeintrag"
-				description="In Kacheldarstellung die Verlinkung von Weiterlesen mit einem Menüeintrag überschreiben."
+				showon="xfields_readmore_override:menuitem"
+				label="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_MENUITEM_LABEL"
+				description="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_MENUITEM_DESC"
 			>
-				<option	value="">Keiner</option>
+				<option	value="">JNONE</option>
 			</field>
 			<field
-				name="readmore-override-article"
+				name="xfields_readmore_override_article"
 				type="modal_article"
-				class="input-xlarge"
+				showon="xfields_readmore_override:article"
 				edit="true"
 				clear="true"
-				label="Link zu Beitrag"
-				description="In Kacheldarstellung die Verlinkung von Weiterlesen mit einem Beitrag überschreiben."
+				label="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_ARTICLE_LABEL"
+				description="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_ARTICLE_DESC"
 			/>
 			<field
-				name="readmore-override-url"
+				name="xfields_readmore_override_url"
 				type="text"
-				label="Link zu URL"
-				description="In Kacheldarstellung die Verlinkung von Weiterlesen mit einer URL überschreiben."
-				hint="http://www.domain.tld"
+				showon="xfields_readmore_override:url"
+				class="input-xxlarge"
+				label="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_URL_LABEL"
+				description="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_URL_DESC"
+				hint="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_URL_HINT"
 			/>
 			<field
-				name="readmore-blank"
+				name="xfields_readmore_blank"
 				type="radio"
 				class="btn-group btn-group-yesno"
 				default="0"
-				label="In neuem Fenster öffnen"
-				description=""
+				label="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_TARGETBLANK_LABEL"
+				description="MOD_ARTICLES_HEAD_XFIELDS_READMORE_OVERRIDE_TARGETBLANK_DESC"
 			>
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
