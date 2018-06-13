@@ -61,7 +61,7 @@ abstract class ModArticlesHeadHelper
 
 		$dbo->setQuery( $q );
 
-		if( $dbo->query() )
+		if( $dbo->execute() )
 		{
 			$module = $dbo->loadObject();
 			$params = new JRegistry($module->params);
