@@ -2,6 +2,7 @@
     <update>
 		<name>HEAD. Beiträge-Modul</name>
 		<description>Code Optimierung</description>
+        <infourl>https://github.com/caru80/mod_articles_head/releases</infourl>
 		<element>mod_articles_head</element>
 		<version>1.7.4</version>
 		<type>module</type>
