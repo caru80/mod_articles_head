@@ -31,8 +31,14 @@ elseif( $params->get('linkcategory',0) != 0 ) // -- Zur ersten gewählten Katego
 }
 
 ?>
-<div class="mod-intro-readmore">
-	<a href="<?php echo $moduleReadmore;?>" class="btn btn-primary more">
-		<span><?php echo $params->get('module_readmore_label','') != '' ? $params->get('module_readmore_label','') : JText::_("MOD_ARTICLES_HEAD_MODULEREADMORE_LABEL_FRONT");?></span> <i class="fas fa-chevron-right"></i>
-	</a>
-</div>
+<?php
+    if($moduleReadmore):
+?>
+        <div class="mod-intro-readmore">
+            <a href="<?php echo $moduleReadmore;?>" class="btn btn-primary more">
+                <span><?php echo $params->get('module_readmore_label','') != '' ? $params->get('module_readmore_label','') : JText::_("MOD_ARTICLES_HEAD_MODULEREADMORE_LABEL_FRONT");?></span> <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+<?php
+    endif;
+?>
