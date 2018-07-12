@@ -47,6 +47,9 @@ if($params->get('load_module_css', 0)) {
 
 // -- Lade das AJAX Controller-Script
 if($params->get('ajax_loadmore', 0)) {
+    
+    JHtml::_('jquery.framework',  true, true);
+
 	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js');
 
 	if($params->get('ajax_post_animations', 0) && $params->get('ajax_post_animations_load_animatedcss', 0)) {
