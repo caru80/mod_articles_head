@@ -47,9 +47,10 @@ if($params->get('load_module_css', 0)) {
 
 // -- Lade das AJAX Controller-Script
 if($params->get('ajax_loadmore', 0)) {
-    
-    JHtml::_('jquery.framework',  true, true);
 
+    JFactory::getLanguage()->load('com_content'); // -- Die Sprachdatei von com_content wird benötigt, wenn der Info-Block angezeigt wird, und Beiträge per AJAX nachgeladen werden.
+
+    JHtml::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
 	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js');
 
 	if($params->get('ajax_post_animations', 0) && $params->get('ajax_post_animations_load_animatedcss', 0)) {
@@ -67,8 +68,11 @@ SCRIPT;
 	JFactory::getApplication()->getDocument()->addScriptDeclaration($ajaxInitScript);
 }
 
+
 // -- Lade die Vorschauvideo-Scripts etc.
 if($params->get('introvideos', 0)) {
+    
+    JHtml::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
 	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_intro_video.min.js');
 
 	$videoInitScript = <<<SCRIPT
