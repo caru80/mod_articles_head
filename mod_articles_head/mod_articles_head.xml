@@ -24,7 +24,7 @@
 	<media destination="mod_articles_head" folder="media">
 		<filename>index.html</filename>
 		<folder>css</folder>
-        <folder>js</folder>
+		<folder>js</folder>
 	</media>
 	<updateservers>
 		<server type="extension" priority="0" name="HEAD. Beiträge-Modul Updates">https://raw.githubusercontent.com/caru80/mod_articles_head/master/updates/updates.xml</server>
@@ -302,6 +302,136 @@
 					showon="triggerevents:1"
 					description="MOD_ARTICLES_HEAD_FIELD_NOTE_CONTENT_EVENTS_DESC"
 				/>
+
+				<field
+					name="show_infoblock"
+					type="radio"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_INFOBLOCK_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_INFOBLOCK_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="info_block_show_title"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_INFO_CREATEDATE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_INFO_CREATEDATE_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_author"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_AUTHOR_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_AUTHOR_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_category"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_CATEGORY_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_CATEGORY_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_parent_category"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_PARENT_CATEGORY_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_PARENT_CATEGORY_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_associations"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_ASSOCIATIONS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_ASSOCIATIONS_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_create_date"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_CREATE_DATE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_CREATE_DATE_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_publish_date"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_PUBLISH_DATE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_PUBLISH_DATE_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_modify_date"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_MODIFY_DATE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_MODIFY_DATE_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field
+					name="show_hits"
+					type="radio"
+					showon="show_infoblock:1"
+					label="MOD_ARTICLES_HEAD_FIELD_SHOW_HITS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_SHOW_HITS_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
 
 				<field
 					name="note-ordering"
