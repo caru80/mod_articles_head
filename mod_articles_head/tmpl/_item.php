@@ -38,9 +38,9 @@ if($params->get('triggerevents',0)) {
 }
 
 /**
-    Weiterlesen-Link
-    $item_readmore_url ist entweder ein string mit einem URL. Dabei entweder der standard Weiterlesen-URL oder der aus den X-Fields-Overrides ermittelte URL.
-    Wenn gar kein URL ermittlet werden kann ist $item_readmore_url ein leerer String. 
+	Weiterlesen-Link
+	$item_readmore_url ist entweder ein string mit einem URL. Dabei entweder der standard Weiterlesen-URL oder der aus den X-Fields-Overrides ermittelte URL.
+	Wenn gar kein URL ermittlet werden kann ist $item_readmore_url ein leerer String. 
 */
 $item_readmore_url = ModArticlesHeadHelper::getReadmoreUrl($item);
 // -- target="_blank"; Boolesch
@@ -89,6 +89,18 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 				echo $item->afterDisplayTitle;
 			endif;
 		?>
+		
+		<?php
+			// -- Info-Block (Datum, Autor etc.)
+			if($params->get('show_infoblock',0)) :
+		?>
+				<section class="item-infoblock">
+					<?php echo JLayoutHelper::render('joomla.content.info_block.block', array('item' => $item, 'params' => $params, 'position' => 'above')); ?>
+				</section>
+		<?php
+			endif;
+		?>
+
 		<section class="item-introtext" itemprop="articleBody">
 			<?php echo $item->beforeDisplayContent;?>
 
