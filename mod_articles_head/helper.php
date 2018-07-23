@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.4
+ * @version        1.8.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -26,14 +26,24 @@ abstract class ModArticlesHeadHelper
 	 * Ermittle die Anzahl der Beiträge. Je nach Moduleintellungen.
 	 * 
 	 * @param   \Joomla\Registry\Registry  &$params   Ein Objekt, dass die Model-Parameter enthält
+	 * @param   Boolean  $all   Hole die Anzahl aller Beiträge, die mit den aktuellen Filtereinstellungen angezeigt werden.
 	 * 
 	 * @return   int  Anzahl der Beiträge
 	 * 
 	 * @since   1.5
 	 */
-	public static function getItemsCount(&$params)
+	public static function getItemsCount(&$params, $all = false)
 	{
-		$count = self::getList($params, true);
+		if($all) {
+			$p = clone $params;
+			$p->set('start', 0);
+			$p->set('count', 0);
+			$count = self::getList($p, true);
+			unset($p);
+		}
+		else {
+			$count = self::getList($params, true);
+		}
 		return count($count);
 	}
 
@@ -61,13 +71,30 @@ abstract class ModArticlesHeadHelper
 
 		$dbo->setQuery( $q );
 
-		if( $dbo->execute() )
+		if( $dbo->query() )
 		{
+			/*
+				Der Trick ist, dass wir hier das Modul aus der Datenbank holen, dessen Parameter (z.B.: Kategorien und Schlagworte) lokal überschreiben, das Modul rendern, und über com_ajax an Javascript zurückgeben. 
+			*/
 			$module = $dbo->loadObject();
 			$params = new JRegistry($module->params);
 
 			$params->set('ajax', 1);	// Das steuert die Ausgabe im Modul-Template. Das bedeutet, wenn der Parameter gleich 1 ist, wird weniger HTML ausgegeben (siehe tmpl/default.php).
 			$params->set('start', $input->get('start',0,'INT')); // Wo das Modul anfängt neue Beiträge zu laden.
+
+			// Kategorie-Filter
+			if($input->get('catid',FALSE,'INT')) 
+			{
+				$params->set('catid', $input->get('catid')); // Das wird in die Modulparameter geschrieben, damit das Modul nur das anzeigt, was es soll.
+				$params->set('filter_catid', $input->get('catid')); // Das wird für den Button Loadmore benötigt, damit sich dessen Konfiguration entsprechend anpasst, wenn gefiltert wird.
+			}
+
+			// Schlagworte-Filter
+			if($input->get('tag',FALSE,'INT')) 
+			{
+				$params->set('tag', $input->get('tag'));
+				$params->set('filter_tag', $input->get('tag'));
+			}
 
 			// Das „Module Chrome” (den Modulstil aus den Moduleinstellungen, das ist z.B. 'html5' oder 'xhtml' etc.) an dieser Stelle überschreiben, weil wir nur einen Teil der Ausgabe brauchen.
 			$chrome = "none";
@@ -77,7 +104,7 @@ abstract class ModArticlesHeadHelper
 			$module->params = $params->toString();
 
 			// ... und den Spaß wieder an Joomla übergeben:
-			return JModuleHelper::renderModule($module);
+			return \Joomla\CMS\Helper\ModuleHelper::renderModule($module);
 		}
 
 		return FALSE;
@@ -91,18 +118,31 @@ abstract class ModArticlesHeadHelper
 	 * @return  stdClass  Ein Objekt, welches die Konfiguration für den AJAX-Request enthält.
 	 * 
 	 * @since   1.7.4
+	 * 
+	 * Das hier produzierte Objekt wird im Frontend für den Link „Mehr Laden”, die Paginierung und die Filter benutzt.
+	 * 
 	 */
 	public static function getAjaxLinkConfig(&$module) {
 
 		$params = new \Joomla\Registry\Registry($module->params);
 		
-		// -- AJAX-Request Konfiguration
+		// -- AJAX-Request Grundkonfiguration
 		$config = (object) [
-			'url' 		=> JUri::root() . 'index.php',
-			'id'		=> $module->id,
-			's' 		=> $params->get('start',0) + $params->get('count', 4),
-			'target' 	=> '#mod-intro-items-list-' . $module->id 
+			'url' 		=> JUri::root() . 'index.php', 							// Basis-URL, das Javascript fügt alles weitere ein.
+			'id'		=> $module->id, 										// Die Id dieses Moduls
+			's' 		=> $params->get('start',0) + $params->get('count', 4), 	// Start...
+			'target' 	=> '#mod-intro-items-list-' . $module->id 				// Ziel zum einhängen des neuen Contents
 		];
+		
+		if($params->get('filter_catid',false,'INT')) // Es wird gerade nach Kategorie gefiltert, für den Link „Mehr Laden”.
+		{
+			$config->catid = $params->get('filter_catid');
+		}
+
+		if($params->get('filter_tag',false,'INT')) // Es wird gerade nach Tags gefiltert, für den Link „Mehr Laden”.
+		{
+			$config->tag = $params->get('filter_tag');
+		}
 
 		// -- Post-Animationen
 		if($params->get('ajax_post_animations',0)) 
@@ -297,7 +337,7 @@ abstract class ModArticlesHeadHelper
 	 * 
 	 * @param   stdClass  &$item   Ein Objekt, welches ein Beitrags-Model repräsentiert.
 	 * 
-	 * @return   string   Ein String, welcher den Weiterlesen-URL repräsentiert oder ein leerer String, wenn gar keine URL ermittelt werden konnte.
+	 * @return   string   Ein String, welcher den Weiterlesen-URL repräsentiert oder ein leerer String, wenn gar kein URL ermittelt werden konnte.
 	 * 
 	 * @since   1.7.4
 	 */
@@ -365,6 +405,220 @@ abstract class ModArticlesHeadHelper
 		}
 
 		return $readmore_url;
+	}
+	
+	
+	/** 
+	 * Stellt die Konfiguration für einem Filter zusammen, und gibt diese als Objekt zurück.
+	 * 
+	 * @param   object  &$module   Ein Objekt, welches das Modul-Model repräsentiert.
+	 * @param   object  $filterParams   Ein Object, das die Filterkonfiguration aus den Moduleinstellungen enthält.
+	 * 
+	 * @return   object  Ein Object, dass die Filterkonfiguration zum aufbauen des Frontends enthält.
+	 * 
+	 * @since   1.8.0
+	 */
+	public static function getFilter(&$module, $filterParams) 
+	{
+		$params = new Joomla\Registry\Registry($module->params);
+
+		$filter 			= new stdClass();
+		$filter->type       = $filterParams->filter_type;
+		$filter->label      = $filterParams->filter_label;
+		$filter->multiple 	= $filterParams->multiple;
+		$filter->template 	= $filterParams->template;
+		$filter->show_items = $filterParams->show_items_count;
+		$filter->options    = array();	// Frontend Auswahl
+		$filter->param_name = null; // Wenn sich der Filter auf einen Modul-Parameter bezieht, wird der hier gespeichert. Sonst bleibt das null.
+
+		switch($filter->type)
+		{
+			case "category" :
+				$filter->param_name = 'catid';
+
+				$options 	= $params->get($filter->param_name, array());
+				$model 		= \Joomla\CMS\Categories\Categories::getInstance('content');
+			break;
+
+			case "tag" :
+				$filter->param_name = 'tag';
+
+				$options 	= $params->get($filter->param_name, array());
+				$model 		= new \Joomla\CMS\Helper\TagsHelper();
+			break;
+
+			case "custom" :
+				// Nächster Release!
+			break;
+		}
+		
+		$filter->field_name = $filter->param_name . ($filter->multiple ? '[]' : ''); // Für das HTML Feld etc.
+		$filter->group_data = "data-filtergroup='" . json_encode((object) array("name" => $filter->param_name, "field" => $filter->field_name)) . "'";
+
+
+		$ajaxConfig 			= self::getAjaxLinkConfig($module);
+		$ajaxConfig->filter 	= true;	// Dem AJAX-Script mitteilen, dass ein Filter angeklicht wurde (sonst wird der Filter beim Anklicken entfernt)
+		$ajaxConfig->s 			= 0;	// Start (ab dem 1. Beitrag)
+		$ajaxConfig->replace 	= true; // Inhalt im Modul ersetzen
+		
+		$filter->reset_option = new stdClass();
+		$filter->reset_option->ajax_config = $ajaxConfig;
+		$filter->reset_option->ajax_config->{$filter->param_name} = array();
+		$filter->reset_option->ajax_json = json_encode($filter->reset_option->ajax_config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+
+		foreach($options as $i => $opt) 
+		{
+			$filterOption = new stdClass();
+			$filterOption->raw_value 	= $opt;
+			$filterOption->ajax_config 	= $ajaxConfig;
+
+			switch($filter->type)
+			{
+				case 'category' :
+					$filterOption->title = $model->get($opt)->title;
+					$filterOption->ajax_config->{$filter->param_name} = array($opt);
+				break;
+
+				case 'tag' :
+					$filterOption->title = $model->getTagNames(array($opt))[0];
+					$filterOption->ajax_config->{$filter->param_name} = array($opt);
+				break;
+
+				default :
+					$filterOption->title = $opt;
+			}
+
+			$filterOption->ajax_json = json_encode($filterOption->ajax_config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+
+			if($filterParams->show_items_count) 
+			{
+				// Hier braucht es noch eine Weiche für Custom Fields;
+				$tempParams = clone $params;
+				$tempParams->set('start', 0);
+				$tempParams->set('count', 0);
+				$tempParams->set($filter->param_name, $opt);
+
+				$filterOption->items_count = count(self::getList($tempParams, true));
+			}
+
+			$filter->options[$filterOption->title] = $filterOption;
+		}
+
+		if($filterParams->filter_sorting === 'asc')
+		{
+			ksort($filter->options);
+		}
+		else{
+			krsort($filter->options);
+		}
+
+		return $filter;
+	}
+
+
+
+	/** 
+	 * Generiert die Liste für die Paginierung
+	 * 
+	 * @param   stdClass  &$module   Ein Objekt, welches das Modul-Model repräsentiert
+	 * 
+	 * @return   array  Ein Array, das die Liste für die Paginierung enthält.
+	 * 
+	 * @since   1.8.0
+	 */
+	public static function getPaginationList(&$module) 
+	{
+		$params = new \Joomla\Registry\Registry($module->params);
+
+		$pages = new stdClass();
+		$pages->items 	= (int) self::getItemsCount($params, true);
+		$pages->limit 	= (int) $params->get('count', 0);
+		$pages->total 	= (int) ceil($pages->items / $pages->limit);
+		$pages->current = (int) ceil(($params->get('start') - $pages->limit + 1) / $pages->limit + 1);
+
+		$list = array(
+			"start",
+			"previous",
+			"next",
+			"end"
+		);
+	
+		foreach($list as $key => $name) 
+		{
+			$config = ModArticlesHeadHelper::getAjaxLinkConfig($module);
+			$config->replace = true;
+				
+			switch($name) 
+			{
+				case "start" :
+					if($config->s - $pages->limit == 0) 
+					{
+						$config->s = null;
+					}
+					else {
+						$config->s = 0;
+					}
+				break;
+	
+				case "previous" :
+					if($config->s - ($pages->limit * 2) < 0) 
+					{
+						$config->s = null;
+					}
+					else 
+					{
+						$config->s = $config->s - ($pages->limit * 2);
+						$config->s = $config->s <= 0 ? 0 : $config->s;
+					}
+				break;
+	
+				case "next" :
+					if($config->s >= $pages->items) 
+					{
+						$config->s = null; 
+					}
+				break;
+	
+				case "end" :
+					if($pages->total === $pages->current || $pages->total === 0)
+					{
+						$config->s = null;
+					}
+					else 
+					{
+						$config->s = $pages->limit * ($pages->total - 1);
+					}
+				break;
+			}
+
+			$list[$name] = new stdClass();
+			$list[$name]->config 	= $config->s === null ? "" : "data-modintroajax='" . json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK) . "'";
+			$list[$name]->disabled 	= $config->s === null ? true : false;
+			$list[$name]->text 		= JText::_("MOD_ARTICLES_HEAD_PAGINATION_" . strtoupper($name) . "_LABEL");
+		}
+	
+		$list["pages"] = array();
+		for($i = 0; $i < $pages->total; $i++) 
+		{
+			$list["pages"][] = new stdClass();
+
+			if($i + 1 !== $pages->current)
+			{
+				$config->s = $pages->limit * $i;
+				$list["pages"][$i]->current = false;
+			}
+			else 
+			{
+				$config->s = null;
+				$list["pages"][$i]->current = true;
+			}
+
+			$list["pages"][$i]->config      = $config->s === null ? "" : "data-modintroajax='" . json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK) . "'";
+			$list["pages"][$i]->disabled 	= $config->s === null ? true : false;
+			$list["pages"][$i]->text 		= $i + 1;
+		}
+
+		return $list;
 	}
 
 }

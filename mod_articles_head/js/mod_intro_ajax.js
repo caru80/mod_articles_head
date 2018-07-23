@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.7.4
+ * @version        1.8.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -27,7 +27,8 @@
 			'module' : 'articles_head',
 			'method' : 'getList',
 			'format' : 'raw'
-		}
+		},
+		ajaxConfig : null
 	}
 
 	$.ModIntroAJAX.prototype = {
@@ -48,66 +49,197 @@
 			var trigger = this.module.find('[data-modintroajax]');
 
 			for(var i = 0, len = trigger.length; i < len; i++) {
-				trigger.one('click' + this.opt.evNamespace, function(ev) {
+				trigger.eq(i)
+				.off(this.opt.evNamespace)
+				.one('click' + this.opt.evNamespace, function(ev) 
+				{
 					this.sendRequest(ev.currentTarget);
 				}.bind(this));
 			}
+
+			this.module.find('.set-filters')
+				.off(this.opt.evNamespace)
+				.on('click' + this.opt.evNamespace, function() 
+				{
+					this.applyFitlerGroups();
+				}.bind(this));
+
+			this.module.find('.reset-filters')
+				.off(this.opt.evNamespace)
+				.on('click' + this.opt.evNamespace, function() 
+				{
+					this.resetFilterGroups();
+				}.bind(this));
 		},
 		
-		postEffects : function(response, config)
+		postEffects : function(response)
 		{
 			var html  = $(response),
 				items = html.find('.item');
 
 			items.css({visibility : 'hidden', opacity : '0'});
 			
-			$(config.target).append(html);
+			if(this.opt.ajaxConfig.replace) {
+				$(this.opt.ajaxConfig.target).html(html);
+			}
+			else {
+				$(this.opt.ajaxConfig.target).append(html);
+			}
 
 			var animateIn = function() {
 				var anim = this.data('modintroanim');
 				this.one('webkitAnimatioEnd msAnimationEnd animationend', function(){
-					var anim = $(this).data('modintroanim');
-					$(this).removeClass(anim.class + ' ' + anim.name);
+					var a = $(this).data('modintroanim');
+					$(this).removeClass(a.class + ' ' + a.name);
 				});
-				this.addClass(anim.class + ' ' + anim.name).css({visibility : '', opacity : '1'});
+				if(anim) {
+					this.addClass(anim.class + ' ' + anim.name).css({visibility : '', opacity : '1'});
+				}
 			}
 
 			var item;
 			for(var i = 0, len = items.length; i < len; i++)
 			{
 				item = items.eq(i);
-				item.data('modintroanim', {class : config.aniclass, name : config.aniname});
+				item.data('modintroanim', {class : this.opt.ajaxConfig.aniclass, name : this.opt.ajaxConfig.aniname});
 				window.setTimeout(animateIn.bind(items.eq(i)), i * 100);
 			}
 		},
 
+
+		setFilterGroupValues : function(group) 
+		{
+			let data 	= $(group).data('filtergroup'),
+				values  = new Array();
+			
+			$('[name="' + data.field + '"]', group).each(function() 
+			{
+				switch(this.nodeName.toLowerCase())
+				{
+					case 'input' :
+						if(this.checked && this.value != '') values[values.length] = this.value;
+					break;
+	
+					case 'select' :
+						for(let i = 0, len = this.options.length; i < len; i++) {
+							if(this.options[i].selected && this.options[i].value != '') values[values.length] = this.options[i].value;
+						}
+					break;
+				}
+			});
+			this.opt.ajaxConfig[data.name] = values;
+		},
+
+
+		resetFilterGroups : function()
+		{
+			this.module.triggerHandler('resetFilters');
+
+			this.opt.ajaxConfig.catid 	= [];
+			this.opt.ajaxConfig.tag 	= [];
+			
+			this.module.find('[data-filtergroup]').each(function() 
+			{
+				let data = $(this).data('filtergroup');
+
+				$(this).find('[name="' + data.field + '"]').each(function()
+				{
+					switch(this.nodeName.toLowerCase())
+					{
+						case 'input' :
+							if(this.checked) this.checked = false;
+						break;
+		
+						case 'select' :
+							for(let i = 0, len = this.options.length; i < len; i++) {
+								if(this.options[i].selected) this.options[i].selected = false;
+							}
+						break;
+					}
+				});
+			});
+
+			this.sendRequest();
+		},
+
+
+		applyFitlerGroups : function()
+		{
+			this.opt.ajaxConfig.s 		= 0;
+			this.opt.ajaxConfig.replace = true; // Beiträge im Modul ersetzen
+			this.opt.ajaxConfig.filter  = true; // Ein Filter-Link wurde angeklickt, und dieser soll nicht aus dem DOM entfernt werden.
+			
+			let self = this;
+
+			this.module.find('[data-filtergroup]').each(function() 
+			{
+				self.setFilterGroupValues(this);
+			});
+
+			this.sendRequest();
+		},
+
+
 		sendRequest : function(trigger) 
 		{
-			var trigger = $(trigger),
-				temp 	= trigger.parent(), // Hier wird die Ladeanzeige eingeblendet
-				config 	= trigger.data('modintroajax');	// {"url":"<?php echo JUri::root();?>index.php","id":<?php echo $module->id;?>,"s":<?php echo $start;?>,"target":"#mod-intro-items-list-<?php echo $module->id;?>"}
+			if(trigger) 
+			{
+				trigger = $(trigger);
 
-			this.opt.request.modid = config.id; // Joomla Modul Id
-			this.opt.request.start = config.s;  // Start
-	
-			trigger.remove();
-			temp.html($(this.opt.html.loading));
+				this.opt.ajaxConfig = $.extend({}, this.opt.ajaxConfig, trigger.data('modintroajax'));
+			}
 			
-			//$('html, body').stop().animate({ scrollTop : temp.offset().top }, {duration : 800} );
+
+			this.opt.request.modid = this.opt.ajaxConfig.id; // Joomla Modul Id
+			this.opt.request.start = this.opt.ajaxConfig.s;  // Start
+			
+			// Kategorie-Filter
+			if(this.opt.ajaxConfig.catid) 
+			{
+				this.opt.request.catid = this.opt.ajaxConfig.catid;
+			}
+
+			// Schlagorte Filter
+			if(this.opt.ajaxConfig.tag)
+			{
+				this.opt.request.tag = this.opt.ajaxConfig.tag;
+			}
+ 
+			let temp;  // Hier wird die Ladeanzeige eingeblendet
+			if(this.opt.ajaxConfig.replace) 
+			{
+				temp = $(this.opt.ajaxConfig.target);
+			}
+			else if(trigger)
+			{
+				temp = trigger.parent();
+			}
+
+			// Wurde ein Filter-Link angeklickt?
+			if(!this.opt.ajaxConfig.filter && trigger) trigger.remove();
+
+			// Ladeanzeige einhängen
+			let indicator = $(this.opt.html.loading);
+			temp.html(indicator);
 
 			$.ajax({
-				url	: config.url,
-				type   : 'POST',
-				data   : this.opt.request,
+				url		: this.opt.ajaxConfig.url,
+				type 	: 'POST',
+				data 	: this.opt.request,
 				success: function (response) 
 				{
-					temp.remove();
+					indicator.remove();
 
-					if(config.animate) {
-						this.postEffects(response, config);
+					if(this.opt.ajaxConfig.animate) {
+						this.postEffects(response);
 					}
 					else {
-						$(config.target).append(response);
+						if(this.opt.ajaxConfig.replace) {
+							$(config.target).html(response);
+						}
+						else {
+							$(this.opt.ajaxConfig.target).append(response);
+						}
 					}
 
 					this.module.triggerHandler('afterLoad');

@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2018-06-13</creationDate>
+	<creationDate>2018-07-23</creationDate>
 	<copyright>©2018 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.7.4</version>
+	<version>1.8.0</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -472,29 +472,45 @@
 					<option value="1">JGLOBAL_ORDER_DESCENDING</option>
 				</field>
 
-				<field
+			</fieldset>
+
+            <fieldset name="mod_intro_ajax">
+                <field
 					name="note-ajax-interface"
 					type="note"
 					label="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_INTERFACE_LABEL"
 					description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_INTERFACE_DESC"
 				/>
 
-				<field
-					name="ajax_loadmore"
+                <field
+					name="ajax_enable"
 					type="radio"
 					class="btn-group"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_DESC"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_ENABLE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_ENABLE_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
 				<field
+					name="ajax_loadmore_type"
+					type="list"
+                    showon="ajax_enable:1"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_TYPE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_TYPE_DESC"
+				>
+					<option value="0">JNONE</option>
+					<option value="1">MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_TYPE_OPT_LOADMORE</option>
+                    <option value="2">MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_TYPE_OPT_PAGINATION</option>
+				</field>
+
+				<field
 					name="ajax_loadmore_label"
 					type="text"
-					showon="ajax_loadmore:1"
+					showon="ajax_enable:1[AND]ajax_loadmore_type:1"
 					class="input-md"
 					default=""
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LINK_LABEL"
@@ -502,10 +518,18 @@
 					hint="MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL"
 				/>
 
+                <field
+                    name="note-ajax_post_animations"
+                    type="note"
+                    showon="ajax_enable:1"
+                    label="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATIONS_LABEL"
+                    description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATIONS_DESC"
+                />
+
 				<field
 					name="ajax_post_animations"
 					type="radio"
-					showon="ajax_loadmore:1"
+					showon="ajax_enable:1"
 					class="btn-group btn-group-yes-no"
 					default="0"
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LABEL"
@@ -518,7 +542,7 @@
 				<field
 					name="ajax_post_animations_load_animatedcss"
 					type="radio"
-					showon="ajax_post_animations:1"
+					showon="ajax_post_animations:1[AND]ajax_enable:1"
 					class="btn-group btn-group-yes-no"
 					default="0"
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_LABEL"
@@ -531,7 +555,7 @@
 				<field
 					name="ajax_post_animation_class"
 					type="text"
-					showon="ajax_post_animations:1"
+					showon="ajax_post_animations:1[AND]ajax_enable:1"
 					class="input-md"
 					default="animated"
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_LABEL"
@@ -541,7 +565,7 @@
 				<field
 					name="ajax_post_animation_name"
 					type="text"
-					showon="ajax_post_animations:1"
+					showon="ajax_post_animations:1[AND]ajax_enable:1"
 					class="input-md"
 					default="bounceIn"
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_LABEL"
@@ -551,12 +575,43 @@
 				<field
 					name="note_ajax_post_animation_names"
 					type="note"
-					showon="ajax_post_animations:1"
+					showon="ajax_post_animations:1[AND]ajax_enable:1"
 					label=""
 					description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATION_NAMES_DESC"
 				/>
 
-			</fieldset>
+                <field
+                    name="note-ajax_filter"
+                    type="note"
+                    showon="ajax_enable:1"
+                    label="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_FILTERS_LABEL"
+                    description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_FILTERS_DESC"
+                />
+
+                <field
+					name="ajax_filters"
+					type="radio"
+					showon="ajax_enable:1"
+					class="btn-group btn-group-yes-no"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_FILTERS_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_FILTERS_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+                <field name="ajax_filter" type="subform"
+                    formsource="/modules/mod_articles_head/forms/filter.xml"
+                    multiple="true"
+                    showon="ajax_enable:1[AND]ajax_filters:1"
+                    max="100"
+                    layout="joomla.form.field.subform.repeatable"
+                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_FILTER_LABEL"
+                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_FILTER_DESC"
+                />
+
+            </fieldset>
 
 			<fieldset name="advanced">
 				<field

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.4
+ * @version        1.8.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -46,7 +46,7 @@ if($params->get('load_module_css', 0)) {
 }
 
 // -- Lade das AJAX Controller-Script
-if($params->get('ajax_loadmore', 0)) {
+if($params->get('ajax_enable', 0)) {
 
     JFactory::getLanguage()->load('com_content'); // -- Die Sprachdatei von com_content wird benötigt, wenn der Info-Block angezeigt wird, und Beiträge per AJAX nachgeladen werden.
 
@@ -57,10 +57,13 @@ if($params->get('ajax_loadmore', 0)) {
 		JFactory::getApplication()->getDocument()->addStylesheet(JUri::root() . 'media/mod_articles_head/css/animate.css');
 	}
 
+
+    $ajaxRequestConfig = json_encode(ModArticlesHeadHelper::getAjaxLinkConfig($module), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+
 	$ajaxInitScript = <<<SCRIPT
 (function($) {
 	$(function() {
-	   $('#mod-intro-$module->id').modintroajax(); 
+	   $('#mod-intro-$module->id').modintroajax({ajaxConfig : JSON.parse('$ajaxRequestConfig')});
 	});
 })(jQuery);
 SCRIPT;

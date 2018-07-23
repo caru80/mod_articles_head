@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="filter" label="filter">
+
+		<field
+			name="filter_type"
+			type="list"
+			label="MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_LABEL"
+			description="MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_DESC"
+		>
+			<option value="category">MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_OPT_CATEGORY</option>
+			<option value="tag">MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_OPT_TAG</option>
+			<!--option value="custom">MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_OPT_CUSTOM</option-->
+		</field>
+
+		<field
+			name="filter_label"
+			type="text"
+			class="input-lg"
+			label="MOD_ARTICLES_HEAD_FIELD_FILTER_LABEL_LABEL"
+			description="MOD_ARTICLES_HEAD_FIELD_FILTER_LABEL_DESC"
+		/>
+
+		<field
+			name="filter_sorting"
+			type="list"
+			label="MOD_ARTICLES_HEAD_FIELD_FILTER_SORTING_LABEL"
+			description="MOD_ARTICLES_HEAD_FIELD_FILTER_SORTING_DESC"
+		>
+			<option value="asc">MOD_ARTICLES_HEAD_FIELD_FILTER_SORTING_OPT_ASC</option>
+			<option value="desc">MOD_ARTICLES_HEAD_FIELD_FILTER_SORTING_OPT_DESC</option>
+		</field>
+
+		<field
+			name="multiple"
+			type="radio"
+			class="btn-group"
+			label="MOD_ARTICLES_HEAD_FIELD_FILTER_MULTIPLE_LABEL"
+			description="MOD_ARTICLES_HEAD_FIELD_FILTER_MULTIPLE_DESC"
+			default="0"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		 <field
+			name="show_items_count"
+			type="radio"
+			class="btn-group"
+			label="MOD_ARTICLES_HEAD_FIELD_FILTER_SHOW_ITEMS_COUNT_LABEL"
+			description="MOD_ARTICLES_HEAD_FIELD_FILTER_SHOW_ITEMS_COUNT_DESC"
+			default="0"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field
+			name="template"
+			type="filelist"
+			directory="/modules/mod_articles_head/tmpl/filter"
+			filter="\.php"
+			stripext="true"
+			hide_none="true"
+			hide_default="true"
+
+			label="MOD_ARTICLES_HEAD_FIELD_FILTER_TEMPLATE_LABEL"
+			description="MOD_ARTICLES_HEAD_FIELD_FILTER_TEMPLATE_DESC"
+			default="default"
+		>
+			<!--option value="default">default</option-->
+		</field>
+
+	</fieldset>
+</form>

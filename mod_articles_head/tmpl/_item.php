@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.7.4
+ * @version        1.8.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -80,7 +80,7 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 		?>
 				<header itemprop="name" class="item-header">
 					<<?php echo $htag;?> class="item-title">
-						<?php if( $params->get('link_titles',0) && $item_readmore_url !== '' ):	?><a href="<?php echo $readmore_url;?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>><?php endif; ?>
+						<?php if( $params->get('link_titles',0) && $item_readmore_url !== '' ):	?><a href="<?php echo $item_readmore_url;?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>><?php endif; ?>
 						<?php echo $item->title;?>
 						<?php if( $params->get('link_titles',0) && $item_readmore_url !== '') : ?></a><?php endif; ?>
 					</<?php echo $htag;?>>
@@ -107,35 +107,41 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 			<?php echo $item->introtext; ?>
 
 			<?php echo $item->afterDisplayContent;?>
-		</section>
-		<footer class="item-footer">
-			<?php
-				if($item_readmore_url !== '') :
-			?>
-					<div class="readmore">
-						<a itemprop="url" class="btn btn-primary more" href="<?php echo $item_readmore_url; ?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>>
-							<span>
-								<?php 
-									if ($readmore = $item->alternative_readmore) :
-										echo $readmore;
-										if ($attribs->get('show_readmore_title', 0) != 0) :
-											echo JHtml::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
-										endif;
-									elseif ($attribs->get('show_readmore_title', 0) == 0) :
-										echo JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
-									else :
-										echo JText::_('COM_CONTENT_READ_MORE');
-										echo JHtml::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
-									endif;
-								?>				
-							</span>
-							<i></i>
-						</a>
-					</div>
-			<?php
-				endif;	
-			?>
-		</footer>
+        </section>
+        <?php
+            if($params->get('readmore', 0)):
+        ?>
+            <footer class="item-footer">
+            <?php
+                if($item_readmore_url !== '') :
+            ?>
+                    <div class="readmore">
+                        <a itemprop="url" class="btn btn-primary more" href="<?php echo $item_readmore_url; ?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>>
+                            <span>
+                                <?php 
+                                    if ($readmore = $item->alternative_readmore) :
+                                        echo $readmore;
+                                        if ($attribs->get('show_readmore_title', 0) != 0) :
+                                            echo JHtml::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
+                                        endif;
+                                    elseif ($attribs->get('show_readmore_title', 0) == 0) :
+                                        echo JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
+                                    else :
+                                        echo JText::_('COM_CONTENT_READ_MORE');
+                                        echo JHtml::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
+                                    endif;
+                                ?>				
+                            </span>
+                            <i></i>
+                        </a>
+                    </div>
+            <?php
+                endif;	
+            ?>
+            </footer>
+        <?php
+            endif;
+        ?>
 	</article>
 </div>
 <span class="item-truncator"></span>
