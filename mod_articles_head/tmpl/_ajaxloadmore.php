@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 ?>
 
 <?php
-    // -- „Mehr laden”:
+	// -- „Mehr laden”:
 if($params->get('ajax_loadmore_type', 0) == 1):
 	
 	$config = ModArticlesHeadHelper::getAjaxLinkConfig($module); // -- AJAX-Request Konfiguration vom Helper holen
@@ -39,7 +39,7 @@ endif;
 ?>
 
 <?php
-    // -- Paginierung:
+	// -- Paginierung:
 if($params->get('ajax_loadmore_type', 0) == 2):
 
 	$list = ModArticlesHeadHelper::getPaginationList($module);
@@ -48,45 +48,55 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 	<div class="pagination mod-intro-pagination">
 		<ul class="pagination">
 			
-            <?php $link = $list["start"];?>
-			<li class="start<?php echo $link->disabled ? ' disabled' : '';?>">
-				<a <?php echo $link->config != '' ? ' ' . $link->config : '';?>>
-					<i class="fas fa-angle-double-left"></i> <?php echo $link->text;?>
-				</a>
-			</li>
+			<?php $link = $list["start"];?>
+			<?php if($link->show): ?>
+				<li class="start<?php echo $link->disabled ? ' disabled' : '';?>">
+					<a <?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+						<i class="fas fa-angle-double-left"></i> <?php echo $link->text;?>
+					</a>
+				</li>
+			<?php endif; ?>
 
 			<?php $link = $list["previous"];?>
-		    <li class="previous<?php echo $link->disabled ? ' disabled' : '';?>">
-				<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
-					<i class="fas fa-angle-left"></i> <?php echo $link->text;?>
-				</a>
-			</li>
+			<?php if($link->show): ?>
+				<li class="previous<?php echo $link->disabled ? ' disabled' : '';?>">
+					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+						<i class="fas fa-angle-left"></i> <?php echo $link->text;?>
+					</a>
+				</li>
+			<?php endif; ?>
 
 			<?php
-				foreach($list["pages"] as $key => $link) :
+				if($list["pages"]->show) :
+					foreach($list["pages"]->options as $key => $link) :
 			?>
-                    <li class="page-<?php echo $key;?><?php echo $link->disabled ? ' disabled' : '';?><?php echo $link->current ? ' active' : '';?>">
-                        <a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
-                            <?php echo $link->text;?>
-                        </a>
-                    </li>
+						<li class="page-<?php echo $key;?><?php echo $link->disabled ? ' disabled' : '';?><?php echo $link->current ? ' active' : '';?>">
+							<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+								<?php echo $link->text;?>
+							</a>
+						</li>
 			<?php
-				endforeach;
+					endforeach;
+				endif;
 			?>
 
 			<?php $link = $list["next"];?>
-			<li class="next<?php echo $link->disabled ? ' disabled' : '';?>">
-				<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
-					<?php echo $link->text;?> <i class="fas fa-angle-right"></i>
-				</a>
-			</li>
+			<?php if($link->show): ?>
+				<li class="next<?php echo $link->disabled ? ' disabled' : '';?>">
+					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+						<?php echo $link->text;?> <i class="fas fa-angle-right"></i>
+					</a>
+				</li>
+			<?php endif; ?>
 
 			<?php $link = $list["end"];?>
-			<li class="end<?php echo $link->disabled ? ' disabled' : '';?>">
-				<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
-					<?php echo $link->text;?> <i class="fas fa-angle-double-right"></i>
-				</a>
-			</li>
+			<?php if($link->show): ?>
+				<li class="end<?php echo $link->disabled ? ' disabled' : '';?>">
+					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+						<?php echo $link->text;?> <i class="fas fa-angle-double-right"></i>
+					</a>
+				</li>
+			<?php endif; ?>
 
 		</ul>
 	</div>

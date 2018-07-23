@@ -7,7 +7,7 @@
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.8.1</version>
+	<version>1.8.2</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>

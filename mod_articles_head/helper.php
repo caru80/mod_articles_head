@@ -542,6 +542,8 @@ abstract class ModArticlesHeadHelper
 			"next",
 			"end"
 		);
+
+		$layout = $params->get('ajax_pagination_layout', array());
 	
 		foreach($list as $key => $name) 
 		{
@@ -592,30 +594,33 @@ abstract class ModArticlesHeadHelper
 			}
 
 			$list[$name] = new stdClass();
+			$list[$name]->show      = in_array($name, $layout);
 			$list[$name]->config 	= $config->s === null ? "" : "data-modintroajax='" . json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK) . "'";
 			$list[$name]->disabled 	= $config->s === null ? true : false;
 			$list[$name]->text 		= JText::_("MOD_ARTICLES_HEAD_PAGINATION_" . strtoupper($name) . "_LABEL");
 		}
 	
-		$list["pages"] = array();
+		$list["pages"] 			= new stdClass();
+		$list["pages"]->options = array();
+		$list["pages"]->show 	= in_array("pages", $layout);
 		for($i = 0; $i < $pages->total; $i++) 
 		{
-			$list["pages"][] = new stdClass();
+			$list["pages"]->options[] = new stdClass();
 
 			if($i + 1 !== $pages->current)
 			{
 				$config->s = $pages->limit * $i;
-				$list["pages"][$i]->current = false;
+				$list["pages"]->options[$i]->current = false;
 			}
 			else 
 			{
 				$config->s = null;
-				$list["pages"][$i]->current = true;
+				$list["pages"]->options[$i]->current = true;
 			}
 
-			$list["pages"][$i]->config      = $config->s === null ? "" : "data-modintroajax='" . json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK) . "'";
-			$list["pages"][$i]->disabled 	= $config->s === null ? true : false;
-			$list["pages"][$i]->text 		= $i + 1;
+			$list["pages"]->options[$i]->config     = $config->s === null ? "" : "data-modintroajax='" . json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK) . "'";
+			$list["pages"]->options[$i]->disabled 	= $config->s === null ? true : false;
+			$list["pages"]->options[$i]->text 		= $i + 1;
 		}
 
 		return $list;
