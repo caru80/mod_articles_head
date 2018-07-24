@@ -131,7 +131,8 @@ abstract class ModArticlesHeadHelper
 			'url' 		=> JUri::root() . 'index.php', 							// Basis-URL, das Javascript fügt alles weitere ein.
 			'id'		=> $module->id, 										// Die Id dieses Moduls
 			's' 		=> $params->get('start',0) + $params->get('count', 4), 	// Start...
-			'target' 	=> '#mod-intro-items-list-' . $module->id 				// Ziel zum einhängen des neuen Contents
+            'target' 	=> '#mod-intro-items-list-' . $module->id, 				// Ziel zum einhängen des neuen Contents
+            'replace'   => false
 		];
 		
 		if($params->get('filter_catid',false,'INT')) // Es wird gerade nach Kategorie gefiltert, für den Link „Mehr Laden”.
