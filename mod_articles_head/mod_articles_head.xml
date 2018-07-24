@@ -2,7 +2,7 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2018-07-23</creationDate>
+	<creationDate>2018-07-24</creationDate>
 	<copyright>©2018 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
