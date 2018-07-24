@@ -7,10 +7,11 @@
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.8.2</version>
+	<version>1.8.3</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
+        <folder>forms</folder>
 		<folder>tmpl</folder>
 		<folder>xfields</folder>
 		<filename>helper.php</filename>
@@ -517,6 +518,22 @@
 					description="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LINK_DESC"
 					hint="MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL"
 				/>
+
+                <field
+					name="ajax_pagination_layout"
+					type="checkboxes"
+                    multiple="true"
+					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LAYOUT_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LAYOUT_DESC"
+                    checked="start,previous,pages,next,end"
+				>
+                    <option value="start">MOD_ARTICLES_HEAD_PAGINATION_START_LABEL</option>
+                    <option value="previous">MOD_ARTICLES_HEAD_PAGINATION_PREVIOUS_LABEL</option>
+                    <option value="pages">MOD_ARTICLES_HEAD_PAGINATION_PAGES_LABEL</option>
+                    <option value="next">MOD_ARTICLES_HEAD_PAGINATION_NEXT_LABEL</option>
+                    <option value="end">MOD_ARTICLES_HEAD_PAGINATION_END_LABEL</option>
+                </field>
 
                 <field
                     name="note-ajax_post_animations"
