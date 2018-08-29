@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.8.0
+ * @version        1.8.1
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.0
+ * @version        1.8.1
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -205,18 +205,19 @@ abstract class ModArticlesHeadHelper
 		// Filter by language
 		$model->setState('filter.language', $app->getLanguageFilter());
 
-		// Featured switch
-		switch ($params->get('show_featured'))
+        // Featured switch
+		$featured = $params->get('show_featured', '');
+		if ($featured === '')
 		{
-			case '1' :
-				$model->setState('filter.featured', 'only');
-				break;
-			case '0' :
-				$model->setState('filter.featured', 'hide');
-				break;
-			default :
-				$model->setState('filter.featured', 'show');
-				break;
+			$model->setState('filter.featured', 'show');
+		}
+		elseif ($featured)
+		{
+			$model->setState('filter.featured', 'only');
+		}
+		else
+		{
+			$model->setState('filter.featured', 'hide');
 		}
 
 		// Set ordering
