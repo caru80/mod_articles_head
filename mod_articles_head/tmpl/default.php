@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.1
+ * @version        1.8.5
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -30,7 +30,7 @@ if(!isset($layoutConf)) {
 	*/
 ?>
 		<div class="mod-intro-items async" id="intro-<?php echo $module->id;?>-items-<?php echo $params->get('start',0);?>">
-			<div class="list-row row-equal <?php echo $params->get('classnames_rows','');?>">
+			<div class="list-row <?php echo $params->get('classnames_rows','');?>">
 				<?php 
 					foreach ($list as $item) : 
 						require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout);
@@ -94,7 +94,7 @@ if(!isset($layoutConf)) {
 					*/					
 				?>
 				<div class="mod-intro-items" id="intro-<?php echo $module->id;?>-items-<?php echo $params->get('start',0);?>">
-					<div class="list-row row-equal <?php echo $params->get('classnames_rows','');?>">
+					<div class="list-row <?php echo $params->get('classnames_rows','');?>">
 						<?php foreach ($list as $item) : ?>
 							<?php require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout); ?>
 						<?php endforeach; ?>

@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2018-08-29</creationDate>
+	<creationDate>2018-09-25</creationDate>
 	<copyright>©2018 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.8.4</version>
+	<version>1.8.5</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -534,6 +534,30 @@
                     <option value="next">MOD_ARTICLES_HEAD_PAGINATION_NEXT_LABEL</option>
                     <option value="end">MOD_ARTICLES_HEAD_PAGINATION_END_LABEL</option>
                 </field>
+
+				<field
+					name="ajax_scroll"
+					type="radio"
+                    showon="ajax_enable:1"
+					class="btn-group"
+					default="0"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_DESC"
+				>
+					<option value="0">JNO</option>
+                    <option value="1">JYES</option>
+				</field>
+
+				<field
+					name="ajax_scroll_offset_query"
+					type="text"
+                    showon="ajax_enable:1[AND]ajax_scroll:1"
+					class="input-md"
+					default=""
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_DESC"
+					hint="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_HINT"
+				/>
 
                 <field
                     name="note-ajax_post_animations"

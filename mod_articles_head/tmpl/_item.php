@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.1
+ * @version        1.8.5
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -47,7 +47,7 @@ $item_readmore_url = ModArticlesHeadHelper::getReadmoreUrl($item);
 $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 
 ?>
-<div class="item-column col-equal <?php echo $params->get('classnames_cols','');?>">
+<div class="item-column <?php echo $params->get('classnames_cols','');?>">
 	<article class="item <?php echo $params->get('classnames_items','');?>" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
 		<meta itemprop="inLanguage" content="<?php echo ($item->language === '*') ? JFactory::getConfig()->get('language') : $item->language; ?>" />
 		<?php
@@ -56,6 +56,12 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 		?>
 				<div class="item-image-intro">
 					<img src="<?php echo $images->image_intro;?>" alt="<?php echo $images->image_intro_alt;?>" />
+                    <?php
+                        // -- Modul-Layout Vorschauvideo
+                        if($params->get('introvideos',0)):
+                            require JModuleHelper::getLayoutPath('mod_articles_head', '_itemvideo');
+                        endif;
+                    ?>
 				</div>
 		<?php
 			endif;
@@ -64,13 +70,6 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 		<?php
 			// -- Protoslider Layout
 			echo JLayoutHelper::render('head.protoslider', $item);
-		?>
-		
-		<?php
-			// -- Modul-Layout Vorschauvideo
-			if($params->get('introvideos',0)):
-				require JModuleHelper::getLayoutPath('mod_articles_head', '_itemvideo');
-			endif;
 		?>
 
 		<?php
@@ -112,32 +111,7 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
             if($params->get('readmore', 0)):
         ?>
             <footer class="item-footer">
-            <?php
-                if($item_readmore_url !== '') :
-            ?>
-                    <div class="readmore">
-                        <a itemprop="url" class="btn btn-primary more" href="<?php echo $item_readmore_url; ?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>>
-                            <span>
-                                <?php 
-                                    if ($readmore = $item->alternative_readmore) :
-                                        echo $readmore;
-                                        if ($attribs->get('show_readmore_title', 0) != 0) :
-                                            echo JHtml::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
-                                        endif;
-                                    elseif ($attribs->get('show_readmore_title', 0) == 0) :
-                                        echo JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
-                                    else :
-                                        echo JText::_('COM_CONTENT_READ_MORE');
-                                        echo JHtml::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
-                                    endif;
-                                ?>				
-                            </span>
-                            <i></i>
-                        </a>
-                    </div>
-            <?php
-                endif;	
-            ?>
+                <?php require JModuleHelper::getLayoutPath('mod_articles_head', '_readmore'); ?>
             </footer>
         <?php
             endif;

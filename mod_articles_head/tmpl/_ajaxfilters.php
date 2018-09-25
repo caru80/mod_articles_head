@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.1
+ * @version        1.8.5
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -27,8 +27,6 @@ endforeach;
 
 $showFilterControls = false;
 ?>
-
-
 <form name="mod-intro-filters-<?php echo $module->id;?>" id="mod-intro-filters-<?php echo $module->id;?>" class="mod-intro-filters">
 <?php
     // Die Filter rendern:

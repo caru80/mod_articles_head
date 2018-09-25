@@ -1,0 +1,82 @@
+
+
+.mod-intro .item-image-intro {
+    position: relative;
+}
+
+/* -- Vorschauvideo */
+.mod-intro .item-introvideo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 10;
+	/**
+		Mindesthöhe:
+		Wenn ein Vorschauvideo vorhanden ist ist das egal, weil das Vorschauvideo die Höhe Vorgibt.
+		Wenn kein Vorschauvideo vorhanden ist, aber ein Video zum abspielen in der Lightbox, brauchst du das, damit der Play-Button ordentlich sitzt.
+		Beachte auch, dass das Kind-Element <video> (wenn es denn vorhanden ist) vertikal nach oben „gezogen” werden muss. Also ein Minus-Margin mit dem gleichen Wert braucht.
+
+		Padding in Prozent wird anhand der Breite des Blockelemnts, auf welches das Padding angewendet wird, berechnet.
+		
+		Der Rechenweg lautet: Höhe / Breite * 100 
+	*/
+	padding-top: 56.25%; /* Mindesthöhe mit der Ratio 16:9 erzwingen. Falls kein Vorschauvideo da ist, damit der Play-Button ordentlich sitzt. */
+	/* padding-top: 75%; */ /* 4:3 */
+}
+.mod-intro .item-introvideo video{
+	display: block; /* Wichtig! wg. White-Spaces */
+
+	margin-top: -56.25%; /* 16:9 */
+	/* margin-top: -75%; */ /* 4:3 */
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+.mod-intro .item-introvideo.in video{ /* MouseOver */
+	opacity: 1;
+}
+
+
+/* -- Play-Button und „Film abspielen” */
+.mod-intro .item-introvideo.with-full-video {
+	cursor: pointer;
+}
+.mod-intro .item-introvideo.with-full-video:before,
+.mod-intro .item-introvideo.with-full-video:after{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 2;
+	color: #ffffff;
+}
+
+/* -- Play-Button */
+.mod-intro .item-introvideo.with-full-video:before{
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 400;
+	content: "\f144";
+	
+	font-size: 6em;
+	-webkit-transform: translate3d(-50%,-50%,0); /* Zentrieren */
+			transform: translate3d(-50%,-50%,0);
+}
+.mod-intro .item-introvideo.with-full-video:hover:before{
+	color: #4a80e2;
+}
+
+/* -- „Film abspielen” */
+.mod-intro .item-introvideo.with-full-video:after{
+	content: attr(title);
+	font-weight: 500;
+	font-size: 1.5em;
+	margin-top: 3em;
+	text-shadow: 2px 2px 0px rgba(0,0,0,0.6);
+	opacity: 0;
+	-webkit-transform: translate3d(-50%,-50%,0);
+			transform: translate3d(-50%,-50%,0);
+	-webkit-transition: opacity 0.5s ease;
+			transition: opacity 0.5s ease;
+}
+.mod-intro .item-introvideo.with-full-video:hover:after {
+	opacity: 1;
+}

@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.8.1
+ * @version        1.8.5
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -20,7 +20,7 @@
 	$.ModIntroVideo.Defaults = {
 		evNamespace 	: '.modintro.video',
 		allowTouch 		: false,
-		itemSelector	: 'article'
+		itemSelector	: '.item'
 	}
 
 	$.ModIntroVideo.prototype = {
@@ -47,7 +47,7 @@
 				item = list.eq(i);
 				
 				// -- Intro-Video Setup
-				if(item.children('.item-introvideo').length)
+				if(item.find('.item-introvideo').length)
 				{
 					item.off(this.opt.evNamespace); // Wenn setup() erneut aufgerufen wird schalten wir zuerst alle Event-Überwachung aus.
 					

@@ -1,0 +1,10 @@
+
+1.8.5:
+- Introvideo: Selektor für Items korrigiert
+- Introvideo: Wenn ein Videos tiefer im HTML-Baum saß, konnte das Script das Video nicht ermitteln.
+- Introvideo: Ein separates Stylesheet zum schnellen einbinden hinzugefügt.
+- Introvideo: Das HTML für das Vorschauvideo wird nun standardmäßig innerhalb des Containers des Einleitungsbilds gerendert.
+- „Weiterlesen” der Items ist jetzt ein eigenes Template.
+- CSS-Klassen row-equal und col-equal entfernt.
+- AJAX: Paginierung mit Bootstrap 4 CSS Klassen ergänzt (https://getbootstrap.com/docs/4.1/components/pagination/).
+- AJAX: Automatisches Scrollen zu neuen Items ist jetzt möglich.

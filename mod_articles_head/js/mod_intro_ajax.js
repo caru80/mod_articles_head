@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.8.1
+ * @version        1.8.5
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -28,7 +28,12 @@
 			'method' : 'getList',
 			'format' : 'raw'
 		},
-		ajaxConfig : null
+		ajaxConfig 		: null,
+		scroll : {
+			enabled  : true,
+			duration : 1000,
+			offsetQuery : ''
+		}
 	}
 
 	$.ModIntroAJAX.prototype = {
@@ -84,6 +89,11 @@
 			}
 			else {
 				$(this.opt.ajaxConfig.target).append(html);
+			}
+
+			if(this.opt.scroll.enabled)
+			{
+				this.scrollToNewItems();
 			}
 
 			var animateIn = function() {
@@ -179,6 +189,25 @@
 			this.sendRequest();
 		},
 
+		scrollToNewItems : function() 
+		{
+			let wrappers = $(this.opt.ajaxConfig.target).find('.async'),
+				latest 	 = wrappers.eq(wrappers.length -1),
+				y 		 = latest.offset().top;
+
+			if(this.opt.scroll.offsetQuery != '') 
+			{
+				let el = $(this.opt.scroll.offsetQuery);
+				if(el.length) {
+					y -= el.outerHeight();
+				}
+			}
+
+			$('html, body').stop().animate({ scrollTop : y }, {
+				duration 	: this.opt.scroll.duration,
+				easing 		: 'swing'
+			});
+		},
 
 		sendRequest : function(trigger) 
 		{
@@ -235,10 +264,15 @@
 					}
 					else {
 						if(this.opt.ajaxConfig.replace) {
-							$(config.target).html(response);
+							$(this.opt.ajaxConfig.target).html(response);
 						}
 						else {
 							$(this.opt.ajaxConfig.target).append(response);
+						}
+
+						if(this.opt.scroll.enabled)
+						{
+							this.scrollToNewItems();
 						}
 					}
 

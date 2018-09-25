@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.1
+ * @version        1.8.5
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -13,7 +13,6 @@
  * @copyright    Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
 ?>
 
@@ -50,8 +49,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 			
 			<?php $link = $list["start"];?>
 			<?php if($link->show): ?>
-				<li class="start<?php echo $link->disabled ? ' disabled' : '';?>">
-					<a <?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+				<li class="page-item start<?php echo $link->disabled ? ' disabled' : '';?>">
+					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
 						<i class="fas fa-angle-double-left"></i> <?php echo $link->text;?>
 					</a>
 				</li>
@@ -59,8 +58,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 
 			<?php $link = $list["previous"];?>
 			<?php if($link->show): ?>
-				<li class="previous<?php echo $link->disabled ? ' disabled' : '';?>">
-					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+				<li class="page-item previous<?php echo $link->disabled ? ' disabled' : '';?>">
+					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
 						<i class="fas fa-angle-left"></i> <?php echo $link->text;?>
 					</a>
 				</li>
@@ -70,8 +69,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 				if($list["pages"]->show) :
 					foreach($list["pages"]->options as $key => $link) :
 			?>
-						<li class="page-<?php echo $key;?><?php echo $link->disabled ? ' disabled' : '';?><?php echo $link->current ? ' active' : '';?>">
-							<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+						<li class="page-item page-<?php echo $key;?><?php echo $link->disabled ? ' disabled' : '';?><?php echo $link->current ? ' active' : '';?>">
+							<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
 								<?php echo $link->text;?>
 							</a>
 						</li>
@@ -82,8 +81,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 
 			<?php $link = $list["next"];?>
 			<?php if($link->show): ?>
-				<li class="next<?php echo $link->disabled ? ' disabled' : '';?>">
-					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+				<li class="page-item next<?php echo $link->disabled ? ' disabled' : '';?>">
+					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
 						<?php echo $link->text;?> <i class="fas fa-angle-right"></i>
 					</a>
 				</li>
@@ -91,8 +90,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 
 			<?php $link = $list["end"];?>
 			<?php if($link->show): ?>
-				<li class="end<?php echo $link->disabled ? ' disabled' : '';?>">
-					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?>>
+				<li class="page-item end<?php echo $link->disabled ? ' disabled' : '';?>">
+					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
 						<?php echo $link->text;?> <i class="fas fa-angle-double-right"></i>
 					</a>
 				</li>

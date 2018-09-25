@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.1
+ * @version        1.8.5
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -13,7 +13,6 @@
  * @copyright    Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
 ?>
 <div class="mod-intro-filter-group"<?php echo $oneFilter->group_data;?>>
@@ -69,8 +68,8 @@ defined('_JEXEC') or die;
 	<script>
 		(function($) {
 			$(function() {
-                $('#mod-intro-<?php echo $module->id;?>').modintroajax().module.on('resetFilters', function() 
-                {
+				$('#mod-intro-<?php echo $module->id;?>').modintroajax().module.on('resetFilters', function() 
+				{
 					$(this).find('.btn-group .btn').each(function() {
 						if($(this).hasClass('active')) {
 							$(this).button('toggle');

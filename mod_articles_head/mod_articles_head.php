@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.1
+ * @version        1.8.5
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -59,11 +59,13 @@ if($params->get('ajax_enable', 0)) {
 
 
     $ajaxRequestConfig = json_encode(ModArticlesHeadHelper::getAjaxLinkConfig($module), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+	$ajaxScrollToItems = $params->get('ajax_scroll', 0);
+	$ajaxScrollOffset  = htmlspecialchars($params->get('ajax_scroll_offset_query', ''));
 
 	$ajaxInitScript = <<<SCRIPT
 (function($) {
 	$(function() {
-	   $('#mod-intro-$module->id').modintroajax({ajaxConfig : JSON.parse('$ajaxRequestConfig')});
+	   $('#mod-intro-$module->id').modintroajax({ajaxConfig : JSON.parse('$ajaxRequestConfig'), scroll : {enabled : $ajaxScrollToItems, offsetQuery : '$ajaxScrollOffset'} });
 	});
 })(jQuery);
 SCRIPT;
