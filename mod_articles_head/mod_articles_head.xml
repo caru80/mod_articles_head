@@ -538,13 +538,14 @@
 				<field
 					name="ajax_pagination_labels"
 					type="radio"
+					class="bnt-group"
 					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LABELS_LABEL"
 					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LABELS_DESC"
                     default="1"
 				>
 					<option value="0">JNO</option>
-					<option value="1">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field
