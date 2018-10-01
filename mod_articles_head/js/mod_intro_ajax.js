@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.8.5
+ * @version        1.8.6
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -82,9 +82,10 @@
 			var html  = $(response),
 				items = html.find('.item');
 
-			items.css({visibility : 'hidden', opacity : '0'});
+			items.css({visibility : 'hidden'}); // , opacity : '0'});
 			
 			if(this.opt.ajaxConfig.replace) {
+				$(this.opt.ajaxConfig.target).css({height: ''});
 				$(this.opt.ajaxConfig.target).html(html);
 			}
 			else {
@@ -103,7 +104,7 @@
 					$(this).removeClass(a.class + ' ' + a.name);
 				});
 				if(anim) {
-					this.addClass(anim.class + ' ' + anim.name).css({visibility : '', opacity : '1'});
+					this.addClass(anim.class + ' ' + anim.name).css({visibility : ''}); //, opacity : '1'});
 				}
 			}
 
@@ -238,6 +239,9 @@
 			if(this.opt.ajaxConfig.replace) 
 			{
 				temp = $(this.opt.ajaxConfig.target);
+
+				temp.css({height : temp.height()});
+
 			}
 			else if(trigger)
 			{
@@ -264,6 +268,7 @@
 					}
 					else {
 						if(this.opt.ajaxConfig.replace) {
+							$(this.opt.ajaxConfig.target).css({height : ''});
 							$(this.opt.ajaxConfig.target).html(response);
 						}
 						else {

@@ -25,13 +25,13 @@ defined('_JEXEC') or die;
 	<?php
 		endif;
 	?>
-	<div class="btn-group filter-<?php echo $oneFilter->type;?>" data-toggle="buttons">
+	<div class="btn-group btn-group-toggle filter-<?php echo $oneFilter->type;?>" data-toggle="buttons">
 	
 		<?php
 			// „Alle” (Diesen Filter zurücksetzen):
 			if( ! $oneFilter->multiple):
 		?>
-				<label class="btn btn-default" data-modintroajax='<?php echo $oneFilter->reset_option->ajax_json;?>'>
+				<label class="btn btn-secondary" data-modintroajax='<?php echo $oneFilter->reset_option->ajax_json;?>'>
 					<input type="radio" name="<?php echo $oneFilter->field_name;?>" value="" /> <?php echo JText::_('JALL');?>
 				</label>
 		<?php
@@ -42,7 +42,7 @@ defined('_JEXEC') or die;
 			foreach($oneFilter->options as $option):
 		?>
 				<label 
-					class="btn btn-default"
+					class="btn btn-secondary"
 					<?php
 						if( ! $oneFilter->multiple) : 
 					?>

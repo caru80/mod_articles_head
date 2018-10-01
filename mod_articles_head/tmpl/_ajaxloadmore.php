@@ -51,7 +51,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 			<?php if($link->show): ?>
 				<li class="page-item start<?php echo $link->disabled ? ' disabled' : '';?>">
 					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
-						<i class="fas fa-angle-double-left"></i> <?php echo $link->text;?>
+						<i class="fas fa-angle-double-left"></i> 
+						<?php if($params->get('ajax_pagination_labels',1)) echo $link->text; ?>
 					</a>
 				</li>
 			<?php endif; ?>
@@ -60,7 +61,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 			<?php if($link->show): ?>
 				<li class="page-item previous<?php echo $link->disabled ? ' disabled' : '';?>">
 					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
-						<i class="fas fa-angle-left"></i> <?php echo $link->text;?>
+						<i class="fas fa-angle-left"></i>
+						<?php if($params->get('ajax_pagination_labels',1)) echo $link->text; ?>
 					</a>
 				</li>
 			<?php endif; ?>
@@ -83,7 +85,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 			<?php if($link->show): ?>
 				<li class="page-item next<?php echo $link->disabled ? ' disabled' : '';?>">
 					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
-						<?php echo $link->text;?> <i class="fas fa-angle-right"></i>
+					<?php if($params->get('ajax_pagination_labels',1)) echo $link->text; ?>
+					<i class="fas fa-angle-right"></i>
 					</a>
 				</li>
 			<?php endif; ?>
@@ -92,7 +95,8 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 			<?php if($link->show): ?>
 				<li class="page-item end<?php echo $link->disabled ? ' disabled' : '';?>">
 					<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
-						<?php echo $link->text;?> <i class="fas fa-angle-double-right"></i>
+						<?php if($params->get('ajax_pagination_labels',1)) echo $link->text; ?>
+						<i class="fas fa-angle-double-right"></i>
 					</a>
 				</li>
 			<?php endif; ?>
