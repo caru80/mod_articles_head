@@ -538,7 +538,7 @@
 				<field
 					name="ajax_pagination_labels"
 					type="radio"
-					class="bnt-group"
+					class="btn-group btn-group-yes-no"
 					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LABELS_LABEL"
 					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LABELS_DESC"
