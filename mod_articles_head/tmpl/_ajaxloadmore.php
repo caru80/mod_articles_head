@@ -44,7 +44,7 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 	$list = ModArticlesHeadHelper::getPaginationList($module);
 
 ?>
-	<div class="pagination mod-intro-pagination">
+	<div class="mod-intro-pagination">
 		<ul class="pagination">
 			
 			<?php $link = $list["start"];?>
@@ -71,7 +71,7 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 				if($list["pages"]->show) :
 					foreach($list["pages"]->options as $key => $link) :
 			?>
-						<li class="page-item page-<?php echo $key;?><?php echo $link->disabled ? ' disabled' : '';?><?php echo $link->current ? ' active' : '';?>">
+						<li class="page-item page-<?php echo $key;?><?php echo $link->current ? ' active' : '';?>">
 							<a<?php echo $link->config != '' ? ' ' . $link->config : '';?> class="page-link">
 								<?php echo $link->text;?>
 							</a>

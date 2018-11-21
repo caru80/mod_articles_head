@@ -100,13 +100,19 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 			endif;
 		?>
 
-		<section class="item-introtext" itemprop="articleBody">
-			<?php echo $item->beforeDisplayContent;?>
+		<?php 
+			if($item->introtext != ''):
+		?>
+			<section class="item-introtext" itemprop="articleBody">
+				<?php echo $item->beforeDisplayContent;?>
 
-			<?php echo $item->introtext; ?>
+				<?php echo $item->introtext; ?>
 
-			<?php echo $item->afterDisplayContent;?>
-        </section>
+				<?php echo $item->afterDisplayContent;?>
+			</section>
+		<?php
+			endif;
+		?>
         <?php
             if($params->get('readmore', 0)):
         ?>

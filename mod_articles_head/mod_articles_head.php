@@ -60,12 +60,16 @@ if($params->get('ajax_enable', 0)) {
 
     $ajaxRequestConfig = json_encode(ModArticlesHeadHelper::getAjaxLinkConfig($module), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 	$ajaxScrollToItems = $params->get('ajax_scroll', 0);
-	$ajaxScrollOffset  = htmlspecialchars($params->get('ajax_scroll_offset_query', ''));
+	
+	$ajaxScrollOffsets = (object) array(
+		"query" 	=> htmlspecialchars($params->get('ajax_scroll_offset_query', '')),
+		"manual" 	=> $params->get('ajax_scroll_offset_manual', 0, 'INT')
+	);
 
 	$ajaxInitScript = <<<SCRIPT
 (function($) {
 	$(function() {
-	   $('#mod-intro-$module->id').modintroajax({ajaxConfig : JSON.parse('$ajaxRequestConfig'), scroll : {enabled : $ajaxScrollToItems, offsetQuery : '$ajaxScrollOffset'} });
+	   $('#mod-intro-$module->id').modintroajax({ajaxConfig : JSON.parse('$ajaxRequestConfig'), scroll : {enabled : $ajaxScrollToItems, offsetQuery : '$ajaxScrollOffsets->query', offsetManual : $ajaxScrollOffsets->manual}});
 	});
 })(jQuery);
 SCRIPT;

@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2018-10-01</creationDate>
+	<creationDate>2018-11-21</creationDate>
 	<copyright>©2018 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.8.6h</version>
+	<version>1.8.7</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -570,6 +570,16 @@
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_LABEL"
 					description="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_DESC"
 					hint="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_HINT"
+				/>
+				<field
+					name="ajax_scroll_offset_manual"
+					type="text"
+					filter="int"
+                    showon="ajax_enable:1[AND]ajax_scroll:1"
+					class="input-md"
+					default=""
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_MANUAL_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_MANUAL_DESC"
 				/>
 
                 <field
