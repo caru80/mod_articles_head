@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.5
+ * @version        1.8.8
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -14,6 +14,58 @@
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
+
+
+/**
+ * Renders the pagination list
+ *
+ * @param   array   $list  Array containing pagination information
+ *
+ * @return  string         HTML markup for the full pagination object
+ *
+ * @since   3.0
+ */
+function pagination_list_render($list)
+{
+	// Calculate to display range of pages
+	$currentPage = 1;
+	$range = 1;
+	$step = 5;
+	foreach ($list as $k => $page)
+	{
+		if (!$page->current)
+		{
+			$currentPage = $k;
+		}
+	}
+	if ($currentPage >= $step)
+	{
+		if ($currentPage % $step == 0)
+		{
+			$range = ceil($currentPage / $step) + 1;
+		}
+		else
+		{
+			$range = ceil($currentPage / $step);
+		}
+	}
+
+	foreach ($list['pages'] as $k => $page)
+	{
+		if (in_array($k, range($range * $step - ($step + 1), $range * $step)))
+		{
+			if (($k % $step == 0 || $k == $range * $step - ($step + 1)) && $k != $currentPage && $k != $range * $step - $step)
+			{
+				$page['data'] = preg_replace('#(<a.*?>).*?(</a>)#', '$1...$2', $page['data']);
+			}
+		}
+
+		$html .= $page['data'];
+	}
+
+	return $html;
+}
+
 ?>
 
 <?php
