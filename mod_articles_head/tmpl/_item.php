@@ -16,10 +16,10 @@
 defined('_JEXEC') or die;
 
 
-// -- Artikel Parameter und "X-Fields"
-$attribs 	= new JRegistry( $item->attribs );
+// -- Artikel-Parameter und "X-Fields"
+$attribs 	= new \Joomla\Registry\Registry($item->attribs);
 // -- Bilder
-$images 	= json_decode( $item->images );
+$images 	= json_decode($item->images);
 
 /** 
 	Joomla 3.7 Eigene Felder/Custom Fields
@@ -50,7 +50,7 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 ?>
 <div class="item-column <?php echo $params->get('classnames_cols','');?>">
 	<article class="item <?php echo $params->get('classnames_items','');?>" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-		<meta itemprop="inLanguage" content="<?php echo ($item->language === '*') ? JFactory::getConfig()->get('language') : $item->language; ?>" />
+		<meta itemprop="inLanguage" content="<?php echo ($item->language === '*') ? \Joomla\CMS\Factory::getConfig()->get('language') : $item->language; ?>" />
 		<?php
 			// -- Einleitungsbild
 			if($images->image_intro != '' && (bool)$params->get('preview-image',1)):
@@ -60,7 +60,7 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
                     <?php
                         // -- Modul-Layout Vorschauvideo
                         if($params->get('introvideos',0)):
-                            require JModuleHelper::getLayoutPath('mod_articles_head', '_itemvideo');
+                            require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', '_itemvideo');
                         endif;
                     ?>
 				</div>
@@ -70,7 +70,7 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 
 		<?php
 			// -- Protoslider Layout
-			echo JLayoutHelper::render('head.protoslider', $item);
+			echo \Joomla\CMS\Layout\LayoutHelper::render('head.protoslider', $item);
 		?>
 
 		<?php
@@ -95,7 +95,7 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
 			if($params->get('show_infoblock',0)) :
 		?>
 				<section class="item-infoblock">
-					<?php echo JLayoutHelper::render('joomla.content.info_block.block', array('item' => $item, 'params' => $params, 'position' => 'above')); ?>
+					<?php echo \Joomla\CMS\Layout\LayoutHelper::render('joomla.content.info_block.block', array('item' => $item, 'params' => $params, 'position' => 'above')); ?>
 				</section>
 		<?php
 			endif;
@@ -118,7 +118,7 @@ $item_readmore_blank = (bool) $attribs->get('xfields_readmore_blank',0);
             if($params->get('readmore', 0)):
         ?>
             <footer class="item-footer">
-                <?php require JModuleHelper::getLayoutPath('mod_articles_head', '_readmore'); ?>
+                <?php require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', '_readmore'); ?>
             </footer>
         <?php
             endif;

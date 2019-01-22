@@ -1,11 +1,11 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.8
+ * @version        1.9.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
- * @copyright      Copyright © 2018 HEAD. MARKETING GmbH All Rights Reserved
+ * @copyright      Copyright © 2018 - 2019 HEAD. MARKETING GmbH All Rights Reserved
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -14,7 +14,6 @@
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
-
 
 // Include the news functions only once
 JLoader::register('ModArticlesHeadHelper', __DIR__ . '/helper.php');
@@ -43,19 +42,19 @@ $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT,
 
 // -- Lade das Beispiel-Stylesheet
 if($params->get('load_module_css', 0)) {
-	JFactory::getApplication()->getDocument()->addStylesheet(JUri::root() . 'media/mod_articles_head/css/mod-intro.css');
+	\Joomla\CMS\Factory::getApplication()->getDocument()->addStylesheet(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/css/mod-intro.css');
 }
 
 // -- Lade das AJAX Controller-Script
 if($params->get('ajax_enable', 0)) {
 
-    JFactory::getLanguage()->load('com_content'); // -- Die Sprachdatei von com_content wird benötigt, wenn der Info-Block angezeigt wird, und Beiträge per AJAX nachgeladen werden.
+    \Joomla\CMS\Factory::getLanguage()->load('com_content'); // -- Die Sprachdatei von com_content wird benötigt, wenn der Info-Block angezeigt wird, und Beiträge per AJAX nachgeladen werden.
 
-    JHtml::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
-	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js');
+    \Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
+	\Joomla\CMS\Factory::getApplication()->getDocument()->addScript(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js');
 
 	if($params->get('ajax_post_animations', 0) && $params->get('ajax_post_animations_load_animatedcss', 0)) {
-		JFactory::getApplication()->getDocument()->addStylesheet(JUri::root() . 'media/mod_articles_head/css/animate.css');
+		\Joomla\CMS\Factory::getApplication()->getDocument()->addStylesheet(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/css/animate.css');
 	}
 
 
@@ -75,15 +74,15 @@ if($params->get('ajax_enable', 0)) {
 })(jQuery);
 SCRIPT;
 
-	JFactory::getApplication()->getDocument()->addScriptDeclaration($ajaxInitScript);
+	\Joomla\CMS\Factory::getApplication()->getDocument()->addScriptDeclaration($ajaxInitScript);
 }
 
 
 // -- Lade die Vorschauvideo-Scripts etc.
 if($params->get('introvideos', 0)) {
     
-    JHtml::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
-	JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/mod_intro_video.min.js');
+    \Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
+	\Joomla\CMS\Factory::getApplication()->getDocument()->addScript(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/js/mod_intro_video.min.js');
 
 	$videoInitScript = <<<SCRIPT
 (function($) {
@@ -93,15 +92,15 @@ if($params->get('introvideos', 0)) {
 })(jQuery);
 SCRIPT;
 
-	JFactory::getApplication()->getDocument()->addScriptDeclaration($videoInitScript);
+	\Joomla\CMS\Factory::getApplication()->getDocument()->addScriptDeclaration($videoInitScript);
 
 	// -- Lade Featherlight.js
 	if($params->get('featherlightbox', 0)) {
-		JFactory::getApplication()->getDocument()->addStylesheet(JUri::root() . 'media/mod_articles_head/css/featherlight.min.css');
-		JFactory::getApplication()->getDocument()->addScript(JUri::root() . 'media/mod_articles_head/js/featherlight.min.js');
+		\Joomla\CMS\Factory::getApplication()->getDocument()->addStylesheet(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/css/featherlight.min.css');
+		\Joomla\CMS\Factory::getApplication()->getDocument()->addScript(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/js/featherlight.min.js');
 	}
 }
 
 // -- Lade das Layout
 $layout = $params->get('layout','default');
-require JModuleHelper::getLayoutPath('mod_articles_head', $layout);
+require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', $layout);

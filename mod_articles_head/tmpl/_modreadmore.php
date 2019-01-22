@@ -14,8 +14,8 @@
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
-
-
+?>
+<?php
 // -- Modul-Weiterlesen URL
 $moduleReadmore = false;
 if( $params->get('linkeditem','') != '' ) // -- Zu einem Menüeintrag
@@ -26,17 +26,20 @@ if( $params->get('linkeditem','') != '' ) // -- Zu einem Menüeintrag
 }
 elseif( $params->get('linkcategory',0) != 0 ) // -- Zur ersten gewählten Kategorie
 {
-	$categories = $params->get('catid', false); // wg. Notice: Strict Standards...
+	$categories = $params->get('catid', false); // wg. „Notice: Strict Standards” wird das zuerst in eine Variable geschrieben...
 	$moduleReadmore = \Joomla\CMS\Router\Route::_(ContentHelperRoute::getCategoryRoute(reset($categories)));
 }
-
 ?>
 <?php
+    //
+    // Template Ausgabe:
+    //
+
     if($moduleReadmore):
 ?>
         <div class="mod-intro-readmore">
             <a href="<?php echo $moduleReadmore;?>" class="btn btn-primary more">
-                <span><?php echo $params->get('module_readmore_label','') != '' ? $params->get('module_readmore_label','') : JText::_("MOD_ARTICLES_HEAD_MODULEREADMORE_LABEL_FRONT");?></span> <i class="fas fa-chevron-right"></i>
+                <span><?php echo $params->get('module_readmore_label','') != '' ? $params->get('module_readmore_label','') : \Joomla\CMS\Language\Text::_("MOD_ARTICLES_HEAD_MODULEREADMORE_LABEL_FRONT");?></span> <i class="fas fa-chevron-right"></i>
             </a>
         </div>
 <?php

@@ -16,6 +16,11 @@
 defined('_JEXEC') or die;
 
 
+//
+// Ausgabe des Weiterlesen-Link von einem Beitrag im Modul
+//
+// $item_readmore_url wird im Template _item.php deklariert: $item_readmore_url = ModArticlesHeadHelper::getReadmoreUrl($item);
+//
     if($item_readmore_url !== '') :
 ?>
         <div class="readmore">
@@ -25,13 +30,13 @@ defined('_JEXEC') or die;
                         if ($readmore = $item->alternative_readmore) :
                             echo $readmore;
                             if ($attribs->get('show_readmore_title', 0) != 0) :
-                                echo JHtml::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
+                                echo \Joomla\CMS\HTML\HTMLHelper::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
                             endif;
                         elseif ($attribs->get('show_readmore_title', 0) == 0) :
-                            echo JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
+                            echo \Joomla\CMS\Language\Text::sprintf('COM_CONTENT_READ_MORE_TITLE');
                         else :
-                            echo JText::_('COM_CONTENT_READ_MORE');
-                            echo JHtml::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
+                            echo \Joomla\CMS\Language\Text::_('COM_CONTENT_READ_MORE');
+                            echo \Joomla\CMS\HTML\HTMLHelper::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
                         endif;
                     ?>				
                 </span>

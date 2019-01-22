@@ -48,8 +48,8 @@ $showFilterControls = false;
         // Filter anwenden und zurücksetzen:
 ?>
 		<div class="mod-intro-filter-controls">
-            <a tabindex="0" class="set-filters"><?php echo JText::_('MOD_ARTICLES_HEAD_FRONT_BTN_SUBMIT_FILTERS');?></a>
-            <a tabindex="0" class="reset-filters"><?php echo JText::_('MOD_ARTICLES_HEAD_FRONT_BTN_RESET_FILTERS');?></a>
+            <a tabindex="0" class="set-filters"><?php echo \Joomla\CMS\Language\Text::_('MOD_ARTICLES_HEAD_FRONT_BTN_SUBMIT_FILTERS');?></a>
+            <a tabindex="0" class="reset-filters"><?php echo \Joomla\CMS\Language\Text::_('MOD_ARTICLES_HEAD_FRONT_BTN_RESET_FILTERS');?></a>
 		</div>
 <?php
 	endif;

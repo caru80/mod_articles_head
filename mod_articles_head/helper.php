@@ -1,11 +1,11 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.8
+ * @version        1.9.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
- * @copyright      Copyright © 2018 HEAD. MARKETING GmbH All Rights Reserved
+ * @copyright      Copyright © 2018 - 2019 HEAD. MARKETING GmbH All Rights Reserved
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -15,9 +15,14 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\Registry;
+use Joomla\CMS;
+use Joomla\CMS\MVC\Model;
+use Joomla\CMS\Language;
+
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-Joomla\CMS\MVC\Model\BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
+Model\BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
 
 
 abstract class ModArticlesHeadHelper
@@ -56,12 +61,12 @@ abstract class ModArticlesHeadHelper
 	 */
 	public static function getListAjax()
 	{
-		$input  = JFactory::getApplication()->input;
+		$input  = CMS\Factory::getApplication()->input;
 		$id 	= $input->get('modid',FALSE,'INT'); // Der Helper weiß sonst nicht, welches Modul gemeint ist – sprich welche Beiträge geladen werden sollen.
 		
 		if(!$id) return FALSE;
 
-		$dbo = JFactory::getDbo();
+		$dbo = CMS\Factory::getDbo();
 		$q	 = $dbo->getQuery(true);
 
 		$q->select('*')
@@ -77,7 +82,7 @@ abstract class ModArticlesHeadHelper
 				Der Trick ist, dass wir hier das Modul aus der Datenbank holen, dessen Parameter (z.B.: Kategorien und Schlagworte) lokal überschreiben, das Modul rendern, und über com_ajax an Javascript zurückgeben. 
 			*/
 			$module = $dbo->loadObject();
-			$params = new JRegistry($module->params);
+			$params = new Registry\Registry($module->params);
 
 			$params->set('ajax', 1);	// Das steuert die Ausgabe im Modul-Template. Das bedeutet, wenn der Parameter gleich 1 ist, wird weniger HTML ausgegeben (siehe tmpl/default.php).
 			$params->set('start', $input->get('start',0,'INT')); // Wo das Modul anfängt neue Beiträge zu laden.
@@ -104,7 +109,7 @@ abstract class ModArticlesHeadHelper
 			$module->params = $params->toString();
 
 			// ... und den Spaß wieder an Joomla übergeben:
-			return \Joomla\CMS\Helper\ModuleHelper::renderModule($module);
+			return CMS\Helper\ModuleHelper::renderModule($module);
 		}
 
 		return FALSE;
@@ -124,12 +129,12 @@ abstract class ModArticlesHeadHelper
 	 */
 	public static function getAjaxLinkConfig(&$module) {
 
-		$params = new \Joomla\Registry\Registry($module->params);
+		$params = new Registry\Registry($module->params);
 		
 		// -- AJAX-Request Grundkonfiguration
 		$config = (object) [
-			'url' 		=> JUri::root() . 'index.php', 							// Basis-URL, das Javascript fügt alles weitere ein.
-			'id'		=> $module->id, 										// Die Id dieses Moduls
+			'url' 		=> CMS\Uri\Uri::root() . 'index.php', 					// Basis-URL, das JavaScript fügt alles weitere ein.
+			'id'		=> $module->id, 										// Die Id des Moduls, das diese Funktion aufruft.
 			's' 		=> $params->get('start',0) + $params->get('count', 4), 	// Start...
             'target' 	=> '#mod-intro-items-list-' . $module->id, 				// Ziel zum einhängen des neuen Contents
             'replace'   => false
@@ -169,10 +174,10 @@ abstract class ModArticlesHeadHelper
 	public static function getList(&$params, $count = false)
 	{
 		// Get an instance of the generic articles model
-		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
+		$model = Model\BaseDatabaseModel::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 
 		// Set application parameters in model
-		$app	   = JFactory::getApplication();
+		$app	   = CMS\Factory::getApplication();
 		$appParams = $app->getParams();
 		$model->setState('params', $appParams);
 
@@ -195,8 +200,8 @@ abstract class ModArticlesHeadHelper
 		$model->setState('filter.published', 1);
 
 		// Access filter
-		$access	 = !JComponentHelper::getParams('com_content')->get('show_noauth');
-		$authorised = JAccess::getAuthorisedViewLevels(JFactory::getUser()->get('id'));
+		$access	 = !CMS\Component\ComponentHelper::getParams('com_content')->get('show_noauth');
+		$authorised = CMS\Access\Access::getAuthorisedViewLevels(CMS\Factory::getUser()->get('id'));
 		$model->setState('filter.access', $access);
 
 		// Category filter
@@ -226,7 +231,7 @@ abstract class ModArticlesHeadHelper
 
 		if (trim($ordering) === 'rand()')
 		{
-			$model->setState('list.ordering', JFactory::getDbo()->getQuery(true)->Rand());
+			$model->setState('list.ordering', CMS\Factory::getDbo()->getQuery(true)->Rand());
 		}
 		else
 		{
@@ -287,17 +292,17 @@ abstract class ModArticlesHeadHelper
 			if ($access || in_array($item->access, $authorised))
 			{
 				// We know that user has the privilege to view the article
-				$item->link	 = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language));
-				$item->linkText = JText::_('MOD_ARTICLES_NEWS_READMORE');
+				$item->link	 = CMS\Router\Route::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language));
+				$item->linkText = Language\Text::_('MOD_ARTICLES_NEWS_READMORE');
 			}
 			else
 			{
-				$item->link = new JUri(JRoute::_('index.php?option=com_users&view=login', false));
+				$item->link = new CMS\Uri\Uri(CMS\Router\Route::_('index.php?option=com_users&view=login', false));
 				$item->link->setVar('return', base64_encode(ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language)));
-				$item->linkText = JText::_('MOD_ARTICLES_NEWS_READMORE_REGISTER');
+				$item->linkText = Language\Text::_('MOD_ARTICLES_NEWS_READMORE_REGISTER');
 			}
 
-			$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'mod_articles_news.content');
+			$item->introtext = CMS\HTML\HTMLHelper::_('content.prepare', $item->introtext, '', 'mod_articles_news.content');
 
 			if (!$params->get('image'))
 			{
@@ -345,13 +350,13 @@ abstract class ModArticlesHeadHelper
 	 */
 	public static function getReadmoreUrl(&$item) 
 	{
-		$attribs 		= new \Joomla\Registry\Registry($item->attribs);
+		$attribs 		= new Registry\Registry($item->attribs);
 		$readmore_url 	= '';
 
 		switch($attribs->get('xfields_readmore_override',''))
 		{
 			case 'menuitem' :
-				$menu_item = \Joomla\CMS\Factory::getApplication()->getMenu()->getItem($attribs->get('xfields_readmore_override_menuitem', 0));
+				$menu_item = CMS\Factory::getApplication()->getMenu()->getItem($attribs->get('xfields_readmore_override_menuitem', 0));
 
 				if($menu_item)
 				{
@@ -361,7 +366,7 @@ abstract class ModArticlesHeadHelper
 					}
 					else
 					{
-						$readmore_url = \Joomla\CMS\Router\Route::_($menu_item->link . '&Itemid=' . $menu_item->id);
+						$readmore_url = CMS\Router\Route::_($menu_item->link . '&Itemid=' . $menu_item->id);
 					}
 				}
 			break;
@@ -369,7 +374,7 @@ abstract class ModArticlesHeadHelper
 			case 'article' : 
 				$id = $attribs->get('xfields_readmore_override_article', 0);
 
-				$db = \Joomla\CMS\Factory::getDbo();
+				$db = CMS\Factory::getDbo();
 				$q 	= $db->getQuery(true);
 	
 				$q->select($db->quoteName('id') .', '. $db->quoteName('state'))
@@ -383,14 +388,14 @@ abstract class ModArticlesHeadHelper
 				{
 					if($result->state !== '1') break; // Der Artikel ist nicht veröffentlicht.
 
-					// -- Hole Artikel Model, weil es nicht immer verfügbar ist, und hole damit den Artikel.
-					$model = Joomla\CMS\MVC\Model\BaseDatabaseModel::getInstance('Article','ContentModel');
+					// -- Instanziere ein Artikel Model, weil es nicht immer verfügbar ist, und hole damit den Artikel.
+					$model = Model\BaseDatabaseModel::getInstance('Article','ContentModel');
 
 					$article = $model->getItem( $id );
 
 					if( $article )
 					{
-						$readmore_url = \Joomla\CMS\Router\Route::_(ContentHelperRoute::getArticleRoute($article->id, $article->catid));
+						$readmore_url = CMS\Router\Route::_(ContentHelperRoute::getArticleRoute($article->id, $article->catid));
 					}
 				}
 			break;
@@ -401,7 +406,8 @@ abstract class ModArticlesHeadHelper
 
 			default : 
 				// -- Standard-URL, wenn ein Fulltext vorhanden ist.
-				if($item->fulltext) {
+				if($item->fulltext) 
+				{
 					$readmore_url = $item->link;
 				}
 		}
@@ -411,12 +417,12 @@ abstract class ModArticlesHeadHelper
 	
 	
 	/** 
-	 * Stellt die Konfiguration für einem Filter zusammen, und gibt diese als Objekt zurück.
+	 * Stellt die Konfiguration für einen Filter zusammen, und gibt diese als Objekt zurück.
 	 * 
 	 * @param   object  &$module   Ein Objekt, welches das Modul-Model repräsentiert.
-	 * @param   object  $filterParams   Ein Object, das die Filterkonfiguration aus den Moduleinstellungen enthält.
+	 * @param   object  $filterParams   Ein Objekt, das die Filterkonfiguration aus den Moduleinstellungen enthält.
 	 * 
-	 * @return   object  Ein Object, dass die Filterkonfiguration zum aufbauen des Frontends enthält.
+	 * @return   object  Ein Objekt, dass die Filterkonfiguration zum aufbauen der Auswahl im Frontend enthält.
 	 * 
 	 * @since   1.8.0
 	 */
@@ -439,14 +445,14 @@ abstract class ModArticlesHeadHelper
 				$filter->param_name = 'catid';
 
 				$options 	= $params->get($filter->param_name, array());
-				$model 		= \Joomla\CMS\Categories\Categories::getInstance('content');
+				$model 		= CMS\Categories\Categories::getInstance('content');
 			break;
 
 			case "tag" :
 				$filter->param_name = 'tag';
 
 				$options 	= $params->get($filter->param_name, array());
-				$model 		= new \Joomla\CMS\Helper\TagsHelper();
+				$model 		= new CMS\Helper\TagsHelper();
 			break;
 
 			case "custom" :
@@ -517,8 +523,6 @@ abstract class ModArticlesHeadHelper
 		return $filter;
 	}
 
-
-
 	/** 
 	 * Generiert die Liste für die Paginierung
 	 * 
@@ -533,10 +537,10 @@ abstract class ModArticlesHeadHelper
 		$params = new \Joomla\Registry\Registry($module->params);
 
 		$pages = new stdClass();
-		$pages->items 	= (int) self::getItemsCount($params, true);
-		$pages->limit 	= (int) $params->get('count', 0);
-		$pages->total 	= (int) ceil($pages->items / $pages->limit);
-		$pages->current = (int) ceil(($params->get('start') - $pages->limit + 1) / $pages->limit + 1);
+		$pages->items 	= (int) self::getItemsCount($params, true); 	// Anzahl Beiträge
+		$pages->limit 	= (int) $params->get('count', 0);				// Anzahl Beiträge auf einer Seite
+		$pages->total 	= (int) ceil($pages->items / $pages->limit);	// Gesamtseitenzahl
+		$pages->current = (int) ceil(($params->get('start') - $pages->limit + 1) / $pages->limit + 1); // Aktuelle Seite
 
 		$list = array(
 			"start",
@@ -545,6 +549,7 @@ abstract class ModArticlesHeadHelper
 			"end"
 		);
 
+		// Pagination-Layout, wie in Moduloptionen angegeben.
 		$layout = $params->get('ajax_pagination_layout', array());
 	
 		foreach($list as $key => $name) 
@@ -599,33 +604,65 @@ abstract class ModArticlesHeadHelper
 			$list[$name]->show      = in_array($name, $layout);
 			$list[$name]->config 	= $config->s === null ? "" : "data-modintroajax='" . json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK) . "'";
 			$list[$name]->disabled 	= $config->s === null ? true : false;
-			$list[$name]->text 		= JText::_("MOD_ARTICLES_HEAD_PAGINATION_" . strtoupper($name) . "_LABEL");
+			$list[$name]->text 		= Language\Text::_("MOD_ARTICLES_HEAD_PAGINATION_" . strtoupper($name) . "_LABEL");
 		}
 	
 		$list["pages"] 			= new stdClass();
 		$list["pages"]->options = array();
 		$list["pages"]->show 	= in_array("pages", $layout);
+		$list["pages"]->total 	= $pages->total;
+		$list["pages"]->current = $pages->current;
+
+		//
+		// Seitenzahlen – Ranged
+		//
+		$range 		= 1;
+		$step  		= (int)$params->get('ajax_pagination_range',4);
+		$current 	= $pages->current - 1; // $pages->current beginnt ab 1, gerechnet wird aber ab 0
+
+		if ($current >= $step)
+		{
+			if ($current % $step == 0)
+			{
+				$range = ceil($current / $step) + 1;
+			}
+			else
+			{
+				$range = ceil($current / $step);
+			}
+		}
+
 		for($i = 0; $i < $pages->total; $i++) 
 		{
-			$list["pages"]->options[] = new stdClass();
-
-			if($i + 1 !== $pages->current)
+			if(in_array($i, range($range * $step - ($step + 1), $range * $step))) // Der Seitenlink mit dem Wert von $i darf in der Paginierung erscheinen
 			{
-				$config->s = $pages->limit * $i;
-				$list["pages"]->options[$i]->current = false;
-			}
-			else 
-			{
-				$config->s = null;
-				$list["pages"]->options[$i]->current = true;
-			}
+				$list["pages"]->options[$i] = new stdClass();
 
-			$list["pages"]->options[$i]->config     = $config->s === null ? "" : "data-modintroajax='" . json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK) . "'";
-			$list["pages"]->options[$i]->disabled 	= $config->s === null ? true : false;
-			$list["pages"]->options[$i]->text 		= $i + 1;
+				if($i + 1 !== $pages->current)
+				{
+					$config->s = $pages->limit * $i;
+					$list["pages"]->options[$i]->current = false;
+				}
+				else 
+				{
+					$config->s = null;
+					$list["pages"]->options[$i]->current = true;
+				}
+
+				$list["pages"]->options[$i]->config     = $config->s === null ? "" : "data-modintroajax='" . json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK) . "'";
+				$list["pages"]->options[$i]->disabled 	= $config->s === null ? true : false;
+				$list["pages"]->options[$i]->text 		= $i + 1;
+
+				if (($i % $step == 0 || $i == $range * $step - ($step + 1)) && $i != $current && $i != $range * $step - $step)
+				{
+					$list["pages"]->options[$i]->range = true; // Für das Frontend. Sagt aus, dass es sich um einen „Range-Link” handelt, der im Frontend durch „...” dargestellt wird.
+				}
+			}
 		}
+		
+		// Array indizes zurücsetzen – von 0 nach n (optional, sonst beginnt der Index bei der Ersten Seite, die in der Paginierung ercheinen darf)
+		$list["pages"]->options = array_values($list["pages"]->options);
 
 		return $list;
 	}
-
 }

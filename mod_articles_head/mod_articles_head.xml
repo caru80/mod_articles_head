@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2018-12-17</creationDate>
-	<copyright>©2018 HEAD. MARKETING GmbH</copyright>
+	<creationDate>2019-01-22</creationDate>
+	<copyright>©2018 - 2019 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.8.8</version>
+	<version>1.9.0</version>
 	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -519,6 +519,19 @@
 					hint="MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL"
 				/>
 
+				<field
+					name="ajax_pagination_range"
+					type="integer"
+					class="input-mini"
+					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_RANGE_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_RANGE_DESC"
+                    first="1"
+					last="10"
+					step="1" 
+					default="4"
+				/>
+
                 <field
 					name="ajax_pagination_layout"
 					type="checkboxes"
@@ -543,6 +556,19 @@
 					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LABELS_LABEL"
 					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LABELS_DESC"
                     default="1"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="ajax_pagination_pagecounter"
+					type="radio"
+					class="btn-group btn-group-yes-no"
+					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
+					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_PAGECOUNTER_LABEL"
+					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_PAGECOUNTER_DESC"
+                    default="0"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>

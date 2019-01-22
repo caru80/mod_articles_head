@@ -18,8 +18,8 @@ defined('_JEXEC') or die;
 
 if(!isset($layoutConf)) {
 	$layoutConf = (object)array(
-					"class_sfx"		=> "intro-default",
-					"item_layout" 	=> "_item"
+					"class_sfx"		=> "intro-default",		// CSS suffix für das zu rendernde Modul
+					"item_layout" 	=> "_item"				// Template-Name für Beiträge/Items
 					);
 }
 ?>

@@ -24,14 +24,14 @@ $videos = (object)array("intro" => $attribs->get('xfields_teaser_video'), "full"
 */
 if(($videos->intro !== "-1" && $videos->intro !== null)||($videos->full !== "-1" && $videos->full !== null)):
 
-	$full_video = $videos->full !== "-1" && $videos->full !== null ? 'data-fullvideo="' . JUri::root() . 'images/videos/' . $videos->full . '"' : '';
+	$full_video = $videos->full !== "-1" && $videos->full !== null ? 'data-fullvideo="' . \Joomla\CMS\Uri\Uri::root() . 'images/videos/' . $videos->full . '"' : '';
 ?>
-	<div class="item-introvideo<?php echo $full_video != '' ? ' with-full-video' : '';?>" <?php echo $full_video;?> title="<?php echo JText::_('MOD_ARTICLES_HEAD_FRONT_PLAYVIDEO');?>">
+	<div class="item-introvideo<?php echo $full_video != '' ? ' with-full-video' : '';?>" <?php echo $full_video;?> title="<?php echo \Joomla\CMS\Language\Text::_('MOD_ARTICLES_HEAD_FRONT_PLAYVIDEO');?>">
 	<?php
 		if($videos->intro !== "-1" && $videos->intro !== null):
 	?>
 			<video preload="metadata" width="100%" loop muted>
-				<source src="<?php echo JUri::root() . 'images/videos/' . $videos->intro;?>" type="video/<?php echo substr($videos->intro, strrpos($videos->intro,'.') + 1);?>" />
+				<source src="<?php echo \Joomla\CMS\Uri\Uri::root() . 'images/videos/' . $videos->intro;?>" type="video/<?php echo substr($videos->intro, strrpos($videos->intro,'.') + 1);?>" />
 			</video>
 	<?php
 		endif;
