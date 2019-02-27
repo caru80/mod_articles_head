@@ -137,7 +137,8 @@ abstract class ModArticlesHeadHelper
 			'id'		=> $module->id, 										// Die Id des Moduls, das diese Funktion aufruft.
 			's' 		=> $params->get('start',0) + $params->get('count', 4), 	// Start...
             'target' 	=> '#mod-intro-items-list-' . $module->id, 				// Ziel zum einhängen des neuen Contents
-            'replace'   => false
+            'replace' 	=> ((int)$params->get('ajax_loadmore_type', 1) === 1 
+							&& (int)$params->get('ajax_replace_content', 0) === 1 ? true : false)
 		];
 		
 		if($params->get('filter_catid',false,'INT')) // Es wird gerade nach Kategorie gefiltert, für den Link „Mehr Laden”.
