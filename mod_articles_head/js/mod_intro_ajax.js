@@ -206,11 +206,15 @@
 			}
 
 			y -= this.opt.scroll.offsetManual; // Manueller Offset
+            y  = Math.trunc !== undefined ? Math.trunc(y) : y;
 
-			$('html, body').stop().animate({ scrollTop : y }, {
-				duration 	: this.opt.scroll.duration,
-				easing 		: 'swing'
-			});
+			if(y !== $(document).scrollTop())
+			{
+				$('html, body').stop().animate({ scrollTop : y }, {
+					duration 	: this.opt.scroll.duration,
+					easing 		: 'swing'
+				});
+			}
 		},
 
 		sendRequest : function(trigger) 
