@@ -181,7 +181,7 @@ abstract class ModArticlesHeadHelper
 
 	public static function getCustomFilterArticles($fieldid, $values, $type = 'default')
 	{
-		$dbo = CMS\Factory::getDbo();
+		$dbo = Factory::getDbo();
 		$query = $dbo->getQuery(true);
 
 		switch($type)
@@ -616,7 +616,7 @@ abstract class ModArticlesHeadHelper
 				$options = array();
 
 				// Ist dieses Feld in den im Modul gewählten Kategorien vorhanden?
-				$dbo 	= CMS\Factory::getDbo();
+				$dbo 	= Factory::getDbo();
 				$query 	= $dbo->getQuery(true);
 
 				$query->select($dbo->quoteName('category_id'))
