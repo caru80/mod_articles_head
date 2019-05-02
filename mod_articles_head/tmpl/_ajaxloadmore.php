@@ -32,7 +32,7 @@ if($params->get('ajax_loadmore_type', 0) == 1):
 				class="btn btn-primary" 
 				data-modintroajax='<?php echo json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);?>'
 			>
-				<span><?php echo $params->get('ajax_loadmore_label','') != '' ? $params->get('ajax_loadmore_label','') : Text::_("MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL");?></span> <i class="fas fa-plus"></i>
+				<span><?php echo $params->get('ajax_loadmore_label','') != '' ? $params->get('ajax_loadmore_label','') : Text::_("MODARH_AJAXLOADMORE_LABEL");?></span> <i class="fas fa-plus"></i>
 			</a>
 		</div>
 <?php
@@ -83,7 +83,7 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 								if($link->range) :
 									// Nur anzeigen, dass es hier weiter geht
 							?>
-									<?php echo Text::_('MOD_ARTICLES_HEAD_RANGELINK_LABEL','...');?>
+									<?php echo Text::_('MODARH_RANGELINK_LABEL','...');?>
 							<?php
 								else :
 									// Seitennummer anzeigen

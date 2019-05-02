@@ -2,13 +2,13 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2019-01-22</creationDate>
+	<creationDate>2019-04-29</creationDate>
 	<copyright>©2018 - 2019 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.9.1</version>
-	<description>MOD_ARTICLES_HEAD_XML_DESCRIPTION</description>
+	<version>1.10.0b</version>
+	<description>MODARH_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
         <folder>forms</folder>
@@ -40,8 +40,8 @@
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_LOAD_MODULE_CSS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_LOAD_MODULE_CSS_DESC"
+					label="MODARH_FIELD_LOAD_MODULE_CSS_LABEL"
+					description="MODARH_FIELD_LOAD_MODULE_CSS_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -51,35 +51,14 @@
 					name="note_module_css"
 					type="note"
 					showon="load_module_css:1"
-					description="MOD_ARTICLES_HEAD_NOTE_MODULE_CSS_DESC"
-				/>
-
-				<field
-					name="show_moduleintro"
-					type="radio"
-					class="btn-group btn-group-yesno"
-					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_MODULEINTRO_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_MODULEINTRO_DESC"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-				<field
-					name="moduleintro"
-					type="editor"
-					filter="raw"
-					showon="show_moduleintro:1"
-					label="MOD_ARTICLES_HEAD_FIELD_MODULEINTRO_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_MODULEINTRO_DESC"
+					description="MODARH_NOTE_MODULE_CSS_DESC"
 				/>
 
 				<field
 					name="note-filter"
 					type="note"
-					label="MOD_ARTICLES_HEAD_FIELD_NOTE_FILTER_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_NOTE_FILTER_DESC"
+					label="MODARH_FIELD_NOTE_FILTER_LABEL"
+					description="MODARH_FIELD_NOTE_FILTER_DESC"
 				/>
 
 				<field
@@ -90,7 +69,7 @@
 					default=""
 					size="10"
 					label="JCATEGORY"
-					description="MOD_ARTICLES_HEAD_FIELD_CATEGORY_DESC"
+					description="MODARH_FIELD_CATEGORY_DESC"
 				>
 					<option value="">JOPTION_ALL_CATEGORIES</option>
 				</field>
@@ -99,7 +78,7 @@
 					name="tag"
 					type="tag"
 					label="JTAG"
-					description="JTAG_DESC"
+					description="MODARH_FIELD_TAG_DESC"
 					mode="nested"
 					multiple="true"
 					class="multipleTags"
@@ -110,12 +89,12 @@
 					type="radio"
 					class="btn-group"
 					default=""
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_DESC"
+					label="MODARH_FIELD_SHOW_FEATURED_ITEMS_LABEL"
+					description="MODARH_FIELD_SHOW_FEATURED_ITEMS_DESC"
 				>
-					<option value="0">MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_OPT_HIDE</option>
-					<option value="">MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_OPT_SHOW</option>
-					<option value="1">MOD_ARTICLES_HEAD_FIELD_SHOW_FEATURED_ITEMS_OPT_ONLY</option>
+					<option value="0">MODARH_FIELD_SHOW_FEATURED_ITEMS_OPT_HIDE</option>
+					<option value="">MODARH_FIELD_SHOW_FEATURED_ITEMS_OPT_SHOW</option>
+					<option value="1">MODARH_FIELD_SHOW_FEATURED_ITEMS_OPT_ONLY</option>
 				</field>
 
 				<field
@@ -123,70 +102,151 @@
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="0"
-					label="MOD_ARTICLES_HEAD_HIDECURRENTARTICLE"
-					description="MOD_ARTICLES_HEAD_HIDECURRENTARTICLE_DESC"
+					label="MODARH_HIDECURRENTARTICLE"
+					description="MODARH_HIDECURRENTARTICLE_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
 				<field
-					name="note-module-link"
+					name="note-ordering"
 					type="note"
-					label="MOD_ARTICLES_HEAD_FIELD_NOTE_MODULE_READMORE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_NOTE_MODULE_READMORE_DESC"
+					label="MODARH_FIELD_NOTE_ORDERING_LABEL"
+					description="MODARH_FIELD_NOTE_ORDERING_DESC"
 				/>
 
 				<field
-					name="linkeditem"
+					name="count"
+					type="text"
+					default="5"
+					label="MODARH_FIELD_ITEMS_COUNT_LABEL"
+					description="MODARH_FIELD_ITEMS_COUNT_DESC" />
+
+				<field
+					name="ordering"
+					type="list"
+					default="a.publish_up"
+					label="MODARH_FIELD_ORDERING_LABEL"
+					description="MODARH_FIELD_ORDERING_DESC"
+				>
+					<option value="a.publish_up">MODARH_FIELD_ORDERING_OPT_PUBLISHED_DATE</option>
+					<option value="a.created">MODARH_FIELD_ORDERING_OPT_CREATED_DATE</option>
+					<option value="a.ordering">MODARH_FIELD_ORDERING_OPT_ORDERING</option>
+					<option value="a.hits">JGLOBAL_HITS</option>
+					<option value="rand()">MODARH_FIELD_ORDERING_OPT_RANDOM</option>
+				</field>
+
+				<field
+					name="direction"
+					type="list"
+					default="1"
+					label="JGLOBAL_ORDER_DIRECTION_LABEL"
+					description="JGLOBAL_ORDER_DIRECTION_DESC"
+				>
+					<option value="0">JGLOBAL_ORDER_ASCENDING</option>
+					<option value="1">JGLOBAL_ORDER_DESCENDING</option>
+				</field>
+
+				<field
+					name="note-module-readmore"
+					type="note"
+					label="MODARH_FIELD_NOTE_MODULE_READMORE_LABEL"
+					description=""
+				/>
+
+				<field
+					name="module_readmore_type"
+					type="radio"
+					class="btn-group"
+					label="MODARH_FIELD_MODULE_READMORE_TYPE_LABEL"
+					description="MODARH_FIELD_MODULE_READMORE_TYPE_DESC"
+					default=""
+				>
+					<option value="">JNO</option>
+					<option value="category">MODARH_FIELD_MODULE_READMORE_TYPE_OPT_CATEGORY</option>
+					<option value="menuitem">MODARH_FIELD_MODULE_READMORE_TYPE_OPT_MENUITEM</option>
+					<option value="url">MODARH_FIELD_MODULE_READMORE_TYPE_OPT_URL</option>
+				</field>
+
+				<field
+					name="module_readmore_menuitem"
 					type="menuitem"
 					published="1"
-					label="MOD_ARTICLES_HEAD_FIELD_LINKEDITEM_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_LINKEDITEM_DESC"
+					showon="module_readmore_type:menuitem"
+					label="MODARH_FIELD_MODULE_READMORE_MENUITEM_LABEL"
+					description="MODARH_FIELD_MODULE_READMORE_MENUITEM_DESC"
 				>
-					<option	value="">JNO</option>
+					<option	value="">JNONE</option>
 				</field>
+
 				<field
-					name="linkcategory"
-					type="radio"
-					class="btn-group btn-group-yesno"
-					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_LINKTOCATEGORY_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_LINKTOCATEGORY_DESC"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
+					name="module_readmore_url"
+					type="url"
+					filter="url"
+					class="input-xxlarge"
+					showon="module_readmore_type:url"
+					label="MODARH_FIELD_MODULE_READMORE_URL_LABEL"
+					hint="MODARH_FIELD_MODULE_READMORE_URL_HINT"
+					description="MODARH_FIELD_MODULE_READMORE_URL_DESC"
+				/>
+
 				<field
 					name="module_readmore_label"
 					type="text"
 					class="input-medium"
 					default=""
-					showon="linkeditem!:[OR]linkcategory!:0"
-					label="MOD_ARTICLES_HEAD_FIELD_MODULEREADMORE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_MODULEREADMORE_DESC"
-					hint="MOD_ARTICLES_HEAD_MODULEREADMORE_LABEL_FRONT"
+					showon="module_readmore_type!:"
+					label="MODARH_FIELD_MODULE_READMORE_LABEL"
+					description="MODARH_FIELD_MODULE_READMORE_DESC"
+					hint="MODARH_MODULE_READMORE_LABEL_FRONT"
 				/>
 
 				<field
-					name="module-link-position"
+					name="module_readmore_position"
 					type="radio"
 					class="btn-group"
-					default="0"
-					showon="linkeditem!:[OR]linkcategory!:0"
-					label="MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_DESC"
+					default="bottom"
+					showon="module_readmore_type!:"
+					label="MODARH_FIELD_MODULE_READMORE_POSITION_LABEL"
+					description="MODARH_FIELD_MODULE_READMORE_POSITION_DESC"
 				>
-					<option value="0">MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_OPT_BOTTOM</option>
-					<option value="1">MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_OPT_TOP</option>
-					<option value="2">MOD_ARTICLES_HEAD_FIELD_MODULE_READMORE_POSITION_OPT_BOTH</option>
+					<option value="bottom">MODARH_FIELD_MODULE_READMORE_POSITION_OPT_BOTTOM</option>
+					<option value="top">MODARH_FIELD_MODULE_READMORE_POSITION_OPT_TOP</option>
+					<option value="both">MODARH_FIELD_MODULE_READMORE_POSITION_OPT_BOTH</option>
+				</field>
+			</fieldset>
+			
+			<fieldset name="mod_intro_introtext">
+				<field
+					name="show_moduleintro"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MODARH_FIELD_SHOW_MODULEINTRO_LABEL"
+					description="MODARH_FIELD_SHOW_MODULEINTRO_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field
+					name="moduleintro"
+					type="editor"
+					filter="raw"
+					showon="show_moduleintro:1"
+					label="MODARH_FIELD_MODULEINTRO_LABEL"
+					description="MODARH_FIELD_MODULEINTRO_DESC"
+				/>
+			</fieldset>
+
+			<fieldset name="mod_intro_articles">
+				
+				<field
 					name="note-articles"
 					type="note"
-					label="MOD_ARTICLES_HEAD_FIELD_NOTE_ARTICLES_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_NOTE_ARTICLES_DESC"
+					label="MODARH_FIELD_NOTE_ARTICLES_LABEL"
+					description="MODARH_FIELD_NOTE_ARTICLES_DESC"
 				/>
 
 				<field
@@ -194,8 +254,8 @@
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="1"
-					label="MOD_ARTICLES_HEAD_FIELD_IMAGEINTRO_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_IMAGEINTRO_DESC"
+					label="MODARH_FIELD_IMAGEINTRO_LABEL"
+					description="MODARH_FIELD_IMAGEINTRO_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -206,8 +266,8 @@
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_INTROVIDEOS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_INTROVIDEOS_DESC"
+					label="MODARH_FIELD_INTROVIDEOS_LABEL"
+					description="MODARH_FIELD_INTROVIDEOS_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -218,8 +278,8 @@
 					showon="introvideos:1"
 					class="btn-group btn-group-yesno"
 					default="1"
-					label="MOD_ARTICLES_HEAD_FIELD_FEATHERLIGHTBOX_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_FEATHERLIGHTBOX_DESC"
+					label="MODARH_FIELD_FEATHERLIGHTBOX_LABEL"
+					description="MODARH_FIELD_FEATHERLIGHTBOX_DESC"
 				>
 						<option value="0">JNO</option>
 						<option value="1">JYES</option>
@@ -230,8 +290,8 @@
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_IMAGES_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_IMAGES_DESC"
+					label="MODARH_FIELD_IMAGES_LABEL"
+					description="MODARH_FIELD_IMAGES_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -241,8 +301,8 @@
 					class="btn-group btn-group-yesno"
 					type="radio"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_ITEM_TITLE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_ITEM_TITLE_DESC"
+					label="MODARH_FIELD_ITEM_TITLE_LABEL"
+					description="MODARH_FIELD_ITEM_TITLE_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -252,8 +312,8 @@
 					name="link_titles"
 					type="list"
 					class="chzn-color"
-					label="MOD_ARTICLES_HEAD_FIELD_LINK_TITLES_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_LINK_TITLES_DESC"
+					label="MODARH_FIELD_LINK_TITLES_LABEL"
+					description="MODARH_FIELD_LINK_TITLES_DESC"
 				>
 					<option value="">JGLOBAL_USE_GLOBAL</option>
 					<option value="0">JNO</option>
@@ -264,8 +324,8 @@
 					name="item_heading"
 					type="list"
 					default="h4"
-					label="MOD_ARTICLES_HEAD_FIELD_TITLE_HEADING_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_TITLE_HEADING_DESC"
+					label="MODARH_FIELD_TITLE_HEADING_LABEL"
+					description="MODARH_FIELD_TITLE_HEADING_DESC"
 				>
 					<option value="h1">JH1</option>
 					<option value="h2">JH2</option>
@@ -280,8 +340,8 @@
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_READMORE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_READMORE_DESC"
+					label="MODARH_FIELD_READMORE_LABEL"
+					description="MODARH_FIELD_READMORE_DESC"
 				>
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
@@ -290,8 +350,8 @@
 				<field
 					name="triggerevents"
 					type="radio"
-					label="MOD_ARTICLES_HEAD_FIELD_TRIGGER_EVENTS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_TRIGGER_EVENTS_DESC"
+					label="MODARH_FIELD_TRIGGER_EVENTS_LABEL"
+					description="MODARH_FIELD_TRIGGER_EVENTS_DESC"
 					class="btn-group btn-group-yesno"
 					default="1"
 				>
@@ -302,14 +362,14 @@
 					name="note-articles-content-events"
 					type="note"
 					showon="triggerevents:1"
-					description="MOD_ARTICLES_HEAD_FIELD_NOTE_CONTENT_EVENTS_DESC"
+					description="MODARH_FIELD_NOTE_CONTENT_EVENTS_DESC"
 				/>
 
 				<field
 					name="show_infoblock"
 					type="radio"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_INFOBLOCK_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_INFOBLOCK_DESC"
+					label="MODARH_FIELD_SHOW_INFOBLOCK_LABEL"
+					description="MODARH_FIELD_SHOW_INFOBLOCK_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -321,8 +381,8 @@
 					name="info_block_show_title"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_INFO_CREATEDATE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_INFO_CREATEDATE_DESC"
+					label="MODARH_FIELD_SHOW_INFO_CREATEDATE_LABEL"
+					description="MODARH_FIELD_SHOW_INFO_CREATEDATE_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -334,8 +394,8 @@
 					name="show_author"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_AUTHOR_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_AUTHOR_DESC"
+					label="MODARH_FIELD_SHOW_AUTHOR_LABEL"
+					description="MODARH_FIELD_SHOW_AUTHOR_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -347,8 +407,8 @@
 					name="show_category"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_CATEGORY_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_CATEGORY_DESC"
+					label="MODARH_FIELD_SHOW_CATEGORY_LABEL"
+					description="MODARH_FIELD_SHOW_CATEGORY_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -360,8 +420,8 @@
 					name="show_parent_category"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_PARENT_CATEGORY_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_PARENT_CATEGORY_DESC"
+					label="MODARH_FIELD_SHOW_PARENT_CATEGORY_LABEL"
+					description="MODARH_FIELD_SHOW_PARENT_CATEGORY_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -373,8 +433,8 @@
 					name="show_associations"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_ASSOCIATIONS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_ASSOCIATIONS_DESC"
+					label="MODARH_FIELD_SHOW_ASSOCIATIONS_LABEL"
+					description="MODARH_FIELD_SHOW_ASSOCIATIONS_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -386,8 +446,8 @@
 					name="show_create_date"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_CREATE_DATE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_CREATE_DATE_DESC"
+					label="MODARH_FIELD_SHOW_CREATE_DATE_LABEL"
+					description="MODARH_FIELD_SHOW_CREATE_DATE_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -399,8 +459,8 @@
 					name="show_publish_date"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_PUBLISH_DATE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_PUBLISH_DATE_DESC"
+					label="MODARH_FIELD_SHOW_PUBLISH_DATE_LABEL"
+					description="MODARH_FIELD_SHOW_PUBLISH_DATE_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -412,8 +472,8 @@
 					name="show_modify_date"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_MODIFY_DATE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_MODIFY_DATE_DESC"
+					label="MODARH_FIELD_SHOW_MODIFY_DATE_LABEL"
+					description="MODARH_FIELD_SHOW_MODIFY_DATE_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
@@ -425,63 +485,22 @@
 					name="show_hits"
 					type="radio"
 					showon="show_infoblock:1"
-					label="MOD_ARTICLES_HEAD_FIELD_SHOW_HITS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_SHOW_HITS_DESC"
+					label="MODARH_FIELD_SHOW_HITS_LABEL"
+					description="MODARH_FIELD_SHOW_HITS_DESC"
 					class="btn-group btn-group-yesno"
 					default="0"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
-
-				<field
-					name="note-ordering"
-					type="note"
-					label="MOD_ARTICLES_HEAD_FIELD_NOTE_ORDERING_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_NOTE_ORDERING_DESC"
-				/>
-
-				<field
-					name="count"
-					type="text"
-					default="5"
-					label="MOD_ARTICLES_HEAD_FIELD_ITEMS_COUNT_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_ITEMS_COUNT_DESC" />
-
-				<field
-					name="ordering"
-					type="list"
-					default="a.publish_up"
-					label="MOD_ARTICLES_HEAD_FIELD_ORDERING_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_ORDERING_DESC"
-				>
-					<option value="a.publish_up">MOD_ARTICLES_HEAD_FIELD_ORDERING_OPT_PUBLISHED_DATE</option>
-					<option value="a.created">MOD_ARTICLES_HEAD_FIELD_ORDERING_OPT_CREATED_DATE</option>
-					<option value="a.ordering">MOD_ARTICLES_HEAD_FIELD_ORDERING_OPT_ORDERING</option>
-					<option value="a.hits">JGLOBAL_HITS</option>
-					<option value="rand()">MOD_ARTICLES_HEAD_FIELD_ORDERING_OPT_RANDOM</option>
-				</field>
-
-				<field
-					name="direction"
-					type="list"
-					default="1"
-					label="JGLOBAL_ORDER_DIRECTION_LABEL"
-					description="JGLOBAL_ORDER_DIRECTION_DESC"
-				>
-					<option value="0">JGLOBAL_ORDER_ASCENDING</option>
-					<option value="1">JGLOBAL_ORDER_DESCENDING</option>
-				</field>
-
 			</fieldset>
 
             <fieldset name="mod_intro_ajax">
                 <field
 					name="note-ajax-interface"
 					type="note"
-					label="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_INTERFACE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_INTERFACE_DESC"
+					label="MODARH_FIELD_NOTE_AJAX_INTERFACE_LABEL"
+					description="MODARH_FIELD_NOTE_AJAX_INTERFACE_DESC"
 				/>
 
                 <field
@@ -489,8 +508,8 @@
 					type="radio"
 					class="btn-group"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_ENABLE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_ENABLE_DESC"
+					label="MODARH_FIELD_AJAX_ENABLE_LABEL"
+					description="MODARH_FIELD_AJAX_ENABLE_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -501,12 +520,12 @@
 					type="list"
                     showon="ajax_enable:1"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_TYPE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_TYPE_DESC"
+					label="MODARH_FIELD_AJAX_LOADMORE_TYPE_LABEL"
+					description="MODARH_FIELD_AJAX_LOADMORE_TYPE_DESC"
 				>
 					<option value="0">JNONE</option>
-					<option value="1">MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_TYPE_OPT_LOADMORE</option>
-                    <option value="2">MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_TYPE_OPT_PAGINATION</option>
+					<option value="1">MODARH_FIELD_AJAX_LOADMORE_TYPE_OPT_LOADMORE</option>
+                    <option value="2">MODARH_FIELD_AJAX_LOADMORE_TYPE_OPT_PAGINATION</option>
 				</field>
 
 				<field
@@ -515,9 +534,9 @@
 					showon="ajax_enable:1[AND]ajax_loadmore_type:1"
 					class="input-md"
 					default=""
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LINK_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_LOADMORE_LINK_DESC"
-					hint="MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL"
+					label="MODARH_FIELD_AJAX_LOADMORE_LINK_LABEL"
+					description="MODARH_FIELD_AJAX_LOADMORE_LINK_DESC"
+					hint="MODARH_AJAXLOADMORE_LABEL"
 				/>
 
 				<field
@@ -526,9 +545,9 @@
 					showon="ajax_enable:1[AND]ajax_loadmore_type:1"
 					class="btn-group"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_REPLACE_CONTENT_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_REPLACE_CONTENT_DESC"
-					hint="MOD_ARTICLES_HEAD_AJAXLOADMORE_LABEL"
+					label="MODARH_FIELD_AJAX_REPLACE_CONTENT_LABEL"
+					description="MODARH_FIELD_AJAX_REPLACE_CONTENT_DESC"
+					hint="MODARH_AJAXLOADMORE_LABEL"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -539,8 +558,8 @@
 					type="integer"
 					class="input-mini"
 					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_RANGE_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_RANGE_DESC"
+					label="MODARH_FIELD_AJAX_PAGINATION_RANGE_LABEL"
+					description="MODARH_FIELD_AJAX_PAGINATION_RANGE_DESC"
                     first="1"
 					last="10"
 					step="1" 
@@ -552,15 +571,15 @@
 					type="checkboxes"
                     multiple="true"
 					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LAYOUT_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LAYOUT_DESC"
+					label="MODARH_FIELD_AJAX_PAGINATION_LAYOUT_LABEL"
+					description="MODARH_FIELD_AJAX_PAGINATION_LAYOUT_DESC"
                     checked="start,previous,pages,next,end"
 				>
-                    <option value="start">MOD_ARTICLES_HEAD_PAGINATION_START_LABEL</option>
-                    <option value="previous">MOD_ARTICLES_HEAD_PAGINATION_PREVIOUS_LABEL</option>
-                    <option value="pages">MOD_ARTICLES_HEAD_PAGINATION_PAGES_LABEL</option>
-                    <option value="next">MOD_ARTICLES_HEAD_PAGINATION_NEXT_LABEL</option>
-                    <option value="end">MOD_ARTICLES_HEAD_PAGINATION_END_LABEL</option>
+                    <option value="start">MODARH_PAGINATION_START_LABEL</option>
+                    <option value="previous">MODARH_PAGINATION_PREVIOUS_LABEL</option>
+                    <option value="pages">MODARH_PAGINATION_PAGES_LABEL</option>
+                    <option value="next">MODARH_PAGINATION_NEXT_LABEL</option>
+                    <option value="end">MODARH_PAGINATION_END_LABEL</option>
                 </field>
 
 				<field
@@ -568,8 +587,8 @@
 					type="radio"
 					class="btn-group btn-group-yes-no"
 					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LABELS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_LABELS_DESC"
+					label="MODARH_FIELD_AJAX_PAGINATION_LABELS_LABEL"
+					description="MODARH_FIELD_AJAX_PAGINATION_LABELS_DESC"
                     default="1"
 				>
 					<option value="0">JNO</option>
@@ -581,8 +600,8 @@
 					type="radio"
 					class="btn-group btn-group-yes-no"
 					showon="ajax_enable:1[AND]ajax_loadmore_type:2"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_PAGECOUNTER_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_PAGINATION_PAGECOUNTER_DESC"
+					label="MODARH_FIELD_AJAX_PAGINATION_PAGECOUNTER_LABEL"
+					description="MODARH_FIELD_AJAX_PAGINATION_PAGECOUNTER_DESC"
                     default="0"
 				>
 					<option value="0">JNO</option>
@@ -595,8 +614,8 @@
                     showon="ajax_enable:1"
 					class="btn-group"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_DESC"
+					label="MODARH_FIELD_AJAX_SCROLL_LABEL"
+					description="MODARH_FIELD_AJAX_SCROLL_DESC"
 				>
 					<option value="0">JNO</option>
                     <option value="1">JYES</option>
@@ -608,9 +627,9 @@
                     showon="ajax_enable:1[AND]ajax_scroll:1"
 					class="input-md"
 					default=""
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_DESC"
-					hint="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_QUERY_HINT"
+					label="MODARH_FIELD_AJAX_SCROLL_OFFSET_QUERY_LABEL"
+					description="MODARH_FIELD_AJAX_SCROLL_OFFSET_QUERY_DESC"
+					hint="MODARH_FIELD_AJAX_SCROLL_OFFSET_QUERY_HINT"
 				/>
 				<field
 					name="ajax_scroll_offset_manual"
@@ -619,16 +638,16 @@
                     showon="ajax_enable:1[AND]ajax_scroll:1"
 					class="input-md"
 					default=""
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_MANUAL_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_SCROLL_OFFSET_MANUAL_DESC"
+					label="MODARH_FIELD_AJAX_SCROLL_OFFSET_MANUAL_LABEL"
+					description="MODARH_FIELD_AJAX_SCROLL_OFFSET_MANUAL_DESC"
 				/>
 
                 <field
                     name="note-ajax_post_animations"
                     type="note"
                     showon="ajax_enable:1"
-                    label="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATIONS_LABEL"
-                    description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATIONS_DESC"
+                    label="MODARH_FIELD_NOTE_AJAX_POST_ANIMATIONS_LABEL"
+                    description="MODARH_FIELD_NOTE_AJAX_POST_ANIMATIONS_DESC"
                 />
 
 				<field
@@ -637,8 +656,8 @@
 					showon="ajax_enable:1"
 					class="btn-group btn-group-yes-no"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_DESC"
+					label="MODARH_FIELD_AJAX_POST_ANIMATIONS_LABEL"
+					description="MODARH_FIELD_AJAX_POST_ANIMATIONS_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -650,8 +669,8 @@
 					showon="ajax_post_animations:1[AND]ajax_enable:1"
 					class="btn-group btn-group-yes-no"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_DESC"
+					label="MODARH_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_LABEL"
+					description="MODARH_FIELD_AJAX_POST_ANIMATIONS_LOAD_ANIMATEDCSS_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -663,8 +682,8 @@
 					showon="ajax_post_animations:1[AND]ajax_enable:1"
 					class="input-md"
 					default="animated"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_CLASS_DESC"
+					label="MODARH_FIELD_AJAX_POST_ANIMATION_CLASS_LABEL"
+					description="MODARH_FIELD_AJAX_POST_ANIMATION_CLASS_DESC"
 				/>
 				
 				<field
@@ -673,8 +692,8 @@
 					showon="ajax_post_animations:1[AND]ajax_enable:1"
 					class="input-md"
 					default="bounceIn"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_POST_ANIMATION_NAME_DESC"
+					label="MODARH_FIELD_AJAX_POST_ANIMATION_NAME_LABEL"
+					description="MODARH_FIELD_AJAX_POST_ANIMATION_NAME_DESC"
 				/>
 
 				<field
@@ -682,16 +701,26 @@
 					type="note"
 					showon="ajax_post_animations:1[AND]ajax_enable:1"
 					label=""
-					description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_POST_ANIMATION_NAMES_DESC"
+					description="MODARH_FIELD_NOTE_AJAX_POST_ANIMATION_NAMES_DESC"
 				/>
+            </fieldset>
+
+			<fieldset name="mod_intro_ajax_filters">
 
                 <field
                     name="note-ajax_filter"
                     type="note"
-                    showon="ajax_enable:1"
-                    label="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_FILTERS_LABEL"
-                    description="MOD_ARTICLES_HEAD_FIELD_NOTE_AJAX_FILTERS_DESC"
+                    label="MODARH_FIELD_NOTE_AJAX_FILTERS_LABEL"
+                    description="MODARH_FIELD_NOTE_AJAX_FILTERS_DESC"
                 />
+
+				<field
+					name="note-ajax_filter_disabled"
+					type="note"
+					showon="ajax_enable:0"
+					label=""
+					description="MODARH_FIELD_NOTE_AJAX_FILTERS_DISABLED_DESC"
+				/>
 
                 <field
 					name="ajax_filters"
@@ -699,8 +728,8 @@
 					showon="ajax_enable:1"
 					class="btn-group btn-group-yes-no"
 					default="0"
-					label="MOD_ARTICLES_HEAD_FIELD_AJAX_FILTERS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_AJAX_FILTERS_DESC"
+					label="MODARH_FIELD_AJAX_FILTERS_LABEL"
+					description="MODARH_FIELD_AJAX_FILTERS_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -712,11 +741,10 @@
                     showon="ajax_enable:1[AND]ajax_filters:1"
                     max="100"
                     layout="joomla.form.field.subform.repeatable"
-                    label="MOD_ARTICLES_HEAD_FIELD_AJAX_FILTER_LABEL"
-                    description="MOD_ARTICLES_HEAD_FIELD_AJAX_FILTER_DESC"
+                    label="MODARH_FIELD_AJAX_FILTER_LABEL"
+                    description="MODARH_FIELD_AJAX_FILTER_DESC"
                 />
-
-            </fieldset>
+			</fieldset>
 
 			<fieldset name="advanced">
 				<field
@@ -734,25 +762,25 @@
 				<field
 					name="classnames_rows"
 					type="text"
-					label="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ROWS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ROWS_DESC"
-					hint="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ROWS_HINT"
+					label="MODARH_FIELD_CLASSNAMES_ROWS_LABEL"
+					description="MODARH_FIELD_CLASSNAMES_ROWS_DESC"
+					hint="MODARH_FIELD_CLASSNAMES_ROWS_HINT"
 				/>
 
 				<field
 					name="classnames_cols"
 					type="text"
-					label="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_COLS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_COLS_DESC"
-					hint="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_COLS_HINT"
+					label="MODARH_FIELD_CLASSNAMES_COLS_LABEL"
+					description="MODARH_FIELD_CLASSNAMES_COLS_DESC"
+					hint="MODARH_FIELD_CLASSNAMES_COLS_HINT"
 				/>
 
 				<field
 					name="classnames_items"
 					type="text"
-					label="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ITEMS_LABEL"
-					description="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ITEMS_DESC"
-					hint="MOD_ARTICLES_HEAD_FIELD_CLASSNAMES_ITEMS_HINT"
+					label="MODARH_FIELD_CLASSNAMES_ITEMS_LABEL"
+					description="MODARH_FIELD_CLASSNAMES_ITEMS_DESC"
+					hint="MODARH_FIELD_CLASSNAMES_ITEMS_HINT"
 				/>
 
 				<field

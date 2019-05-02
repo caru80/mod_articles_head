@@ -80,8 +80,15 @@
 		
 		postEffects : function(response)
 		{
-			var html  = $(response),
-				items = html.find('.item');
+			let html  		= $(response),
+				items 		= html.find('.item'),
+				animation 	= this.opt.ajaxConfig.aniname;
+
+			if (animation.indexOf(',') > -1)
+			{
+				animation = animation.split(',');
+				animation = animation.map(Function.prototype.call, String.prototype.trim);
+			}
 
 			items.css({visibility : 'hidden'}); // , opacity : '0'});
 			
@@ -98,7 +105,7 @@
 				this.scrollToNewItems();
 			}
 
-			var animateIn = function() {
+			let animateIn = function() {
 				var anim = this.data('modintroanim');
 				this.one('webkitAnimatioEnd msAnimationEnd animationend', function(){
 					var a = $(this).data('modintroanim');
@@ -109,10 +116,10 @@
 				}
 			}
 
-			var item;
+			// let item;
 			for(var i = 0, len = items.length; i < len; i++)
 			{
-				item = items.eq(i);
+				let item = items.eq(i);
 				item.data('modintroanim', {class : this.opt.ajaxConfig.aniclass, name : this.opt.ajaxConfig.aniname});
 				window.setTimeout(animateIn.bind(items.eq(i)), i * 100);
 			}
@@ -175,7 +182,7 @@
 		},
 
 
-		applyFitlerGroups : function()
+		applyFilterGroups : function()
 		{
 			this.opt.ajaxConfig.s 		= 0;
 			this.opt.ajaxConfig.replace = true; // Beiträge im Modul ersetzen
@@ -241,7 +248,14 @@
 			{
 				this.opt.request.tag = this.opt.ajaxConfig.tag;
 			}
- 
+			
+			// Custom Fields Filter
+			if(this.opt.ajaxConfig.custom)
+			{
+				this.opt.request.custom = this.opt.ajaxConfig.custom;
+				this.opt.request.value  = this.opt.ajaxConfig.value;
+			}
+
 			let temp;  // Hier wird die Ladeanzeige eingeblendet
 			if(this.opt.ajaxConfig.replace) 
 			{

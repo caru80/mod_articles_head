@@ -5,38 +5,48 @@
 		<field
 			name="filter_type"
 			type="list"
-			label="MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_LABEL"
-			description="MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_DESC"
+			label="MODARH_FIELD_FILTER_TYPE_LABEL"
+			description="MODARH_FIELD_FILTER_TYPE_DESC"
 		>
-			<option value="category">MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_OPT_CATEGORY</option>
-			<option value="tag">MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_OPT_TAG</option>
-			<!--option value="custom">MOD_ARTICLES_HEAD_FIELD_FILTER_TYPE_OPT_CUSTOM</option-->
+			<option value="category">MODARH_FIELD_FILTER_TYPE_OPT_CATEGORY</option>
+			<option value="tag">MODARH_FIELD_FILTER_TYPE_OPT_TAG</option>
+			<option value="custom">MODARH_FIELD_FILTER_TYPE_OPT_CUSTOM</option>
 		</field>
 
+		<field
+			name="filter_field"
+			type="sql"
+			showon="filter_type:custom"
+			query="SELECT id AS value, CONCAT(title, ' (', language, ')') AS filter_field FROM #__fields WHERE context='com_content.article' AND state=1 ORDER BY title ASC"
+			label="MODARH_FIELD_FILTER_FIELD_LABEL"
+			description="MODARH_FIELD_FILTER_FIELD_DESC"
+			header="JSELECT"
+		/>
+		
 		<field
 			name="filter_label"
 			type="text"
 			class="input-lg"
-			label="MOD_ARTICLES_HEAD_FIELD_FILTER_LABEL_LABEL"
-			description="MOD_ARTICLES_HEAD_FIELD_FILTER_LABEL_DESC"
+			label="MODARH_FIELD_FILTER_LABEL_LABEL"
+			description="MODARH_FIELD_FILTER_LABEL_DESC"
 		/>
 
 		<field
 			name="filter_sorting"
 			type="list"
-			label="MOD_ARTICLES_HEAD_FIELD_FILTER_SORTING_LABEL"
-			description="MOD_ARTICLES_HEAD_FIELD_FILTER_SORTING_DESC"
+			label="MODARH_FIELD_FILTER_SORTING_LABEL"
+			description="MODARH_FIELD_FILTER_SORTING_DESC"
 		>
-			<option value="asc">MOD_ARTICLES_HEAD_FIELD_FILTER_SORTING_OPT_ASC</option>
-			<option value="desc">MOD_ARTICLES_HEAD_FIELD_FILTER_SORTING_OPT_DESC</option>
+			<option value="asc">MODARH_FIELD_FILTER_SORTING_OPT_ASC</option>
+			<option value="desc">MODARH_FIELD_FILTER_SORTING_OPT_DESC</option>
 		</field>
 
 		<field
 			name="multiple"
 			type="radio"
 			class="btn-group"
-			label="MOD_ARTICLES_HEAD_FIELD_FILTER_MULTIPLE_LABEL"
-			description="MOD_ARTICLES_HEAD_FIELD_FILTER_MULTIPLE_DESC"
+			label="MODARH_FIELD_FILTER_MULTIPLE_LABEL"
+			description="MODARH_FIELD_FILTER_MULTIPLE_DESC"
 			default="0"
 		>
 			<option value="0">JNO</option>
@@ -47,8 +57,8 @@
 			name="show_items_count"
 			type="radio"
 			class="btn-group"
-			label="MOD_ARTICLES_HEAD_FIELD_FILTER_SHOW_ITEMS_COUNT_LABEL"
-			description="MOD_ARTICLES_HEAD_FIELD_FILTER_SHOW_ITEMS_COUNT_DESC"
+			label="MODARH_FIELD_FILTER_SHOW_ITEMS_COUNT_LABEL"
+			description="MODARH_FIELD_FILTER_SHOW_ITEMS_COUNT_DESC"
 			default="0"
 		>
 			<option value="0">JNO</option>
@@ -64,11 +74,10 @@
 			hide_none="true"
 			hide_default="true"
 
-			label="MOD_ARTICLES_HEAD_FIELD_FILTER_TEMPLATE_LABEL"
-			description="MOD_ARTICLES_HEAD_FIELD_FILTER_TEMPLATE_DESC"
+			label="MODARH_FIELD_FILTER_TEMPLATE_LABEL"
+			description="MODARH_FIELD_FILTER_TEMPLATE_DESC"
 			default="default"
 		>
-			<!--option value="default">default</option-->
 		</field>
 
 	</fieldset>

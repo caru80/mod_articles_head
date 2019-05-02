@@ -59,7 +59,7 @@ defined('_JEXEC') or die;
                 (function($){
                     $('[name="<?php echo $oneFilter->field_name;?>"]').on('change', function()
                     {
-                        $('#mod-intro-<?php echo $module->id;?>').modintroajax().applyFitlerGroups();
+                        $('#mod-intro-<?php echo $module->id;?>').modintroajax().applyFilterGroups();
                     });
                 })(jQuery);
             </script>

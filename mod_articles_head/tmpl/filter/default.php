@@ -31,7 +31,7 @@ defined('_JEXEC') or die;
 		// „Alle” (Diesen Filter zurücksetzen):
 		if( ! $oneFilter->multiple):
 	?>
-			<label data-modintroajax='<?php echo $oneFilter->reset_option->ajax_json;?>'>
+			<label>
 				<input type="radio" name="<?php echo $oneFilter->field_name;?>" value="" /> <?php echo JText::_('JALL');?>
 			</label>
 	<?php
@@ -41,16 +41,7 @@ defined('_JEXEC') or die;
 	<?php
 		foreach($oneFilter->options as $option):
 	?>
-			<label 
-				<?php
-					if( ! $oneFilter->multiple) : 
-						// Dieser Filter hat keine Mehrfachauswahl und wird beim anklicken gesetzt.
-				?>
-						data-modintroajax='<?php echo $option->ajax_json;?>'
-				<?php
-					endif;
-				?>
-			>
+			<label>
 				<input 
 					type="<?php echo $oneFilter->multiple ? 'checkbox' : 'radio';?>" 
 					value="<?php echo $option->raw_value;?>" 
@@ -62,4 +53,19 @@ defined('_JEXEC') or die;
 	<?php
 		endforeach;
 	?>
+	<?php
+        if(!$oneFilter->multiple):
+            // Ist keine mehrfachauswahl, und soll direkt abgeschickt werden. Weil wir an dem <input> und dem <label> keinen onclick handler lauschen lassen können (jedenfalls nicht sinnvoll) müssen wir etwas mehr Script-Magie einsetzen:
+    ?>
+            <script>
+                (function($){
+                    $('[name="<?php echo $oneFilter->field_name;?>"]').on('change', function()
+                    {
+                        $('#mod-intro-<?php echo $module->id;?>').modintroajax().applyFilterGroups();
+                    });
+                })(jQuery);
+            </script>
+    <?php
+        endif;
+    ?>
 </div>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.9.0
+ * @version        1.10.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -15,48 +15,61 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Helper\ModuleHelper;
+
 // Include the news functions only once
 JLoader::register('ModArticlesHeadHelper', __DIR__ . '/helper.php');
 
+$app = Factory::getApplication();
+$doc = $app->getDocument();
 
 // -- Gesamtanzahl Items abfragen, dazu parameter überschreiben:
+/*
+	OBSOLET?!
+
 $tmpParams = clone $params;
 $tmpParams->set('start', 0);
 $tmpParams->set('count', 0);
 $fullItemsCount = ModArticlesHeadHelper::getItemsCount($tmpParams);
 unset($tmpParams);
-
+*/
 
 // -- Für AJAX; Start und Anzahl von Items:
+/*
+	OBSOLET?!
 $begin		= $params->get('start',0);
 $limit 		= $params->get('count',0);
-
+*/
 
 // -- Liste der Beiträge
-$list		= ModArticlesHeadHelper::getList($params);
-
+$list = ModArticlesHeadHelper::getList($params);
 
 // -- Modulklassen-Suffix
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
 
-
 // -- Lade das Beispiel-Stylesheet
-if($params->get('load_module_css', 0)) {
-	\Joomla\CMS\Factory::getApplication()->getDocument()->addStylesheet(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/css/mod-intro.css');
+if ($params->get('load_module_css', 0)) 
+{
+	$doc->addStylesheet(Uri::root() . 'media/mod_articles_head/css/mod-intro.css');
 }
 
 // -- Lade das AJAX Controller-Script
-if($params->get('ajax_enable', 0)) {
+if($params->get('ajax_enable', 0)) 
+{
+	// Die Sprachdatei von com_content wird benötigt, wenn der Info-Block angezeigt wird, und Beiträge per AJAX nachgeladen werden.
+    Factory::getLanguage()->load('com_content'); 
 
-    \Joomla\CMS\Factory::getLanguage()->load('com_content'); // -- Die Sprachdatei von com_content wird benötigt, wenn der Info-Block angezeigt wird, und Beiträge per AJAX nachgeladen werden.
+    HTMLHelper::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
+	$doc->addScript(Uri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js');
 
-    \Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
-	\Joomla\CMS\Factory::getApplication()->getDocument()->addScript(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js');
-
-	if($params->get('ajax_post_animations', 0) && $params->get('ajax_post_animations_load_animatedcss', 0)) {
-		\Joomla\CMS\Factory::getApplication()->getDocument()->addStylesheet(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/css/animate.css');
+	if ($params->get('ajax_post_animations', 0) 
+			&& $params->get('ajax_post_animations_load_animatedcss', 0)) 
+	{
+		$doc->addStylesheet(Uri::root() . 'media/mod_articles_head/css/animate.css');
 	}
-
 
     $ajaxRequestConfig = json_encode(ModArticlesHeadHelper::getAjaxLinkConfig($module), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 	$ajaxScrollToItems = $params->get('ajax_scroll', 0);
@@ -74,15 +87,15 @@ if($params->get('ajax_enable', 0)) {
 })(jQuery);
 SCRIPT;
 
-	\Joomla\CMS\Factory::getApplication()->getDocument()->addScriptDeclaration($ajaxInitScript);
+	$doc->addScriptDeclaration($ajaxInitScript);
 }
 
 
 // -- Lade die Vorschauvideo-Scripts etc.
 if($params->get('introvideos', 0)) {
     
-    \Joomla\CMS\HTML\HTMLHelper::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
-	\Joomla\CMS\Factory::getApplication()->getDocument()->addScript(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/js/mod_intro_video.min.js');
+    HTMLHelper::_('jquery.framework', true, true); // Sicherstellen, dass jQuery vorher geladen wird.
+	$doc->addScript(Uri::root() . 'media/mod_articles_head/js/mod_intro_video.min.js');
 
 	$videoInitScript = <<<SCRIPT
 (function($) {
@@ -92,15 +105,16 @@ if($params->get('introvideos', 0)) {
 })(jQuery);
 SCRIPT;
 
-	\Joomla\CMS\Factory::getApplication()->getDocument()->addScriptDeclaration($videoInitScript);
+	$doc->addScriptDeclaration($videoInitScript);
 
 	// -- Lade Featherlight.js
-	if($params->get('featherlightbox', 0)) {
-		\Joomla\CMS\Factory::getApplication()->getDocument()->addStylesheet(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/css/featherlight.min.css');
-		\Joomla\CMS\Factory::getApplication()->getDocument()->addScript(\Joomla\CMS\Uri\Uri::root() . 'media/mod_articles_head/js/featherlight.min.js');
+	if($params->get('featherlightbox', 0)) 
+	{
+		$doc->addStylesheet(Uri::root() . 'media/mod_articles_head/css/featherlight.min.css');
+		$doc->addScript(Uri::root() . 'media/mod_articles_head/js/featherlight.min.js');
 	}
 }
 
 // -- Lade das Layout
 $layout = $params->get('layout','default');
-require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', $layout);
+require ModuleHelper::getLayoutPath('mod_articles_head', $layout);

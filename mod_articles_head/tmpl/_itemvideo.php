@@ -26,7 +26,7 @@ if(($videos->intro !== "-1" && $videos->intro !== null)||($videos->full !== "-1"
 
 	$full_video = $videos->full !== "-1" && $videos->full !== null ? 'data-fullvideo="' . \Joomla\CMS\Uri\Uri::root() . 'images/videos/' . $videos->full . '"' : '';
 ?>
-	<div class="item-introvideo<?php echo $full_video != '' ? ' with-full-video' : '';?>" <?php echo $full_video;?> title="<?php echo \Joomla\CMS\Language\Text::_('MOD_ARTICLES_HEAD_FRONT_PLAYVIDEO');?>">
+	<div class="item-introvideo<?php echo $full_video != '' ? ' with-full-video' : '';?>" <?php echo $full_video;?> title="<?php echo \Joomla\CMS\Language\Text::_('MODARH_FRONT_PLAYVIDEO');?>">
 	<?php
 		if($videos->intro !== "-1" && $videos->intro !== null):
 	?>

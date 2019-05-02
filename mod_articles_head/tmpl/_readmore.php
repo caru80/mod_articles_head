@@ -15,34 +15,36 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 //
 // Ausgabe des Weiterlesen-Link von einem Beitrag im Modul
 //
 // $item_readmore_url wird im Template _item.php deklariert: $item_readmore_url = ModArticlesHeadHelper::getReadmoreUrl($item);
 //
-    if($item_readmore_url !== '') :
+if($item_readmore_url !== '') :
 ?>
-        <div class="readmore">
-            <a itemprop="url" class="btn btn-primary more" href="<?php echo $item_readmore_url; ?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>>
-                <span>
-                    <?php 
-                        if ($readmore = $item->alternative_readmore) :
-                            echo $readmore;
-                            if ($attribs->get('show_readmore_title', 0) != 0) :
-                                echo \Joomla\CMS\HTML\HTMLHelper::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
-                            endif;
-                        elseif ($attribs->get('show_readmore_title', 0) == 0) :
-                            echo \Joomla\CMS\Language\Text::sprintf('COM_CONTENT_READ_MORE_TITLE');
-                        else :
-                            echo \Joomla\CMS\Language\Text::_('COM_CONTENT_READ_MORE');
-                            echo \Joomla\CMS\HTML\HTMLHelper::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
-                        endif;
-                    ?>				
-                </span>
-                <i></i>
-            </a>
-        </div>
+	<div class="readmore">
+		<a itemprop="url" class="btn btn-primary more" href="<?php echo $item_readmore_url; ?>"<?php echo $item_readmore_blank ? ' target="_blank"' : '';?>>
+			<span>
+				<?php 
+					if ($readmore = $item->alternative_readmore) :
+						echo $readmore;
+						if ($attribs->get('show_readmore_title', 0) != 0) :
+							echo HTMLHelper::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
+						endif;
+					elseif ($attribs->get('show_readmore_title', 0) == 0) :
+						echo Text::sprintf('COM_CONTENT_READ_MORE_TITLE');
+					else :
+						echo Text::_('COM_CONTENT_READ_MORE');
+						echo HTMLHelper::_('string.truncate', $item->title, $attribs->get('readmore_limit'));
+					endif;
+				?>				
+			</span>
+			<i></i>
+		</a>
+	</div>
 <?php
-    endif;	
+endif;	
 ?>

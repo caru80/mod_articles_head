@@ -15,6 +15,8 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\ModuleHelper;
+
 
 if(!isset($layoutConf)) {
 	$layoutConf = (object)array(
@@ -25,39 +27,39 @@ if(!isset($layoutConf)) {
 ?>
 
 <?php
-	if((bool)$params->get('ajax', false)) : // && $params->get('start', 0) > 0) :
-	/**
-		Asynchrone Anfrage von com_ajax, es wird nur der folgende Block ausgegeben:
-	*/
+	if ($params->get('ajax', 0)) :
+	//
+	// Asynchrone Anfrage von com_ajax, es wird nur der folgende Block ausgegeben:
+	//
 ?>
-		<div class="mod-intro-items async" id="intro-<?php echo $module->id;?>-items-<?php echo $params->get('start',0);?>">
-			<div class="list-row <?php echo $params->get('classnames_rows','');?>">
+		<div class="mod-intro-items async" id="intro-<?php echo $module->id;?>-items-<?php echo $params->get('start', 0);?>">
+			<div class="list-row <?php echo $params->get('classnames_rows', '');?>">
 				<?php 
 					foreach ($list as $item) : 
-						require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout);
+						require ModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout);
 					endforeach;
 				?>
 			</div>
 		</div>
 		<?php
-		/** 
-			AJAX – Mehr laden
-		*/
-		if( (bool) $params->get('ajax_enable', false) ):
-			require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath("mod_articles_head", "_ajaxloadmore");
+		//
+		// AJAX: „Mehr laden” oder Paginierung
+		// 
+		if ($params->get('ajax_enable', 0)) :
+			require ModuleHelper::getLayoutPath("mod_articles_head", "_ajaxloadmore");
 		endif;
 
 	else:
-	/**
-		Modul wurde „normal geladen”, das Template wird komplett ausgegeben:
-	*/
+	//
+	//	Modul wurde „normal geladen”, das Template wird komplett ausgegeben:
+	//
 ?>
 		<div id="mod-intro-<?php echo $module->id;?>" class="mod-intro<?php echo $moduleclass_sfx;?> <?php echo $layoutConf->class_sfx;?>">
 			<?php
-				/**
-					Modul-Einleitungstext
-				*/
-				if($params->get('show_moduleintro',0)):
+				//
+				// Modul-Einleitungstext
+				//
+				if ($params->get('show_moduleintro', 0)) :
 			?>
 					<div class="mod-intro-introtext">
 						<?php
@@ -68,54 +70,56 @@ if(!isset($layoutConf)) {
 				endif;
 			?>
             
-            <?php
-                if($params->get('ajax_enable', 0) && $params->get('ajax_filters', 0)) :
-                    require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', "_ajaxfilters");
+			<?php
+				//
+				// AJAX-Filter
+				//
+				if ($params->get('ajax_enable', 0) 
+						&& $params->get('ajax_filters', 0)) :
+                    require ModuleHelper::getLayoutPath('mod_articles_head', "_ajaxfilters");
                 endif;
             ?> 
 
 			<?php
-				/** 
-					Modul-Weiterlesen – Position "oben"
-				*/
-				if($params->get('module-link-position',0) >= 1):
-			?>
-					<div class="mod-intro-readmore-top">
-					<?php
-						require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', "_modreadmore");
-					?>
-					</div>
-			<?php
+				//
+				// 	Modul-Weiterlesen – Position "oben"
+				// 
+				if ($params->get('module_readmore_type', '') !== '' 
+						&& $params->get('module_readmore_position', '') === 'top'
+						|| $params->get('module_readmore_position', '') === 'both') :
+					require ModuleHelper::getLayoutPath('mod_articles_head', "_modreadmore");
 				endif;
 			?>
 			<div id="mod-intro-items-list-<?php echo $module->id;?>" class="mod-intro-items-list">
 				<?php
-					/**
-						Neue Items, die per AJAX geladen werden, werden hier am Ende – nach div.mod-intro-items – eingefügt.
-					*/					
+					//
+					// Neue Items, die per AJAX geladen werden, werden hier hinein, nach div.mod-intro-items, eingefügt.
+					//
 				?>
 				<div class="mod-intro-items" id="intro-<?php echo $module->id;?>-items-<?php echo $params->get('start',0);?>">
 					<div class="list-row <?php echo $params->get('classnames_rows','');?>">
 						<?php foreach ($list as $item) : ?>
-							<?php require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout); ?>
+							<?php require ModuleHelper::getLayoutPath('mod_articles_head', $layoutConf->item_layout); ?>
 						<?php endforeach; ?>
 					</div>
 				</div>
 				<?php
-					/** 
-						AJAX – Mehr laden
-					*/
-					if( (bool) $params->get('ajax_enable', false) ):
-						require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath("mod_articles_head", "_ajaxloadmore");
+					//
+					// AJAX: „Mehr laden” oder Paginierung
+					// 
+					if ($params->get('ajax_enable', 0)) :
+						require ModuleHelper::getLayoutPath("mod_articles_head", "_ajaxloadmore");
 					endif;	
 				?>
 			</div>
 			<?php
-				/** 
-					Modul-Weiterlesen – Position "unten"
-				*/
-				if(($params->get('module-link-position',0) == 0)||($params->get('module-link-position',0) == 2)):
-					require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', "_modreadmore");
+				//
+				// 	Modul-Weiterlesen – Position „unten”
+				// 
+				if ($params->get('module_readmore_type', '') !== '' 
+						&& $params->get('module_readmore_position', '') === 'bottom'
+						|| $params->get('module_readmore_position', '') === 'both') :
+					require ModuleHelper::getLayoutPath('mod_articles_head', "_modreadmore");
 				endif;
 			?>
 		</div>

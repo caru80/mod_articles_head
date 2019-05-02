@@ -15,22 +15,25 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Language\Text;
 
 // -- Die Filtereinstellungen abholen:
 $ajaxFilterSettings = $params->get('ajax_filter', array());
 
 // -- Die Filterliste aufbauen:
 $ajaxFilterList = array();
-foreach($ajaxFilterSettings as $filterParams):
+foreach($ajaxFilterSettings as $filterParams)
+{
 	$ajaxFilterList[] = ModArticlesHeadHelper::getFilter($module, $filterParams);
-endforeach;
-
+}
 $showFilterControls = false;
+
 ?>
 <form name="mod-intro-filters-<?php echo $module->id;?>" id="mod-intro-filters-<?php echo $module->id;?>" class="mod-intro-filters">
 <?php
     // Die Filter rendern:
-	foreach($ajaxFilterList as $i => $oneFilter):
+	foreach ($ajaxFilterList as $i => $oneFilter) :
 
         // Mehrfachauswahl vorhanden?
 		if($oneFilter->multiple):
@@ -38,18 +41,17 @@ $showFilterControls = false;
 		endif;
 
 		// Das jeweilige Filter Template laden:
-	    require \Joomla\CMS\Helper\ModuleHelper::getLayoutPath('mod_articles_head', 'filter/' . $oneFilter->template);
+	    require ModuleHelper::getLayoutPath('mod_articles_head', 'filter/' . $oneFilter->template);
 
 	endforeach;
 ?>
-
 <?php
-    if($showFilterControls):
+    if ($showFilterControls) :
         // Filter anwenden und zurücksetzen:
 ?>
 		<div class="mod-intro-filter-controls">
-            <a tabindex="0" class="set-filters"><?php echo \Joomla\CMS\Language\Text::_('MOD_ARTICLES_HEAD_FRONT_BTN_SUBMIT_FILTERS');?></a>
-            <a tabindex="0" class="reset-filters"><?php echo \Joomla\CMS\Language\Text::_('MOD_ARTICLES_HEAD_FRONT_BTN_RESET_FILTERS');?></a>
+            <a tabindex="0" class="set-filters"><?php echo Text::_('MODARH_FRONT_BTN_SUBMIT_FILTERS');?></a>
+            <a tabindex="0" class="reset-filters"><?php echo Text::_('MODARH_FRONT_BTN_RESET_FILTERS');?></a>
 		</div>
 <?php
 	endif;
