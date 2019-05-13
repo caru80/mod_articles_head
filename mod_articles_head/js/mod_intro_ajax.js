@@ -1,6 +1,6 @@
 /**
  * @package        HEAD. Article Module
- * @version        1.8.8
+ * @version        1.8.9
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -54,7 +54,8 @@
 		{
 			var trigger = this.module.find('[data-modintroajax]');
 
-			for(var i = 0, len = trigger.length; i < len; i++) {
+			for(var i = 0, len = trigger.length; i < len; i++) 
+			{
 				trigger.eq(i)
 				.off(this.opt.evNamespace)
 				.one('click' + this.opt.evNamespace, function(ev) 
@@ -67,7 +68,7 @@
 				.off(this.opt.evNamespace)
 				.on('click' + this.opt.evNamespace, function() 
 				{
-					this.applyFitlerGroups();
+					this.applyFilterGroups();
 				}.bind(this));
 
 			this.module.find('.reset-filters')
@@ -81,7 +82,7 @@
 		postEffects : function(response)
 		{
 			let html  		= $(response),
-				items 		= html.find('.item'),
+				items 		= html.find('.item-column'),
 				animation 	= this.opt.ajaxConfig.aniname;
 
 			if (animation.indexOf(',') > -1)
@@ -119,8 +120,15 @@
 			// let item;
 			for(var i = 0, len = items.length; i < len; i++)
 			{
-				let item = items.eq(i);
-				item.data('modintroanim', {class : this.opt.ajaxConfig.aniclass, name : this.opt.ajaxConfig.aniname});
+				let item 	= items.eq(i),
+					aniname = animation;
+
+				if(typeof aniname === 'object')
+				{
+					aniname = aniname[Math.floor(Math.random() * aniname.length)];
+				}
+				
+				item.data('modintroanim', {class : this.opt.ajaxConfig.aniclass, name : aniname});
 				window.setTimeout(animateIn.bind(items.eq(i)), i * 100);
 			}
 		},
@@ -130,23 +138,48 @@
 		{
 			let data 	= $(group).data('filtergroup'),
 				values  = new Array();
-			
+
 			$('[name="' + data.field + '"]', group).each(function() 
 			{
 				switch(this.nodeName.toLowerCase())
 				{
 					case 'input' :
-						if(this.checked && this.value != '') values[values.length] = this.value;
+						switch(data.type)
+						{
+							case 'html5range' :
+							case 'range' :
+								values[values.length] = this.value;
+							break;
+
+							case 'default' :
+							case 'btngroup' :
+							default :
+								if(this.checked && this.value != '') values[values.length] = this.value;
+							
+						}
 					break;
 	
 					case 'select' :
-						for(let i = 0, len = this.options.length; i < len; i++) {
+						for(let i = 0, len = this.options.length; i < len; i++) 
+						{
 							if(this.options[i].selected && this.options[i].value != '') values[values.length] = this.options[i].value;
 						}
 					break;
 				}
 			});
-			this.opt.ajaxConfig[data.name] = values;
+
+			if(data.param === 'custom')
+			{
+				if(!this.opt.ajaxConfig[data.param])
+				{
+					this.opt.ajaxConfig[data.param] = {};
+				}
+				this.opt.ajaxConfig[data.param][data.id] = values;
+			}
+			else
+			{
+				this.opt.ajaxConfig[data.param] = values;
+			}
 		},
 
 
@@ -156,21 +189,41 @@
 
 			this.opt.ajaxConfig.catid 	= [];
 			this.opt.ajaxConfig.tag 	= [];
+			this.opt.ajaxConfig.custom 	= {};
 			
 			this.module.find('[data-filtergroup]').each(function() 
 			{
-				let data = $(this).data('filtergroup');
+				let group = $(this),
+					data  = group.data('filtergroup');
 
 				$(this).find('[name="' + data.field + '"]').each(function()
 				{
 					switch(this.nodeName.toLowerCase())
 					{
 						case 'input' :
-							if(this.checked) this.checked = false;
+							switch (data.type)
+							{
+								//case 'html5range' : // Erst mal nicht!
+								case 'range' :
+									let id 		= data.id != '' ? 'slider-' + data.param + '-' + data.id + '[]' : 'slider-' + data.param + '[]', // data.id nur bei Custom Fields;
+										slider 	= document.getElementById(id);
+									
+									if (slider)	
+									{
+										slider.noUiSlider.reset();
+									}
+								break;
+
+								case 'default' :
+								case 'btngroup' :
+								default :
+									if(this.checked) this.checked = false;
+							}
 						break;
 		
 						case 'select' :
-							for(let i = 0, len = this.options.length; i < len; i++) {
+							for(let i = 0, len = this.options.length; i < len; i++) 
+							{
 								if(this.options[i].selected) this.options[i].selected = false;
 							}
 						break;
@@ -213,7 +266,7 @@
 			}
 
 			y -= this.opt.scroll.offsetManual; // Manueller Offset
-            y  = Math.trunc !== undefined ? Math.trunc(y) : y;
+			y  = Math.trunc !== undefined ? Math.trunc(y) : y;
 
 			if(y !== $(document).scrollTop())
 			{
@@ -240,20 +293,20 @@
 			// Kategorie-Filter
 			if(this.opt.ajaxConfig.catid) 
 			{
-				this.opt.request.catid = this.opt.ajaxConfig.catid;
+				this.opt.request.catid = this.opt.ajaxConfig.catid; // Array!
 			}
 
 			// Schlagorte Filter
 			if(this.opt.ajaxConfig.tag)
 			{
-				this.opt.request.tag = this.opt.ajaxConfig.tag;
+				this.opt.request.tag = this.opt.ajaxConfig.tag; // Array!
 			}
 			
 			// Custom Fields Filter
 			if(this.opt.ajaxConfig.custom)
 			{
 				this.opt.request.custom = this.opt.ajaxConfig.custom;
-				this.opt.request.value  = this.opt.ajaxConfig.value;
+				//this.opt.request.value  = this.opt.ajaxConfig.value;
 			}
 
 			let temp;  // Hier wird die Ladeanzeige eingeblendet
