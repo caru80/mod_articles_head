@@ -108,6 +108,8 @@
 
 		hideIntroVideo : function(item) 
 		{
+			const _ = this;
+
 			var item 	= $(item),
 				wrapper = item.find('.item-introvideo');
 
@@ -125,12 +127,12 @@
 					}
 				
 					if(!this.opt.allowTouch) {
-						item.one('touchstart' + this.opt.evNamespace, function(ev) {
+						item.one('touchstart' + _.opt.evNamespace, function(ev) {
 							/**
 								Wenn wir nicht wollen, dass Touch-Devices das Vorschauvideo zu sehen bekommen – weil das ein technisches und auch „useability” Problem sein kann, weil das Video erst ausgeblendet wird, 
 								wenn der <article> den Fokus verliert (onmouseleave gefeuert wird).
 							*/
-							$(this).off('mouseover' + this.opt.evNamespace); /* touchstart findet vor mouseover statt, also schalten wir hier mouseover einfach ab. */
+							$(this).off('mouseover' + _.opt.evNamespace); /* touchstart findet vor mouseover statt, also schalten wir hier mouseover einfach ab. */
 						});
 					}
 
