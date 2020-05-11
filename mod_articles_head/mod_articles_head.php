@@ -26,23 +26,18 @@ JLoader::register('ModArticlesHeadHelper', __DIR__ . '/helper.php');
 $app = Factory::getApplication();
 $doc = $app->getDocument();
 
-// -- Gesamtanzahl Items abfragen, dazu parameter überschreiben:
-/*
-	OBSOLET?!
-
-$tmpParams = clone $params;
-$tmpParams->set('start', 0);
-$tmpParams->set('count', 0);
-$fullItemsCount = ModArticlesHeadHelper::getItemsCount($tmpParams);
-unset($tmpParams);
-*/
-
-// -- Für AJAX; Start und Anzahl von Items:
-/*
-	OBSOLET?!
-$begin		= $params->get('start',0);
-$limit 		= $params->get('count',0);
-*/
+// Voreingestellter Kategorie-Filter
+if($params->get('ajax', 0) != 1) {
+	$filterSettings = $params->get('ajax_filter', array());
+	foreach($filterSettings as $filter)
+	{
+		if ($filter->filter_type === 'category' && $filter->filter_category_default != '')
+		{
+			$params->set('catid', $filter->filter_category_default); // Das wird in die Modulparameter geschrieben, damit das Modul nur das anzeigt, was es soll.
+			$params->set('filter_catid', $filter->filter_category_default); // Das wird für den Button Loadmore benötigt damit sich dessen Konfiguration entsprechend anpasst, wenn gefiltert wird.
+		}
+	}
+}
 
 // -- Liste der Beiträge
 $list = ModArticlesHeadHelper::getList($params);
@@ -80,7 +75,7 @@ if($params->get('ajax_enable', 0))
 	);
 
 	$ajaxInitScript = <<<SCRIPT
-(function($) {
+;(function($) {
 	$(function() {
 	   $('#mod-intro-$module->id').modintroajax({ajaxConfig : JSON.parse('$ajaxRequestConfig'), scroll : {enabled : $ajaxScrollToItems, offsetQuery : '$ajaxScrollOffsets->query', offsetManual : $ajaxScrollOffsets->manual}});
 	});
@@ -98,7 +93,7 @@ if($params->get('introvideos', 0)) {
 	$doc->addScript(Uri::root() . 'media/mod_articles_head/js/mod_intro_video.min.js');
 
 	$videoInitScript = <<<SCRIPT
-(function($) {
+;(function($) {
 	$(function() {
 		$('#mod-intro-$module->id').modintrovideo();
 	});
