@@ -14,6 +14,20 @@
 		</field>
 
 		<field
+            name="filter_category_default"
+            type="category"
+			showon="filter_type:category"
+            extension="com_content"
+            multiple="false"
+            default=""
+            size="10"
+            label="MODARH_FIELD_FILTER_CATEGORY_DEFAULT_LABEL"
+            description="MODARH_FIELD_FILTER_CATEGORY_DEFAULT_DESC"
+        >
+            <option value="">JNONE</option>
+        </field>
+
+		<field
 			name="filter_field"
 			type="sql"
 			showon="filter_type:custom"

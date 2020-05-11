@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2019-04-29</creationDate>
-	<copyright>©2018 - 2019 HEAD. MARKETING GmbH</copyright>
+	<creationDate>2020-05-11</creationDate>
+	<copyright>©2018 - 2020 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.10.0b</version>
+	<version>1.11</version>
 	<description>MODARH_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
