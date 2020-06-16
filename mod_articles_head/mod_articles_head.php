@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.10.0
+ * @version        2.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -20,64 +20,57 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Helper\ModuleHelper;
 
-// Include the news functions only once
+// Helper hinzufügen
 JLoader::register('ModArticlesHeadHelper', __DIR__ . '/helper.php');
 
+$Helper = new ModArticlesHeadHelper($module);
 $app = Factory::getApplication();
 $doc = $app->getDocument();
 
-// Voreingestellter Kategorie-Filter
-if($params->get('ajax', 0) != 1) {
-	$filterSettings = $params->get('ajax_filter', array());
-	foreach($filterSettings as $filter)
-	{
-		if ($filter->filter_type === 'category' && $filter->filter_category_default != '')
-		{
-			$params->set('catid', $filter->filter_category_default); // Das wird in die Modulparameter geschrieben, damit das Modul nur das anzeigt, was es soll.
-			$params->set('filter_catid', $filter->filter_category_default); // Das wird für den Button Loadmore benötigt damit sich dessen Konfiguration entsprechend anpasst, wenn gefiltert wird.
-		}
-	}
-}
 
-// -- Liste der Beiträge
-$list = ModArticlesHeadHelper::getList($params);
+// Modulklassen-Suffix
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8'); 
 
-// -- Modulklassen-Suffix
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'), ENT_COMPAT, 'UTF-8');
+// Die Sprachdatei von com_content wird geladen und benötigt für: den Infoblock, „Weiterlesen”.
+Factory::getLanguage()->load('com_content'); 
 
-// -- Lade das Beispiel-Stylesheet
+// Lade das Beispiel-Stylesheet
 if ($params->get('load_module_css', 0)) 
-{
-	$doc->addStylesheet(Uri::root() . 'media/mod_articles_head/css/mod-intro.css');
+{	
+	$Helper->addStylesheet('mod-intro.min.css');
 }
 
 // -- Lade das AJAX Controller-Script
-if($params->get('ajax_enable', 0)) 
+if($params->get('ajax_enable', 0)
+	&& !$params->get('render_partial', 0)) 
 {
-	// Die Sprachdatei von com_content wird benötigt, wenn der Info-Block angezeigt wird, und Beiträge per AJAX nachgeladen werden.
-    Factory::getLanguage()->load('com_content'); 
+	HTMLHelper::_('jquery.framework', true, true); // Sicherstellen, dass jQuery vorher geladen wird.
+	
+	$Helper->addStylesheet('loading-spinner.min.css');
+	$doc->addScript(Uri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js'); // AJAX Controller-Script
 
-    HTMLHelper::_('jquery.framework', true, true); // -- Sicherstellen, dass jQuery vorher geladen wird.
-	$doc->addScript(Uri::root() . 'media/mod_articles_head/js/mod_intro_ajax.min.js');
-
+	// Animate.css laden
 	if ($params->get('ajax_post_animations', 0) 
 			&& $params->get('ajax_post_animations_load_animatedcss', 0)) 
 	{
-		$doc->addStylesheet(Uri::root() . 'media/mod_articles_head/css/animate.css');
+		$Helper->addStylesheet('animate.min.css');
 	}
 
-    $ajaxRequestConfig = json_encode(ModArticlesHeadHelper::getAjaxLinkConfig($module), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+	// Konfiguration für XHR
+    $ajaxRequestConfig = json_encode($Helper->getAjaxLinkConfig(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 	$ajaxScrollToItems = $params->get('ajax_scroll', 0);
 	
+	// Offset-Elemente für automatisches scrollen
 	$ajaxScrollOffsets = (object) array(
 		"query" 	=> htmlspecialchars($params->get('ajax_scroll_offset_query', '')),
 		"manual" 	=> $params->get('ajax_scroll_offset_manual', 0, 'INT')
 	);
 
+	// AJAX-Controller init-Script
 	$ajaxInitScript = <<<SCRIPT
-;(function($) {
+(function($) {
 	$(function() {
-	   $('#mod-intro-$module->id').modintroajax({ajaxConfig : JSON.parse('$ajaxRequestConfig'), scroll : {enabled : $ajaxScrollToItems, offsetQuery : '$ajaxScrollOffsets->query', offsetManual : $ajaxScrollOffsets->manual}});
+	   $('#mod-intro-$module->id').modintroajax({ajaxConfig : $ajaxRequestConfig, scroll : {enabled : $ajaxScrollToItems, offsetQuery : '$ajaxScrollOffsets->query', offsetManual : $ajaxScrollOffsets->manual}});
 	});
 })(jQuery);
 SCRIPT;
@@ -86,14 +79,19 @@ SCRIPT;
 }
 
 
-// -- Lade die Vorschauvideo-Scripts etc.
-if($params->get('introvideos', 0)) {
-    
+// Lade die Vorschauvideo-Scripts etc.
+if($params->get('introvideos', 0)
+	&& !$params->get('render_partial', 0)) 
+{
     HTMLHelper::_('jquery.framework', true, true); // Sicherstellen, dass jQuery vorher geladen wird.
+	
+	// Vorschau Videos Script laden
+	$Helper->addStylesheet('introvideos.min.css');
 	$doc->addScript(Uri::root() . 'media/mod_articles_head/js/mod_intro_video.min.js');
 
+	// Vorschau Videos init-Script
 	$videoInitScript = <<<SCRIPT
-;(function($) {
+(function($) {
 	$(function() {
 		$('#mod-intro-$module->id').modintrovideo();
 	});
@@ -102,14 +100,20 @@ SCRIPT;
 
 	$doc->addScriptDeclaration($videoInitScript);
 
-	// -- Lade Featherlight.js
+	// Featherlight.js laden
 	if($params->get('featherlightbox', 0)) 
 	{
-		$doc->addStylesheet(Uri::root() . 'media/mod_articles_head/css/featherlight.min.css');
+		$Helper->addStylesheet('featherlight.min.css');
 		$doc->addScript(Uri::root() . 'media/mod_articles_head/js/featherlight.min.js');
 	}
 }
 
-// -- Lade das Layout
-$layout = $params->get('layout','default');
-require ModuleHelper::getLayoutPath('mod_articles_head', $layout);
+
+if($params->get('rendertype','items') === 'items')
+{
+	// Liste der Beiträge abholen
+	$list = $Helper->getList();
+}
+
+// Lade das Layout
+require ModuleHelper::getLayoutPath('mod_articles_head', $params->get('layout', 'default'));

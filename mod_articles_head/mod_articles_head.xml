@@ -2,12 +2,12 @@
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>MOD_ARTICLES_HEAD</name>
 	<author>Carsten Ruppert</author>
-	<creationDate>2020-05-11</creationDate>
+	<creationDate>2020-06-16</creationDate>
 	<copyright>©2018 - 2020 HEAD. MARKETING GmbH</copyright>
 	<license></license>
 	<authorEmail>webmaster@headmarketing.de</authorEmail>
 	<authorUrl>http://www.headmarketing.de</authorUrl>
-	<version>1.11</version>
+	<version>2.0</version>
 	<description>MODARH_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_articles_head">mod_articles_head.php</filename>
@@ -25,10 +25,11 @@
 	<media destination="mod_articles_head" folder="media">
 		<filename>index.html</filename>
 		<folder>css</folder>
+		<folder>images</folder>
 		<folder>js</folder>
 	</media>
 	<updateservers>
-		<server type="extension" priority="0" name="HEAD. Beiträge-Modul Updates">https://raw.githubusercontent.com/caru80/mod_articles_head/master/updates/updates.xml</server>
+		<server type="extension" priority="0" name="HEAD. Beiträge-Modul Updates">https://raw.githubusercontent.com/caru80/mod_articles_head/master/updates/updates_2.0.xml</server>
  	</updateservers>
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_ARTICLES_NEWSFLASH" />
 	<config>
@@ -88,13 +89,13 @@
 					name="show_featured"
 					type="radio"
 					class="btn-group"
-					default=""
+					default="show"
 					label="MODARH_FIELD_SHOW_FEATURED_ITEMS_LABEL"
 					description="MODARH_FIELD_SHOW_FEATURED_ITEMS_DESC"
 				>
-					<option value="0">MODARH_FIELD_SHOW_FEATURED_ITEMS_OPT_HIDE</option>
-					<option value="">MODARH_FIELD_SHOW_FEATURED_ITEMS_OPT_SHOW</option>
-					<option value="1">MODARH_FIELD_SHOW_FEATURED_ITEMS_OPT_ONLY</option>
+					<option value="hide">JHIDE</option>
+					<option value="show">JSHOW</option>
+					<option value="only">MODARH_OPT_ONLY</option>
 				</field>
 
 				<field
@@ -117,9 +118,9 @@
 				/>
 
 				<field
-					name="count"
+					name="limit"
 					type="text"
-					default="5"
+					default="6"
 					label="MODARH_FIELD_ITEMS_COUNT_LABEL"
 					description="MODARH_FIELD_ITEMS_COUNT_DESC" />
 
@@ -134,18 +135,19 @@
 					<option value="a.created">MODARH_FIELD_ORDERING_OPT_CREATED_DATE</option>
 					<option value="a.ordering">MODARH_FIELD_ORDERING_OPT_ORDERING</option>
 					<option value="a.hits">JGLOBAL_HITS</option>
+					<option value="a.title">MODARH_FIELD_ORDERING_OPT_TITLE</option>
 					<option value="rand()">MODARH_FIELD_ORDERING_OPT_RANDOM</option>
 				</field>
 
 				<field
 					name="direction"
 					type="list"
-					default="1"
+					default="DESC"
 					label="JGLOBAL_ORDER_DIRECTION_LABEL"
 					description="JGLOBAL_ORDER_DIRECTION_DESC"
 				>
-					<option value="0">JGLOBAL_ORDER_ASCENDING</option>
-					<option value="1">JGLOBAL_ORDER_DESCENDING</option>
+					<option value="ASC">JGLOBAL_ORDER_ASCENDING</option>
+					<option value="DESC">JGLOBAL_ORDER_DESCENDING</option>
 				</field>
 
 				<field
@@ -250,7 +252,7 @@
 				/>
 
 				<field
-					name="preview-image"
+					name="preview_image"
 					type="radio"
 					class="btn-group btn-group-yesno"
 					default="1"
@@ -259,6 +261,17 @@
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="img_intro_full"
+					type="list"
+					showon="preview_image:1"
+					label="MODARH_IMAGEINTRO_TYPE_LABEL"
+					default="intro"
+					>
+					<option value="intro">MODARH_IMAGEINTRO_TYPE_INTROIMAGE</option>
+					<option value="full">MODARH_IMAGEINTRO_TYPE_FULLIMAGE</option>
 				</field>
 
 				<field
@@ -272,6 +285,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+
 				<field
 					name="featherlightbox"
 					type="radio"
@@ -281,8 +295,32 @@
 					label="MODARH_FIELD_FEATHERLIGHTBOX_LABEL"
 					description="MODARH_FIELD_FEATHERLIGHTBOX_DESC"
 				>
-						<option value="0">JNO</option>
-						<option value="1">JYES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field 
+					name="introtext"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="1"
+					label="MODARH_FIELD_INTROTEXT_LABEL"
+					description="MODARH_FIELD_INTROTEXT_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="show_tags"
+					type="radio"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MODARH_FIELD_SHOW_TAGS_LABEL"
+					description="MODARH_FIELD_SHOW_TAGS_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field
@@ -310,12 +348,12 @@
 
 				<field
 					name="link_titles"
-					type="list"
-					class="chzn-color"
+					type="radio"
+					showon="item_title:1"
+					class="btn-group btn-group-yesno"
 					label="MODARH_FIELD_LINK_TITLES_LABEL"
 					description="MODARH_FIELD_LINK_TITLES_DESC"
 				>
-					<option value="">JGLOBAL_USE_GLOBAL</option>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -323,6 +361,7 @@
 				<field
 					name="item_heading"
 					type="list"
+					showon="item_title:1"
 					default="h4"
 					label="MODARH_FIELD_TITLE_HEADING_LABEL"
 					description="MODARH_FIELD_TITLE_HEADING_DESC"
@@ -345,6 +384,19 @@
 				>
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
+				</field>
+
+				<field
+					name="force_readmore"
+					type="radio"
+					showon="readmore:1"
+					class="btn-group btn-group-yesno"
+					default="0"
+					label="MODARH_FIELD_FORCE_READMORE_LABEL"
+					description="MODARH_FIELD_FORCE_READMORE_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field
@@ -376,6 +428,14 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+
+				<field
+					name="note-articles-infoblock"
+					type="note"
+					showon="show_infoblock:1"
+					label="MODARH_FIELD_NOTE_INFOBLOCK_LABEL"
+					description=""
+				/>
 
 				<field
 					name="info_block_show_title"
@@ -510,6 +570,19 @@
 					default="0"
 					label="MODARH_FIELD_AJAX_ENABLE_LABEL"
 					description="MODARH_FIELD_AJAX_ENABLE_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="ajax_userstate"
+					type="radio"
+					showon="ajax_enable:1"
+					class="btn-group"
+					default="1"
+					label="MODARH_FIELD_AJAX_USERSTATE_LABEL"
+					description="MODARH_FIELD_AJAX_USERSTATE_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -730,6 +803,45 @@
 					default="0"
 					label="MODARH_FIELD_AJAX_FILTERS_LABEL"
 					description="MODARH_FIELD_AJAX_FILTERS_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="ajax_dynamic_filteroptions"
+					type="radio"
+					showon="ajax_enable:1[AND]ajax_filters:1"
+					class="btn-group btn-group-yes-no"
+					default="0"
+					label="MODARH_FIELD_AJAX_DYNAMICFILTER_OPTIONS_LABEL"
+					description="MODARH_FIELD_AJAX_DYNAMICFILTER_OPTIONS_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field
+					name="ajax_filter_showempty"
+					type="radio"
+					showon="ajax_enable:1[AND]ajax_filters:1"
+					class="btn-group btn-group-yes-no"
+					default="0"
+					label="MODARH_FIELD_AJAX_FILTER_SHOWEMPTY_LABEL"
+					description="MODARH_FIELD_AJAX_FILTER_SHOWEMPTY_DESC"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field 
+					name="ajax_reset_filters"
+					type="radio"
+					showon="ajax_enable:1[AND]ajax_filters:1"
+					class="btn-group btn-group-yes-no"
+					default="0"
+					label="MODARH_FIELD_AJAX_RESET_FILTERS_LABEL"
+					description="MODARH_FIELD_AJAX_RESET_FILTERS_DESC"
 				>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>

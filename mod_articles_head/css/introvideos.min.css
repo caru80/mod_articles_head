@@ -1,0 +1,10 @@
+/**
+ * @package        HEAD. Article Module
+ * @version        2.0
+ * 
+ * @author         Carsten Ruppert <webmaster@headmarketing.de>
+ * @link           https://www.headmarketing.de
+ * @copyright      Copyright © 2018 HEAD. MARKETING GmbH All Rights Reserved
+ * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+ */
+:root{--play-icon-color:#ffffff;--play-text-color:#ffffff;--play-icon-hover-color:#3882c7;--play-text-hover-color:#ffffff}.mod-intro .item-introvideo{position:absolute;top:0;left:0;width:100%;z-index:10;padding-top:56.25%}.mod-intro .item-introvideo video{display:block;margin-top:-56.25%;opacity:0;transition:opacity .3s ease}.mod-intro .item-introvideo.in video{opacity:1}.mod-intro .item-introvideo.with-full-video{cursor:pointer}.mod-intro .item-introvideo .introvideo-play{position:absolute;top:50%;left:0;width:100%;z-index:2;-webkit-transform:translate3d(0,-50%,0);transform:translate3d(0,-50%,0);text-align:center}.mod-intro .item-introvideo .play-icon{position:relative;display:inline-block;width:25%;line-height:0}.mod-intro .item-introvideo .play-icon svg{width:100%}.mod-intro .item-introvideo .play-icon svg path{fill:var(--play-icon-color)}.mod-intro .item-introvideo .play-text{position:absolute;top:100%;width:100%;font-weight:400;font-size:1.5em;color:var(--play-text-color);opacity:0;-webkit-transition:opacity .3s ease;transition:opacity .3s ease}@media(max-width:768px){.mod-intro .item-introvideo .play-text{opacity:1}}.mod-intro .item-introvideo.with-full-video:hover .play-icon svg path{fill:var(--play-icon-hover-color)}.mod-intro .item-introvideo.with-full-video:hover .play-text{color:var(--play-text-hover-color);opacity:1}

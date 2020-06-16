@@ -1,11 +1,11 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.8.5
+ * @version        2.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
- * @copyright      Copyright © 2018 HEAD. MARKETING GmbH All Rights Reserved
+ * @copyright      Copyright © 2018 - 2019 HEAD. MARKETING GmbH All Rights Reserved
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -15,8 +15,9 @@
  */
 defined('_JEXEC') or die;
 ?>
-<div class="mod-intro-filter-group"<?php echo $oneFilter->group_data;?>>
+<div id="filter-group-<?php echo $oneFilter->field_name;?>-<?php echo $module->id;?>" class="mod-intro-filter-group btngroup"<?php echo $oneFilter->group_data;?>>
 	<?php
+		// Filter-Beschriftung
 		if($oneFilter->label != ''):
 	?>
 			<div class="filter-group-label">
@@ -26,26 +27,46 @@ defined('_JEXEC') or die;
 		endif;
 	?>
 	<div class="btn-group btn-group-toggle filter-<?php echo $oneFilter->type;?>" data-toggle="buttons">
-	
 		<?php
-			// „Alle” (Diesen Filter zurücksetzen):
-			if( ! $oneFilter->multiple):
+			// Option „Alle” (Diesen Filter zurücksetzen):
+			if ( ! $oneFilter->multiple && ! $oneFilter->hide_option_all) :
 		?>
-				<label class="btn btn-secondary active">
-					<input type="radio" name="<?php echo $oneFilter->field_name;?>" value="" /> <?php echo JText::_('JALL');?>
+				<label class="option-all btn btn-primary<?php echo !$oneFilter->is_active ? ' active' : '';?>">
+					<input 
+						type="radio" 
+						name="<?php echo $oneFilter->field_name;?>" 
+						id="<?php echo $oneFilter->field_name;?>-all-<?php echo $module->id;?>"
+						value="" 
+						<?php 
+							echo !$oneFilter->is_active ? ' checked="checked"' : '';
+						?>
+					/>
+					<?php echo $oneFilter->option_all_label;?>
 				</label>
 		<?php
 			endif;
 		?>
 
 		<?php
-			foreach($oneFilter->options as $option):
+			// Filteroptionen ausgeben
+			foreach ($oneFilter->options as $i => $option) :
+				// Ist die Filteroption aktiv?
+				$active = false;
+				if ($oneFilter->is_active)
+				{
+					$active = in_array($option->raw_value, $oneFilter->current_value);
+				}
 		?>
-				<label class="btn btn-primary">
+				<label for="<?php echo $option->id;?>" class="btn btn-primary<?php echo $active ? ' active' : '';?>">
 					<input 
 						type="<?php echo $oneFilter->multiple ? 'checkbox' : 'radio';?>" 
 						value="<?php echo $option->raw_value;?>" 
 						name="<?php echo $oneFilter->field_name;?>" 
+						id="<?php echo $option->id;?>"
+						<?php 
+							// Option aktiv...
+							echo $active ? ' checked="checked"' : '';
+						?>
 					/> 
 					<?php echo $option->title;?>
 					<?php if($oneFilter->show_items): ?>
@@ -56,33 +77,39 @@ defined('_JEXEC') or die;
 			endforeach;
 		?>
 	</div>
-	<script>
-		<?php // Die Buttons der btn-group inaktiv machen, wenn die Filter zurückgesetzt werden. ?>
-		(function($) {
-			$(function() {
-				$('#mod-intro-<?php echo $module->id;?>').modintroajax().module.on('resetFilters', function() 
+</div>
+<script>
+	<?php // Die Buttons der btn-group inaktiv machen, wenn die Filter zurückgesetzt werden. ?>
+	(function($) {
+
+		let module 	= '#mod-intro-<?php echo $module->id;?>',
+			group 	= '#filter-group-<?php echo $oneFilter->field_name;?>-<?php echo $module->id;?>';
+
+		$(function() {
+			$(module).modintroajax().module.on('resetFilters', function() 
+			{
+				$(this).find('.btn-group .btn').each(function() 
 				{
-					$(this).find('.btn-group .btn').each(function() {
-						if($(this).hasClass('active')) {
-							$(this).button('toggle'); <?php // Twitter Bootstrap! ?>
-						}
-					});
+					if ($(this).hasClass('active')) 
+					{
+						<?php //$(this).button('toggle'); // Twitter Bootstrap! – NÄ! Weil das einen „change” Event auslöst, und dann NOCHMAL (!) eine Anfrage geschickt wird (siehe unten)!?>
+						this.classList.remove('active'); <?php // jQuery.removeClass funktionierte nicht! (?!);?>
+						$(this).children('input').prop('checked', false);
+					}
 				});
 			});
-		})(jQuery);
-	</script>
-	<?php
-		if(!$oneFilter->multiple):
-	?>
-			<script>
-				(function($){
-					$('[name="<?php echo $oneFilter->field_name;?>"]').on('change', function()
-					{
-						$('#mod-intro-<?php echo $module->id;?>').modintroajax().applyFilterGroups();
-					});
-				})(jQuery);
-			</script>
-	<?php
-		endif;
-	?>
-</div>
+		});
+
+		<?php
+		// Den Filter abschicken, wenn ein Wert ausgewählt wird:
+		if (!$oneFilter->multiple) :
+		?>
+			$('[name="<?php echo $oneFilter->field_name;?>"]', group).on('change', function()
+			{
+				$(module).modintroajax().applyFilterGroups();
+			});
+		<?php
+			endif;
+		?>
+	})(jQuery);
+</script>

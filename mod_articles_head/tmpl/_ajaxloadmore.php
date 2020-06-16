@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.9.0
+ * @version        2.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -14,18 +14,20 @@
  * @license      GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
+
+use \Joomla\CMS\Language\Text; // JText
 ?>
 <?php
-use \Joomla\CMS\Language\Text; // JText
-
 //
 // Mehr laden:
 //
 if($params->get('ajax_loadmore_type', 0) == 1):
 	
-	$config = ModArticlesHeadHelper::getAjaxLinkConfig($module); // -- AJAX-Request Konfiguration vom Helper holen
-	
-	if($config->s < ModArticlesHeadHelper::getItemsCount($params, true)): // Nur anzeigen, wenn es noch etwas zum Nachladen gibt.
+	$config = $Helper->getAjaxLinkConfig(); // -- AJAX-Request Konfiguration vom Helper holen
+
+	$config->removeTrigger = true;
+
+	if($config->start < $Helper->getItemsCount('all')): // Nur anzeigen, wenn es noch etwas zum Nachladen gibt.
 ?>
 		<div class="mod-intro-loadmore">
 			<a  tabindex="0" 
@@ -44,16 +46,15 @@ endif;
 // 
 // Pagination:
 //
-if($params->get('ajax_loadmore_type', 0) == 2):
+if ($params->get('ajax_loadmore_type', 0) == 2 && $list !== false) :
 
-	$list = ModArticlesHeadHelper::getPaginationList($module);
-
+	// Diese Variable umbennen, weil $list die Items enthält.
+	$list = $Helper->getPaginationList();
 ?>
 	<div class="mod-intro-pagination">
 		<ul class="pagination">
-
 			<?php $link = $list["start"];?>
-			<?php if($link->show): ?>
+			<?php if ($link->show) : ?>
 				<li class="page-item start<?php echo $link->disabled ? ' disabled' : '';?>">
 					<a class="page-link" tabindex="0" <?php echo $link->config != '' ?  $link->config : '';?>>
 						<i class="fas fa-angle-double-left"></i> 
@@ -63,24 +64,24 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 			<?php endif; ?>
 
 			<?php $link = $list["previous"];?>
-			<?php if($link->show): ?>
+			<?php if ($link->show) : ?>
 				<li class="page-item previous<?php echo $link->disabled ? ' disabled' : '';?>">
 					<a class="page-link" tabindex="0" <?php echo $link->config != '' ?  $link->config : '';?>>
 						<i class="fas fa-angle-left"></i>
-						<?php if($params->get('ajax_pagination_labels',1)) echo $link->text; ?>
+						<?php if ($params->get('ajax_pagination_labels',1)) echo $link->text; ?>
 					</a>
 				</li>
 			<?php endif; ?>
 
 			<?php
 				// Seitenzahlen
-				if($list["pages"]->show) :
-					foreach($list["pages"]->options as $key => $link) :
+				if ($list["pages"]->show) :
+					foreach ($list["pages"]->options as $key => $link) :
 			?>
 						<li class="page-item page-<?php echo $key;?><?php echo $link->current ? ' active' : '';?>">
 							<a class="page-link page-num" tabindex="0" <?php echo $link->config != '' ? $link->config : '';?>>
 							<?php
-								if($link->range) :
+								if (isset($link->range)) :
 									// Nur anzeigen, dass es hier weiter geht
 							?>
 									<?php echo Text::_('MODARH_RANGELINK_LABEL','...');?>
@@ -100,7 +101,7 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 			?>
 
 			<?php $link = $list["next"];?>
-			<?php if($link->show): ?>
+			<?php if ($link->show) : ?>
 				<li class="page-item next<?php echo $link->disabled ? ' disabled' : '';?>">
 					<a class="page-link" tabindex="0" <?php echo $link->config != '' ? $link->config : '';?>>
 						<?php if($params->get('ajax_pagination_labels',1)) echo $link->text; ?>
@@ -110,7 +111,7 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 			<?php endif; ?>
 
 			<?php $link = $list["end"];?>
-			<?php if($link->show): ?>
+			<?php if ($link->show) : ?>
 				<li class="page-item end<?php echo $link->disabled ? ' disabled' : '';?>">
 					<a class="page-link" tabindex="0" <?php echo $link->config != '' ? $link->config : '';?>>
 						<?php if($params->get('ajax_pagination_labels',1)) echo $link->text; ?>
@@ -122,7 +123,7 @@ if($params->get('ajax_loadmore_type', 0) == 2):
 
 		<?php
 			// Seitenzähler (Seite x von y)
-			if($params->get('ajax_pagination_pagecounter', 0)):
+			if ($params->get('ajax_pagination_pagecounter', 0)) :
 		?>
 				<div class="page-counter">
 					<?php echo Text::sprintf("JLIB_HTML_PAGE_CURRENT_OF_TOTAL", $list["pages"]->current, $list["pages"]->total);?>

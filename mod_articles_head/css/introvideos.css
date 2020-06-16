@@ -1,4 +1,10 @@
 
+:root {
+	--play-icon-color: #ffffff;
+	--play-text-color: #ffffff;
+	--play-icon-hover-color: #3882c7;
+	--play-text-hover-color: #ffffff;
+};
 
 .mod-intro .item-image-intro {
     position: relative;
@@ -24,7 +30,7 @@
 	padding-top: 56.25%; /* Mindesthöhe mit der Ratio 16:9 erzwingen. Falls kein Vorschauvideo da ist, damit der Play-Button ordentlich sitzt. */
 	/* padding-top: 75%; */ /* 4:3 */
 }
-.mod-intro .item-introvideo video{
+.mod-intro .item-introvideo video {
 	display: block; /* Wichtig! wg. White-Spaces */
 
 	margin-top: -56.25%; /* 16:9 */
@@ -32,51 +38,72 @@
 	opacity: 0;
 	transition: opacity 0.3s ease;
 }
-.mod-intro .item-introvideo.in video{ /* MouseOver */
+.mod-intro .item-introvideo.in video { /* MouseOver */
 	opacity: 1;
 }
 
 
-/* -- Play-Button und „Film abspielen” */
+/*
+	Play-Icon und -Text
+*/
 .mod-intro .item-introvideo.with-full-video {
 	cursor: pointer;
 }
-.mod-intro .item-introvideo.with-full-video:before,
-.mod-intro .item-introvideo.with-full-video:after{
+
+.mod-intro .item-introvideo .introvideo-play {
 	position: absolute;
 	top: 50%;
-	left: 50%;
+	left: 0px;
+	width: 100%;
 	z-index: 2;
-	color: #ffffff;
+	-webkit-transform: translate3d(0, -50%, 0);
+			transform: translate3d(0, -50%, 0);
+	text-align: center;
 }
 
-/* -- Play-Button */
-.mod-intro .item-introvideo.with-full-video:before{
-	font-family: 'Font Awesome 5 Free';
-	font-weight: 400;
-	content: "\f144";
-	
-	font-size: 6em;
-	-webkit-transform: translate3d(-50%,-50%,0); /* Zentrieren */
-			transform: translate3d(-50%,-50%,0);
+/*
+	Play-Icon
+*/
+.mod-intro .item-introvideo .play-icon {
+	position: relative;
+	display: inline-block;
+	width: 25%;
+	line-height: 0;
 }
-.mod-intro .item-introvideo.with-full-video:hover:before{
-	color: #4a80e2;
+.mod-intro .item-introvideo .play-icon svg {
+	width: 100%;
+}
+.mod-intro .item-introvideo .play-icon svg path {
+	fill: var(--play-icon-color);
 }
 
-/* -- „Film abspielen” */
-.mod-intro .item-introvideo.with-full-video:after{
-	content: attr(title);
-	font-weight: 500;
+/*
+	Play-Text
+*/
+.mod-intro .item-introvideo .play-text {
+	position: absolute;
+	top: 100%;
+	width: 100%;
+	font-weight: normal;
 	font-size: 1.5em;
-	margin-top: 3em;
-	text-shadow: 2px 2px 0px rgba(0,0,0,0.6);
+	color: var(--play-text-color);
 	opacity: 0;
-	-webkit-transform: translate3d(-50%,-50%,0);
-			transform: translate3d(-50%,-50%,0);
-	-webkit-transition: opacity 0.5s ease;
-			transition: opacity 0.5s ease;
+	-webkit-transition: opacity 0.3s ease;
+			transition: opacity 0.3s ease;
 }
-.mod-intro .item-introvideo.with-full-video:hover:after {
+@media(max-width: 768px) {
+	.mod-intro .item-introvideo .play-text {
+		opacity: 1;
+	}
+}
+
+/*
+	Icon & Text hover
+*/
+.mod-intro .item-introvideo.with-full-video:hover .play-icon svg path {
+	fill: var(--play-icon-hover-color);
+}
+.mod-intro .item-introvideo.with-full-video:hover .play-text {
+	color: var(--play-text-hover-color);
 	opacity: 1;
 }

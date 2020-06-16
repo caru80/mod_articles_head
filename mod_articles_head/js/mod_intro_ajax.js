@@ -25,7 +25,7 @@
 		request : {
 			'option' : 'com_ajax',
 			'module' : 'articles_head',
-			'method' : 'getList',
+			'method' : 'render',
 			'format' : 'raw'
 		},
 		ajaxConfig 		: null,
@@ -43,7 +43,6 @@
 		{
 			this.opt = $.extend(true, {}, $.ModIntroAJAX.Defaults, options);
 			this.setup();
-
 			// Wenn ein AJAX Ereigniss eintritt wird Setup erneut ausgeführt.
 			this.module.on('afterLoad', function() {
 				this.setup();
@@ -52,9 +51,9 @@
 		
 		setup : function()
 		{
-			var trigger = this.module.find('[data-modintroajax]');
+			let trigger = this.module.find('[data-modintroajax]');
 
-			for(var i = 0, len = trigger.length; i < len; i++) 
+			for(let i = 0, len = trigger.length; i < len; i++) 
 			{
 				trigger.eq(i)
 				.off(this.opt.evNamespace)
@@ -75,6 +74,7 @@
 				.off(this.opt.evNamespace)
 				.on('click' + this.opt.evNamespace, function() 
 				{
+					console.log('reset clicked!');
 					this.resetFilterGroups();
 				}.bind(this));
 		},
@@ -91,7 +91,7 @@
 				animation = animation.map(Function.prototype.call, String.prototype.trim);
 			}
 
-			items.css({visibility : 'hidden'}); // , opacity : '0'});
+			items.css({visibility : 'hidden'});
 			
 			if(this.opt.ajaxConfig.replace) {
 				$(this.opt.ajaxConfig.target).html(html);
@@ -107,9 +107,10 @@
 			}
 
 			let animateIn = function() {
-				var anim = this.data('modintroanim');
-				this.one('webkitAnimatioEnd msAnimationEnd animationend', function(){
-					var a = $(this).data('modintroanim');
+				let anim = this.data('modintroanim');
+				this.one('webkitAnimatioEnd msAnimationEnd animationend', function()
+				{
+					let a = $(this).data('modintroanim');
 					$(this).removeClass(a.class + ' ' + a.name);
 				});
 				if(anim) {
@@ -118,7 +119,7 @@
 			}
 
 			// let item;
-			for(var i = 0, len = items.length; i < len; i++)
+			for(let i = 0, len = items.length; i < len; i++)
 			{
 				let item 	= items.eq(i),
 					aniname = animation;
@@ -190,6 +191,8 @@
 			this.opt.ajaxConfig.catid 	= [];
 			this.opt.ajaxConfig.tag 	= [];
 			this.opt.ajaxConfig.custom 	= {};
+			this.opt.ajaxConfig.start 	= 0;	// Beim 1. Beitrag beginnen!
+			this.opt.ajaxConfig.replace = true; // Beiträge im Modul ersetzen!
 			
 			this.module.find('[data-filtergroup]').each(function() 
 			{
@@ -203,17 +206,16 @@
 						case 'input' :
 							switch (data.type)
 							{
-								//case 'html5range' : // Erst mal nicht!
-								case 'range' :
-									let id 		= data.id != '' ? 'slider-' + data.param + '-' + data.id + '[]' : 'slider-' + data.param + '[]', // data.id nur bei Custom Fields;
-										slider 	= document.getElementById(id);
-									
-									if (slider)	
-									{
-										slider.noUiSlider.reset();
-									}
+								case 'html5range' : 
+
 								break;
 
+								/*
+									NoUISlider: Siehe Script im Template /filter/range.php
+								case 'range' : 
+								
+								break;
+								*/
 								case 'default' :
 								case 'btngroup' :
 								default :
@@ -234,20 +236,20 @@
 			this.sendRequest();
 		},
 
-
 		applyFilterGroups : function()
 		{
-			this.opt.ajaxConfig.s 		= 0;
-			this.opt.ajaxConfig.replace = true; // Beiträge im Modul ersetzen
-			this.opt.ajaxConfig.filter  = true; // Ein Filter-Link wurde angeklickt, und dieser soll nicht aus dem DOM entfernt werden.
-			
 			let self = this;
+
+			this.opt.ajaxConfig.start	= 0;	// Beim 1. Beitrag beginnen!
+			this.opt.ajaxConfig.replace = true; // Beiträge im Modul ersetzen!
+			this.opt.ajaxConfig.filter  = true; // Ein Filter-Link wurde angeklickt, und dieser soll nicht aus dem DOM entfernt werden.
 
 			this.module.find('[data-filtergroup]').each(function() 
 			{
 				self.setFilterGroupValues(this);
 			});
 
+			this.module.triggerHandler('applyFilters');
 			this.sendRequest();
 		},
 
@@ -277,8 +279,36 @@
 			}
 		},
 
+		requestSuccess : function (response)
+		{
+			console.log(this.indicator);
+			this.indicator.remove();
+
+			if(this.opt.ajaxConfig.animate) {
+				this.postEffects(response);
+			}
+			else {
+				if(this.opt.ajaxConfig.replace) {
+					$(this.opt.ajaxConfig.target).css({height : ''});
+					$(this.opt.ajaxConfig.target).html(response);
+				}
+				else {
+					$(this.opt.ajaxConfig.target).append(response);
+				}
+
+				if(this.opt.scroll.enabled)
+				{
+					this.scrollToNewItems();
+				}
+			}
+
+			this.module.triggerHandler('afterLoad');
+		},
+
 		sendRequest : function(trigger) 
 		{
+			console.log('Sending request!');
+
 			if(trigger) 
 			{
 				trigger = $(trigger);
@@ -288,7 +318,7 @@
 			
 
 			this.opt.request.modid = this.opt.ajaxConfig.id; // Joomla Modul Id
-			this.opt.request.start = this.opt.ajaxConfig.s;  // Start
+			this.opt.request.start = this.opt.ajaxConfig.start;  // Start
 			
 			// Kategorie-Filter
 			if(this.opt.ajaxConfig.catid) 
@@ -305,27 +335,14 @@
 			// Custom Fields Filter
 			if(this.opt.ajaxConfig.custom)
 			{
-				this.opt.request.custom = this.opt.ajaxConfig.custom;
-				//this.opt.request.value  = this.opt.ajaxConfig.value;
-			}
-
-			let temp;  // Hier wird die Ladeanzeige eingeblendet
-			if(this.opt.ajaxConfig.replace) 
-			{
-				temp = $(this.opt.ajaxConfig.target);
-				temp.css({height : temp.outerHeight()});
-			}
-			else if(trigger)
-			{
-				temp = trigger.parent();
+				this.opt.request.custom = this.opt.ajaxConfig.custom; // Array, mehrdimensional!
 			}
 
 			// Wurde ein Filter-Link angeklickt?
-			if(!this.opt.ajaxConfig.filter && trigger) trigger.remove();
+			// if(!this.opt.ajaxConfig.filter && trigger) trigger.remove();
 
-			// Ladeanzeige einhängen
-			let indicator = $(this.opt.html.loading);
-			temp.html(indicator);
+			this.indicator = $(this.opt.html.loading);
+			$(document.body).prepend(this.indicator);
 
 			$.ajax({
 				url		: this.opt.ajaxConfig.url,
@@ -333,28 +350,9 @@
 				data 	: this.opt.request,
 				success: function (response) 
 				{
-					indicator.remove();
-
-					if(this.opt.ajaxConfig.animate) {
-						this.postEffects(response);
-					}
-					else {
-						if(this.opt.ajaxConfig.replace) {
-							$(this.opt.ajaxConfig.target).css({height : ''});
-							$(this.opt.ajaxConfig.target).html(response);
-						}
-						else {
-							$(this.opt.ajaxConfig.target).append(response);
-						}
-
-						if(this.opt.scroll.enabled)
-						{
-							this.scrollToNewItems();
-						}
-					}
-
-					this.module.triggerHandler('afterLoad');
+					this.requestSuccess(response);
 				}.bind(this),
+
 				error: function(response) {
 					console.log(response);
 				}
@@ -364,7 +362,7 @@
 
 	$.fn.modintroajax = function(options)
 	{
-		var self = $(this).data('modintroajax');
+		let self = $(this).data('modintroajax');
 
 		if(!self) 
 		{

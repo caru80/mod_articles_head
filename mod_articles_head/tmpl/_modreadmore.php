@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        HEAD. Article Module
- * @version        1.10.0
+ * @version        2.0
  * 
  * @author         Carsten Ruppert <webmaster@headmarketing.de>
  * @link           https://www.headmarketing.de
@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
-$mod_readmore_url = ModArticlesHeadHelper::getModuleReadmoreUrl($params); // Modul-Weiterlesen URL
+$mod_readmore_url = $Helper->getModuleReadmoreUrl($params); // Modul-Weiterlesen URL
 ?>
 <?php
 //
@@ -27,9 +27,7 @@ if ($mod_readmore_url != '') :
 ?>
 	<div class="mod-intro-readmore">
 		<a href="<?php echo $mod_readmore_url;?>" class="btn btn-primary more">
-			<span>
-				<?php echo $params->get('module_readmore_label','') != '' ? $params->get('module_readmore_label','') : Text::_("MODARH_MODULE_READMORE_LABEL_FRONT");?>
-			</span> 
+			<?php echo $params->get('module_readmore_label','') != '' ? $params->get('module_readmore_label','') : Text::_("MODARH_MODULE_READMORE_LABEL_FRONT");?>
 			<i class="fas fa-chevron-right"></i>
 		</a>
 	</div>
